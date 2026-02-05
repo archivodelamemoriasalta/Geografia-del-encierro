@@ -16,11 +16,11 @@ const desaparecidosPorDepto = {
 
 // 3. Escala de color
 function getColor(d) {
-  return d > 100 ? '#800026' :
-         d > 70  ? '#BD0026' :
-         d > 40  ? '#E31A1C' :
-         d > 20  ? '#FC4E2A' :
-                   '#FD8D3C';
+  return d > 100 ? '#2b0000' :   // casi negro
+         d > 70  ? '#4a0000' :
+         d > 40  ? '#6a0000' :
+         d > 20  ? '#8b0000' :   // bordó clásico
+                   '#d9caca';   // blanco sucio / ausencia
 }
 
 // 4. Estilo por departamento
