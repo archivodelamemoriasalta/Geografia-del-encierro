@@ -2,15 +2,120 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Geografías del Encierro – Salta</title>
+  <title>Geografías del Encierro – Presos Políticos en Salta</title>
+
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+
   <style>
-    #map { height: 100vh; }
+    body {
+      margin: 0;
+      font-family: Georgia, serif;
+      background: #f4f4f4;
+      color: #222;
+    }
+
+    header {
+      padding: 20px;
+      background: #1f1f1f;
+      color: white;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 1.8em;
+    }
+
+    header p {
+      margin-top: 8px;
+      max-width: 800px;
+      line-height: 1.5;
+      font-size: 0.95em;
+      color: #ccc;
+    }
+
+    #contenedor {
+      display: flex;
+      height: calc(100vh - 160px);
+    }
+
+    #map {
+      flex: 3;
+    }
+
+    #panel {
+      flex: 1;
+      padding: 15px;
+      background: #ffffff;
+      border-left: 1px solid #ddd;
+      overflow-y: auto;
+    }
+
+    #panel h2 {
+      font-size: 1.2em;
+      margin-top: 0;
+    }
+
+    .boton {
+      display: block;
+      margin: 10px 0;
+      padding: 10px;
+      background: #8b0000;
+      color: white;
+      text-align: center;
+      text-decoration: none;
+      font-size: 0.9em;
+      border-radius: 4px;
+    }
+
+    .boton:hover {
+      background: #a40000;
+    }
+
+    footer {
+      padding: 10px 20px;
+      font-size: 0.8em;
+      background: #eaeaea;
+    }
   </style>
 </head>
+
 <body>
 
-<div id="map"></div>
+<header>
+  <h1>Geografías del Encierro</h1>
+  <p>
+    Presos políticos en la provincia de Salta (1975–1983).  
+    Este mapa interactivo reconstruye, a partir del fondo documental del
+    Archivo Provincial de la Memoria, los traslados forzados y detenciones
+    ilegales de personas perseguidas por razones políticas.
+  </p>
+</header>
+
+<div id="contenedor">
+  <div id="map"></div>
+
+  <div id="panel">
+    <h2>Cómo leer el mapa</h2>
+    <p>
+      Cada departamento está coloreado según la cantidad de personas
+      detenidas-desaparecidas registradas en el período.
+    </p>
+
+    <p>
+      Al hacer clic sobre un departamento podrás acceder al detalle de
+      las personas registradas.
+    </p>
+
+    <a href="#" class="boton">Ver listado completo</a>
+    <a href="#" class="boton">Sobre el archivo</a>
+    <a href="#" class="boton">Metodología</a>
+  </div>
+</div>
+
+<footer>
+  Archivo Provincial de la Memoria – Salta  
+</footer>
 
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script src="script.js"></script>
