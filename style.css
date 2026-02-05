@@ -1,0 +1,14 @@
+body {
+  font-family: serif;
+  margin: 20px;
+}
+
+#map {
+  height: 500px;
+  margin: 20px 0;
+}
+
+#panel {
+  border-top: 1px solid #ccc;
+  padding-top: 10px;
+}
