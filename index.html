@@ -1,116 +1,201 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Geografías del Encierro – Presos Políticos en Salta</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+<title>Geografías del Encierro – Presos Políticos en Salta (1975–1983)</title>
 
-  <style>
-    body {
-      margin: 0;
-      font-family: Georgia, serif;
-      background: #f4f4f4;
-      color: #222;
-    }
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
 
-    header {
-      padding: 20px;
-      background: #2b0000;
-      color: white;
-    }
+<style>
 
-    header h1 {
-      margin: 0;
-      font-size: 1.8em;
-    }
-
-    header p {
-      margin-top: 8px;
-      max-width: 800px;
-      line-height: 1.5;
-      font-size: 0.95em;
-      color: #ccc;
-    }
-
-    #contenedor {
-      display: flex;
-      height: calc(100vh - 160px);
-    }
-
-    #map {
-      flex: 3;
-    }
-
-    #panel {
-      flex: 1;
-      padding: 15px;
+body {
+  margin: 0;
+  font-family: Georgia, serif;
   background: #ffffff;
-  border-left: 3px solid #2b0000;
-      overflow-y: auto;
-    }
+  color: #111;
+  line-height: 1.6;
+}
 
-    #panel h2 {
-      font-size: 1.2em;
-      margin-top: 0;
-    }
+/* ================= HEADER ================= */
 
-    .boton {
-      display: block;
-      margin: 10px 0;
-      padding: 10px;
-      background: #8b0000;
-      color: white;
-      text-align: center;
-      text-decoration: none;
-      font-size: 0.9em;
-      border-radius: 4px;
-    }
+header {
+  background: #2b0000;
+  color: white;
+  padding: 60px 10%;
+}
 
-    .boton:hover {
-      background: #a40000;
-    }
+header h1 {
+  margin: 0;
+  font-size: 2.2rem;
+}
 
-    footer {
-      padding: 10px 20px;
-      font-size: 0.8em;
-      background: #eaeaea;
-    }
-  </style>
+header p {
+  max-width: 800px;
+  margin-top: 20px;
+  font-size: 1rem;
+}
+
+/* ================= SECCIONES ================= */
+
+section {
+  padding: 60px 10%;
+}
+
+.section-light {
+  background: #f4f4f4;
+}
+
+.section-white {
+  background: #ffffff;
+}
+
+/* ================= MAPA + PANEL ================= */
+
+.mapa-wrapper {
+  display: flex;
+  gap: 30px;
+  align-items: flex-start;
+}
+
+#map {
+  flex: 2;
+  height: 500px;
+  border: 1px solid #ddd;
+}
+
+#panel {
+  flex: 1;
+  min-height: 500px;
+  border-left: 4px solid #2b0000;
+  padding-left: 20px;
+}
+
+#panel h2 {
+  margin-top: 0;
+}
+
+#contenido-panel ul {
+  padding-left: 20px;
+}
+
+#contenido-panel li {
+  margin-bottom: 6px;
+  font-size: 0.95rem;
+}
+
+/* ================= FOOTER ================= */
+
+footer {
+  background: #111;
+  color: #ccc;
+  padding: 40px 10%;
+  font-size: 0.9rem;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 900px) {
+
+  .mapa-wrapper {
+    flex-direction: column;
+  }
+
+  #map {
+    height: 400px;
+  }
+
+  #panel {
+    border-left: none;
+    border-top: 4px solid #2b0000;
+    padding-left: 0;
+    padding-top: 20px;
+  }
+
+}
+
+</style>
 </head>
 
 <body>
 
+<!-- ================= HERO ================= -->
+
 <header>
   <h1>Geografías del Encierro</h1>
   <p>
-    Presos políticos en la provincia de Salta (1975–1983).  
-    Este mapa interactivo reconstruye, a partir del fondo documental del
-    Archivo Provincial de la Memoria, los traslados forzados y detenciones
-    ilegales de personas perseguidas por razones políticas.
+    Presos políticos en la provincia de Salta (1975–1983).
+    Proyecto de visualización territorial basado en el fondo documental
+    del Archivo Provincial de la Memoria.
   </p>
 </header>
 
-<div id="contenedor">
-  <div id="map"></div>
+<!-- ================= CONTEXTO HISTÓRICO ================= -->
 
-  <div id="panel">
-    <h2 id="titulo-panel">Seleccione un departamento</h2>
-    <div id="contenido-panel">
-      <p>
-        Hacé clic sobre un departamento del mapa para ver
-        el detalle de las personas registradas.
-      </p>
+<section class="section-white">
+  <h2>Contexto Histórico</h2>
+  <p>
+    Entre 1975 y 1983, numerosas personas fueron detenidas y trasladadas
+    en el marco de la represión política. Este proyecto reconstruye,
+    desde una perspectiva territorial, la procedencia geográfica de los
+    registros documentados.
+  </p>
+</section>
+
+<!-- ================= MAPA INTERACTIVO ================= -->
+
+<section class="section-light">
+  <h2>Distribución Territorial</h2>
+
+  <div class="mapa-wrapper">
+    
+    <div id="map"></div>
+
+    <div id="panel">
+      <h2 id="titulo-panel">Seleccione un departamento</h2>
+      <div id="contenido-panel">
+        Haga clic sobre el mapa para visualizar
+        las personas registradas.
+      </div>
     </div>
+
   </div>
-</div> <!-- ← ESTA LÍNEA FALTABA -->
+
+</section>
+
+<!-- ================= METODOLOGÍA ================= -->
+
+<section class="section-white">
+  <h2>Metodología</h2>
+  <p>
+    La base de datos fue sistematizada a partir de documentación oficial.
+    Se utilizaron técnicas de georreferenciación y procesamiento estadístico
+    para vincular los registros individuales con su departamento de origen.
+  </p>
+</section>
+
+<!-- ================= ENTREVISTAS / ESPACIO FUTURO ================= -->
+
+<section class="section-light">
+  <h2>Testimonios y Material Complementario</h2>
+  <p>
+    Espacio reservado para la incorporación de entrevistas,
+    material audiovisual y ampliaciones documentales.
+  </p>
+</section>
+
+<!-- ================= FOOTER ================= -->
 
 <footer>
-  Archivo Provincial de la Memoria – Salta  
+  Archivo Provincial de la Memoria – Provincia de Salta<br>
+  Proyecto de visualización territorial
 </footer>
 
+<!-- Librerías -->
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<!-- Script principal -->
 <script src="script.js"></script>
 
 </body>
