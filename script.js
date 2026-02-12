@@ -9,7 +9,7 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 let conteoPorDepto = {};
 let personas = [];
 
-// Normalizador (seguridad extra)
+// Normalizador robusto
 function normalizar(texto) {
   if (!texto) return "";
   return texto
@@ -20,15 +20,14 @@ function normalizar(texto) {
     .trim();
 }
 
-// 1️⃣ Leer CSV
+// 1️⃣ Leer CSV delimitado por ;
 fetch('presos_politicos_salta.csv')
   .then(response => response.text())
   .then(csvText => {
 
-    const filas = csvText.split("\n");
-    const encabezados = filas[0].split(",");
+    const filas = csvText.split("\n").filter(f => f.trim() !== "");
+    const encabezados = filas[0].split(";");
 
-    // Buscar índice real de la columna Departamen
     const indexDepartamento = encabezados.findIndex(
       col => normalizar(col) === "DEPARTAMEN"
     );
@@ -38,7 +37,8 @@ fetch('presos_politicos_salta.csv')
     );
 
     filas.slice(1).forEach(fila => {
-      const columnas = fila.split(",");
+
+      const columnas = fila.split(";");
 
       const nombre = columnas[indexNombre];
       const departamento = columnas[indexDepartamento];
@@ -69,6 +69,7 @@ function getColor(d) {
          d > 0  ? "#b22222" :
                   "#f5f5f5";
 }
+
 
 // 2️⃣ Cargar GeoJSON
 function cargarMapa() {
