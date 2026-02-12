@@ -1,36 +1,100 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<title>Geografías del Encierro</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geografías del Encierro</title>
 
-<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600&display=swap" rel="stylesheet">
 
-<style>
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-}
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden; /* Evita el scroll global de la página */
+        }
 
-#map {
-  height: 100vh;
-}
-</style>
+        #map {
+            height: 100vh;
+            width: 100vw;
+            z-index: 1;
+        }
 
+        /* PANEL LATERAL DERECHO */
+        #panel-lateral {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 350px;
+            max-height: calc(100vh - 40px);
+            background: rgba(255, 255, 255, 0.9); /* Fondo semi-transparente */
+            backdrop-filter: blur(10px); /* Efecto de desenfoque detrás del panel */
+            z-index: 1000;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+            display: flex;
+            flex-direction: column;
+            transition: all 0.4s ease-in-out;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            overflow: hidden;
+        }
+
+        /* Clase para cuando el panel está oculto */
+        .panel-cerrado {
+            transform: translateX(120%); /* Lo saca de la pantalla a la derecha */
+            opacity: 0;
+        }
+
+        .panel-header {
+            background: #2c3e50;
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .panel-header h2 {
+            margin: 0;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        #cerrar-panel {
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        #cerrar-panel:hover {
+            transform: scale(1.2);
+        }
+
+        .panel-contenido {
+            padding: 20px;
+            overflow-y: auto; /* Si el texto es largo, solo scrolea el panel */
+            color: #333;
+            line-height: 1.5;
+        }
+    </style>
 </head>
 <body>
-  
 
 <div id="map"></div>
 
-  <!-- PANEL LATERAL -->
-<div id="panel-lateral" class="panel-cerrado">
-  <div class="panel-header">
-    <h2 id="titulo-panel"></h2>
-    <button id="cerrar-panel">✕</button>
-  </div>
-  <div id="contenido-panel" class="panel-contenido"></div>
-</div>
+<aside id="panel-lateral" class="panel-cerrado">
+    <div class="panel-header">
+        <h2 id="titulo-panel">Información</h2>
+        <button id="cerrar-panel">✕</button>
+    </div>
+    <div id="contenido-panel" class="panel-contenido">
+        </div>
+</aside>
 
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script src="script.js"></script>
