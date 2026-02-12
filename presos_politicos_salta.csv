@@ -1,4 +1,4 @@
-ID,NombreCompleto,Decreto,FechaIngreso,FechaTraslado,FechaLiberacion,UnidadDestino,Departamento,Localidad,Profesion,Estado,Observaciones
+ID,NombreCompleto,Decreto,FechaIngreso,FechaTraslado,FechaLiberacion,UnidadDestino,departamento,Localidad,Profesion,Estado,Observaciones
 "1","Acardi Juan Domingo","null","04/12/1974","null","null","null","null","Salta","null","Detenido","Ingresa desde la Jefatura de la Policia de Salta junto a Ramón Jesus Pedraza y Antonio Osores."
 "2","Ache Elías / Alfredo De las Heras / Gregorio Ponce","2978/75","null","null","null","null","null","null","null","Liberado","Liberado por decreto 2978/75"
 "3","Ahuerma Marcelo Cristian","null","12/11/1974","01/12/1974","29/11/1974","Instituto Penitenciario de la Capital","null","Salta Capital","Empleado","Trasladado","Entregado a comisión de Policia Federal junto a Vicente Baz Sanchez y otros."
