@@ -12,3 +12,65 @@ body {
   border-top: 1px solid #ccc;
   padding-top: 10px;
 }
+#panel-lateral {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 400px;
+  height: 100%;
+  background: #ffffff;
+  box-shadow: -4px 0 15px rgba(0,0,0,0.2);
+  transition: transform 0.3s ease-in-out;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+}
+
+.panel-cerrado {
+  transform: translateX(100%);
+}
+
+.panel-abierto {
+  transform: translateX(0);
+}
+
+.panel-header {
+  background: #6a0000;
+  color: white;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.panel-header h2 {
+  margin: 0;
+  font-size: 18px;
+}
+
+#cerrar-panel {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.panel-contenido {
+  padding: 20px;
+  overflow-y: auto;
+  font-size: 14px;
+}
+
+.panel-contenido ul {
+  padding-left: 18px;
+}
+
+.panel-contenido a {
+  color: #6a0000;
+  text-decoration: none;
+}
+
+.panel-contenido a:hover {
+  text-decoration: underline;
+}
