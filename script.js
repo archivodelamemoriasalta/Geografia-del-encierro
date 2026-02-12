@@ -108,4 +108,69 @@ function cargarMapa() {
       }).addTo(map);
 
     });
+  function abrirPanel() {
+  document.getElementById("panel-lateral")
+    .classList.remove("panel-cerrado");
+  document.getElementById("panel-lateral")
+    .classList.add("panel-abierto");
+}
+
+function cerrarPanel() {
+  document.getElementById("panel-lateral")
+    .classList.remove("panel-abierto");
+  document.getElementById("panel-lateral")
+    .classList.add("panel-cerrado");
+}
+
+document.getElementById("cerrar-panel")
+  .addEventListener("click", cerrarPanel);
+  function mostrarDepartamento(depto) {
+
+  abrirPanel();
+
+  const panelTitulo = document.getElementById("titulo-panel");
+  const panelContenido = document.getElementById("contenido-panel");
+
+  const filtradas = personas.filter(
+    p => normalizar(p.departamento) === normalizar(depto)
+  );
+
+  panelTitulo.textContent = depto;
+
+  panelContenido.innerHTML = `
+    <p><strong>${filtradas.length}</strong> detenidos registrados</p>
+    <ul>
+      ${filtradas.map(p =>
+        `<li>
+          <a href="#" onclick="mostrarFicha('${p.nombre.replace(/'/g, "\\'")}')">
+            ${p.nombre}
+          </a>
+        </li>`
+      ).join("")}
+    </ul>
+  `;
+function mostrarFicha(nombre) {
+
+  const persona = personas.find(p => p.nombre === nombre);
+  if (!persona) return;
+
+  const panelTitulo = document.getElementById("titulo-panel");
+  const panelContenido = document.getElementById("contenido-panel");
+
+  panelTitulo.textContent = persona.nombre;
+
+  panelContenido.innerHTML = `
+    <p><strong>Departamento:</strong> ${persona.departamento}</p>
+    <p><strong>Decreto:</strong> ${persona.decreto || "No registrado"}</p>
+    <p><strong>Ingreso:</strong> ${persona.fechaIngreso || "No registrado"}</p>
+    <p><strong>Estado:</strong> ${persona.estado || "No registrado"}</p>
+    <br>
+    <button onclick="mostrarDepartamento('${persona.departamento}')">
+      ← Volver al departamento
+    </button>
+  `;
+}
+
+  }
+
 }
