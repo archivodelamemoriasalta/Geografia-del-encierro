@@ -1,25 +1,37 @@
-// Include Papa Parse library
-// <reference to Papa Parse library>
+// Crear mapa centrado en Salta
+const map = L.map('map').setView([-24.8, -65.4], 7);
 
-const csvData = []; // Array to hold parsed CSV data
+// Capa base
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  attribution: '© OpenStreetMap'
+}).addTo(map);
 
-function parseCSV(data) {
-  // Use Papa Parse to parse the CSV data
-  const parsedData = Papa.parse(data, {
-    header: true, // Treat the first row as a header
-    skipEmptyLines: true // Skip empty lines
+// Cargar GeoJSON
+fetch('salta_departamentos.geojson')
+  .then(response => response.json())
+  .then(data => {
+
+    L.geoJSON(data, {
+      style: {
+        color: "#000",
+        weight: 1,
+        fillColor: "#800020",  // bordo
+        fillOpacity: 0.5
+      },
+
+      onEachFeature: function(feature, layer) {
+
+        const nombre = feature.properties.Departamen;
+
+        layer.on('click', function() {
+          alert("Departamento: " + nombre);
+        });
+
+      }
+
+    }).addTo(map);
+
+  })
+  .catch(error => {
+    console.error("Error cargando el GeoJSON:", error);
   });
-
-  parsedData.data.forEach(row => {
-    csvData.push({
-      departamento: row.Departamento, // Change to lowercase as requested
-      NombreCompleto: row.Nombre, // Changed to NombreCompleto
-      Profesion: row.Profesion
-    });
-  });
-}
-
-// Example usage: fetch the CSV file and parse it
-fetch('path/to/csvfile.csv')
-  .then(response => response.text())
-  .then(data => parseCSV(data));
