@@ -3,11 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Geografia del Encierro</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
-    <script src="script.js"></script>
+    <title>Interactive Map of Detainees</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <style>
+        body { margin: 0; }
+        #map { height: 100vh; width: 75%; float: left; }
+        #sidebar { height: 100vh; width: 25%; float: right; overflow-y: auto; background: #f8f9fa; padding: 20px; }
+        .department { cursor: pointer; }
+    </style>
 </head>
 <body>
+
+<div id="map"></div>
+<div id="sidebar"><h2>List of Prisoners</h2><ul id="prisoner-list"></ul></div>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/papa-parse/5.3.0/papaparse.min.js"></script>
+<script>
+    let map = L.map('map').setView([-24.0, -65.0], 5);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 19}).addTo(map);
+
+    // Load GeoJSON departments
+    fetch('path/to/departments.geojson')
+        .then(response => response.json())
+        .then(data => {
+            let geojsonLayer = L.geoJSON(data, { 
+                style: style,
+                onEachFeature: onEachFeature
+            }).addTo(map);
+        });
+
+    // Load CSV file with detainees data
+    Papa.parse('path/to/detainees.csv', {
+        download: true,
+        header: true,
+        complete: function(results) {
+            var detaineesData = results.data;
+            // Additional processing can be done here
+        }
+    });
+
+    function style(feature) {
+        // Customize style based on detainee numbers
+    }
+
+    function onEachFeature(feature, layer) {
+        layer.on('click', function() {
+            document.getElementById('prisoner-list').innerHTML = '';  
+            // Populate the side panel with prisoners when the department is clicked
+            let prisoners = getPrisonersByDepartment(feature.properties.name); // Placeholder function
+            prisoners.forEach(prisoner => {
+                let li = document.createElement('li');
+                li.textContent = prisoner.name; // Adjust as per your data structure
+                document.getElementById('prisoner-list').appendChild(li);
+            });
+        });
+    }
+
+    function getPrisonersByDepartment(department) {
+        // Logic to retrieve prisoners from the detaineesData based on the department
+        return [];
+    }
+</script>
 
 </body>
 </html>
