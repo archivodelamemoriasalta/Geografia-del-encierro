@@ -1,4 +1,8 @@
-// Crear mapa
+// ========================
+// 🌎 Mapa y Datos
+// ========================
+
+// Crear mapa centrado en Salta
 const map = L.map('map').setView([-24.8, -65.4], 7);
 
 // Capa base
@@ -6,62 +10,93 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   attribution: '© OpenStreetMap'
 }).addTo(map);
 
-let conteoPorDepto = {};
+// Datos globales
 let personas = [];
+let conteoPorDepto = {};
 
-// Normalizador robusto
+// ========================
+// 🔹 Normalización de texto
+// ========================
 function normalizar(texto) {
   if (!texto) return "";
-  return texto
-    .toString()
-    .toUpperCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .trim();
+  return texto.toString()
+              .toUpperCase()
+              .normalize("NFD")
+              .replace(/[\u0300-\u036f]/g, "")
+              .trim();
 }
 
-// 1️⃣ Leer CSV delimitado por ;
-fetch('presos_politicos_salta.csv')
-  .then(response => response.text())
-  .then(csvText => {
+// ========================
+// 🔹 Funciones del panel lateral
+// ========================
+function abrirPanel() {
+  const panel = document.getElementById("panel-lateral");
+  panel.classList.remove("panel-cerrado");
+  panel.classList.add("panel-abierto");
+}
 
-    const filas = csvText.split("\n").filter(f => f.trim() !== "");
-    const encabezados = filas[0].split(";");
+function cerrarPanel() {
+  const panel = document.getElementById("panel-lateral");
+  panel.classList.remove("panel-abierto");
+  panel.classList.add("panel-cerrado");
+}
 
-    const indexDepartamento = encabezados.findIndex(
-      col => normalizar(col) === "DEPARTAMEN"
-    );
+document.getElementById("cerrar-panel")
+  .addEventListener("click", cerrarPanel);
 
-    const indexNombre = encabezados.findIndex(
-      col => normalizar(col) === "NOMBRECOMPLETO"
-    );
+// Mostrar lista de personas por departamento
+function mostrarDepartamento(depto) {
+  abrirPanel();
+  const panelTitulo = document.getElementById("titulo-panel");
+  const panelContenido = document.getElementById("contenido-panel");
 
-    filas.slice(1).forEach(fila => {
+  const filtradas = personas.filter(p => normalizar(p.departamento) === normalizar(depto));
+  
+  panelTitulo.textContent = depto;
+  panelContenido.innerHTML = `
+    <p><strong>${filtradas.length}</strong> detenidos registrados</p>
+    <ul>
+      ${filtradas.map(p => 
+        `<li><a href="#" data-nombre="${p.nombre}">${p.nombre}</a></li>`
+      ).join("")}
+    </ul>
+  `;
 
-      const columnas = fila.split(";");
-
-      const nombre = columnas[indexNombre];
-      const departamento = columnas[indexDepartamento];
-
-      if (departamento) {
-
-        const deptoNormalizado = normalizar(departamento);
-
-        personas.push({
-          nombre: nombre,
-          departamento: deptoNormalizado
-        });
-
-        conteoPorDepto[deptoNormalizado] =
-          (conteoPorDepto[deptoNormalizado] || 0) + 1;
-      }
+  // Delegar click para abrir ficha
+  panelContenido.querySelectorAll("a[data-nombre]").forEach(a => {
+    a.addEventListener("click", (e) => {
+      e.preventDefault();
+      mostrarFicha(a.dataset.nombre);
     });
-
-    cargarMapa();
   });
+}
 
+// Mostrar ficha individual
+function mostrarFicha(nombre) {
+  const persona = personas.find(p => p.nombre === nombre);
+  if (!persona) return;
 
-// 🎨 Escala bordó institucional
+  abrirPanel();
+  const panelTitulo = document.getElementById("titulo-panel");
+  const panelContenido = document.getElementById("contenido-panel");
+
+  panelTitulo.textContent = persona.nombre;
+  panelContenido.innerHTML = `
+    <p><strong>Departamento:</strong> ${persona.departamento}</p>
+    <p><strong>Decreto:</strong> ${persona.decreto || "No registrado"}</p>
+    <p><strong>Ingreso:</strong> ${persona.fechaIngreso || "No registrado"}</p>
+    <p><strong>Estado:</strong> ${persona.estado || "No registrado"}</p>
+    <br>
+    <button id="volver-depto">← Volver al departamento</button>
+  `;
+
+  document.getElementById("volver-depto")
+    .addEventListener("click", () => mostrarDepartamento(persona.departamento));
+}
+
+// ========================
+// 🔹 Escala de colores
+// ========================
 function getColor(d) {
   return d > 20 ? "#2b0000" :
          d > 10 ? "#5a0000" :
@@ -70,109 +105,77 @@ function getColor(d) {
                   "#f5f5f5";
 }
 
+// ========================
+// 🔹 Cargar CSV de personas
+// ========================
+async function cargarCSV(url) {
+  try {
+    const response = await fetch(url);
+    const csvText = await response.text();
+    const filas = csvText.split("\n").filter(f => f.trim() !== "");
+    const encabezados = filas[0].split(";");
 
-// 2️⃣ Cargar GeoJSON
-function cargarMapa() {
-  fetch('salta_departamentos.geojson')
-    .then(r => r.json())
-    .then(data => {
+    const indexDepartamento = encabezados.findIndex(col => normalizar(col) === "DEPARTAMEN");
+    const indexNombre = encabezados.findIndex(col => normalizar(col) === "NOMBRECOMPLETO");
 
-      L.geoJSON(data, {
+    if (indexDepartamento === -1 || indexNombre === -1) {
+      console.error("No se encontraron las columnas DEPARTAMEN o NOMBRECOMPLETO");
+      return;
+    }
 
-        style: function(feature) {
-
-          const nombreGeo = normalizar(feature.properties.Departamen);
-          const valor = conteoPorDepto[nombreGeo] || 0;
-
-          return {
-            fillColor: getColor(valor),
-            weight: 1,
-            color: "#000",
-            fillOpacity: 0.7
-          };
-        },
-
-        onEachFeature: function(feature, layer) {
-
-          const nombreGeo = normalizar(feature.properties.Departamen);
-          const total = conteoPorDepto[nombreGeo] || 0;
-
-          layer.on('click', function() {
-            alert(
-              "DEPARTAMENTO: " + nombreGeo +
-              "\nCantidad registrada: " + total
-            );
-          });
-        }
-
-      }).addTo(map);
-
+    filas.slice(1).forEach(fila => {
+      const columnas = fila.split(";");
+      const nombre = columnas[indexNombre];
+      const departamento = columnas[indexDepartamento];
+      if (departamento) {
+        const deptoNormalizado = normalizar(departamento);
+        personas.push({ nombre, departamento: deptoNormalizado });
+        conteoPorDepto[deptoNormalizado] = (conteoPorDepto[deptoNormalizado] || 0) + 1;
+      }
     });
-  function abrirPanel() {
-  document.getElementById("panel-lateral")
-    .classList.remove("panel-cerrado");
-  document.getElementById("panel-lateral")
-    .classList.add("panel-abierto");
-}
 
-function cerrarPanel() {
-  document.getElementById("panel-lateral")
-    .classList.remove("panel-abierto");
-  document.getElementById("panel-lateral")
-    .classList.add("panel-cerrado");
-}
-
-document.getElementById("cerrar-panel")
-  .addEventListener("click", cerrarPanel);
-  function mostrarDepartamento(depto) {
-
-  abrirPanel();
-
-  const panelTitulo = document.getElementById("titulo-panel");
-  const panelContenido = document.getElementById("contenido-panel");
-
-  const filtradas = personas.filter(
-    p => normalizar(p.departamento) === normalizar(depto)
-  );
-
-  panelTitulo.textContent = depto;
-
-  panelContenido.innerHTML = `
-    <p><strong>${filtradas.length}</strong> detenidos registrados</p>
-    <ul>
-      ${filtradas.map(p =>
-        `<li>
-          <a href="#" onclick="mostrarFicha('${p.nombre.replace(/'/g, "\\'")}')">
-            ${p.nombre}
-          </a>
-        </li>`
-      ).join("")}
-    </ul>
-  `;
-function mostrarFicha(nombre) {
-
-  const persona = personas.find(p => p.nombre === nombre);
-  if (!persona) return;
-
-  const panelTitulo = document.getElementById("titulo-panel");
-  const panelContenido = document.getElementById("contenido-panel");
-
-  panelTitulo.textContent = persona.nombre;
-
-  panelContenido.innerHTML = `
-    <p><strong>Departamento:</strong> ${persona.departamento}</p>
-    <p><strong>Decreto:</strong> ${persona.decreto || "No registrado"}</p>
-    <p><strong>Ingreso:</strong> ${persona.fechaIngreso || "No registrado"}</p>
-    <p><strong>Estado:</strong> ${persona.estado || "No registrado"}</p>
-    <br>
-    <button onclick="mostrarDepartamento('${persona.departamento}')">
-      ← Volver al departamento
-    </button>
-  `;
-}
-
-}
-
+  } catch (err) {
+    console.error("Error cargando CSV:", err);
   }
-
 }
+
+// ========================
+// 🔹 Cargar GeoJSON y dibujar mapa
+// ========================
+async function cargarGeoJSON(url) {
+  try {
+    const response = await fetch(url);
+    const data = await response.json();
+
+    L.geoJSON(data, {
+      style: feature => {
+        const nombreGeo = normalizar(feature.properties.Departamen);
+        const valor = conteoPorDepto[nombreGeo] || 0;
+        return { fillColor: getColor(valor), weight: 1, color: "#000", fillOpacity: 0.7 };
+      },
+      onEachFeature: (feature, layer) => {
+        const nombreGeo = normalizar(feature.properties.Departamen);
+        const total = conteoPorDepto[nombreGeo] || 0;
+
+        // Tooltip al pasar el mouse
+        layer.bindTooltip(`${nombreGeo}: ${total} detenidos`);
+
+        // Click abre panel lateral
+        layer.on("click", () => mostrarDepartamento(nombreGeo));
+      }
+    }).addTo(map);
+
+  } catch (err) {
+    console.error("Error cargando GeoJSON:", err);
+  }
+}
+
+// ========================
+// 🔹 Inicialización
+// ========================
+async function init() {
+  await cargarCSV("presos_politicos_salta.csv");
+  await cargarGeoJSON("salta_departamentos.geojson");
+}
+
+init();
