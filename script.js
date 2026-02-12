@@ -171,6 +171,8 @@ function mostrarFicha(nombre) {
   `;
 }
 
+}
+
   }
 
 }
