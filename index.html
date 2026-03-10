@@ -18,6 +18,7 @@ body {
 /* ============================= */
 /* BARRA SUPERIOR */
 /* ============================= */
+
 #barra-superior {
     position: fixed;
     top: 0;
@@ -41,9 +42,26 @@ body {
     font-weight: 600;
 }
 
+/* BOTON MENU MOVIL */
+
+#menu-info{
+    position:absolute;
+    right:20px;
+    top:30px;
+    background:white;
+    color:#6b0f1a;
+    border:none;
+    padding:6px 12px;
+    border-radius:6px;
+    font-weight:600;
+    cursor:pointer;
+    display:none;
+}
+
 /* ============================= */
 /* MAPA */
 /* ============================= */
+
 #map {
     position: fixed;
     top: 90px;
@@ -54,8 +72,9 @@ body {
 }
 
 /* ============================= */
-/* PANEL IZQUIERDO ACORDEÓN */
+/* PANEL IZQUIERDO */
 /* ============================= */
+
 #panel-izquierdo {
     position: fixed;
     top: 90px;
@@ -94,8 +113,9 @@ body {
 }
 
 /* ============================= */
-/* PANEL LATERAL DERECHO (TUYO) */
+/* PANEL DERECHO */
 /* ============================= */
+
 #panel-lateral {
     position: fixed;
     top: 90px;
@@ -136,6 +156,7 @@ body {
 /* ============================= */
 /* BARRA INFERIOR */
 /* ============================= */
+
 #barra-inferior {
     position: fixed;
     bottom: 0;
@@ -151,18 +172,59 @@ body {
     text-align: center;
     padding: 0 20px;
 }
+
+/* ============================= */
+/* MODO MOVIL */
+/* ============================= */
+
+@media (max-width: 768px){
+
+#panel-izquierdo{
+    display:none;
+}
+
+#menu-info{
+    display:block;
+}
+
+/* el panel pasa a ser superior */
+
+#panel-lateral{
+
+    top:90px;
+    left:0;
+    right:0;
+    width:100%;
+    max-height:60vh;
+    border-radius:0 0 12px 12px;
+
+    transform: translateY(-120%);
+    opacity:0;
+}
+
+#panel-lateral.panel-abierto{
+
+    transform: translateY(0);
+    opacity:1;
+
+}
+
+}
+
 </style>
 </head>
 
 <body>
 
 <div id="barra-superior">
-    <h1>Geografías del Encierro – Mapa interactivo de investigación histórica</h1>
+<h1>Geografías del Encierro – Mapa interactivo de investigación histórica</h1>
+<button id="menu-info">☰ Info</button>
 </div>
 
 <div id="map"></div>
 
 <!-- PANEL IZQUIERDO -->
+
 <aside id="panel-izquierdo">
 
 <div class="acordeon-item">
@@ -212,32 +274,55 @@ body {
 
 </aside>
 
-<!-- TU PANEL DERECHO ORIGINAL -->
+<!-- PANEL DERECHO -->
+
 <aside id="panel-lateral" class="panel-cerrado">
-    <div class="panel-header">
-        <h2 id="titulo-panel">Información</h2>
-        <button id="cerrar-panel">✕</button>
-    </div>
-    <div id="contenido-panel" class="panel-contenido"></div>
+
+<div class="panel-header">
+<h2 id="titulo-panel">Información</h2>
+<button id="cerrar-panel">✕</button>
+</div>
+
+<div id="contenido-panel" class="panel-contenido"></div>
+
 </aside>
 
 <div id="barra-inferior">
-    © 2026 Proyecto Geografías del Encierro – Ministerio / Programa institucional – Todos los derechos reservados
+© 2026 Proyecto Geografías del Encierro – Ministerio / Programa institucional – Todos los derechos reservados
 </div>
 
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script src="script.js"></script>
 
 <script>
+
+/* acordeon */
+
 document.querySelectorAll(".acordeon-titulo").forEach(titulo => {
-    titulo.addEventListener("click", () => {
-        const item = titulo.parentElement;
-        document.querySelectorAll(".acordeon-item").forEach(i => {
-            if(i !== item) i.classList.remove("activo");
-        });
-        item.classList.toggle("activo");
-    });
+titulo.addEventListener("click", () => {
+
+const item = titulo.parentElement;
+
+document.querySelectorAll(".acordeon-item").forEach(i => {
+if(i !== item) i.classList.remove("activo");
 });
+
+item.classList.toggle("activo");
+
+});
+});
+
+/* menu movil */
+
+const botonMenu = document.getElementById("menu-info");
+const panel = document.getElementById("panel-lateral");
+
+botonMenu.addEventListener("click", () => {
+
+panel.classList.toggle("panel-abierto");
+
+});
+
 </script>
 
 </body>
