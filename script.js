@@ -29,18 +29,42 @@ function normalizar(texto) {
 // 🔹 Funciones del panel lateral (MODIFICADAS)
 // ========================
 function abrirPanel() {
+
   const panel = document.getElementById("panel-lateral");
-  // Simplemente removemos la clase que lo saca de pantalla
-  panel.classList.remove("panel-cerrado");
+
+  if (window.innerWidth <= 768) {
+
+    panel.classList.add("panel-abierto");
+
+  } else {
+
+    panel.classList.remove("panel-cerrado");
+
+  }
+
 }
 
 function cerrarPanel() {
+
   const panel = document.getElementById("panel-lateral");
-  panel.classList.add("panel-cerrado");
+
+  if (window.innerWidth <= 768) {
+
+    panel.classList.remove("panel-abierto");
+
+  } else {
+
+    panel.classList.add("panel-cerrado");
+
+  }
+
 }
 
 document.getElementById("cerrar-panel").addEventListener("click", cerrarPanel);
 
+map.on("click", function(){
+  cerrarPanel();
+});
 // Mostrar lista de personas por departamento
 function mostrarDepartamento(depto) {
   const panelTitulo = document.getElementById("titulo-panel");
