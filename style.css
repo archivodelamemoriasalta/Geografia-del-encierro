@@ -3,15 +3,28 @@ body {
   margin: 20px;
 }
 
+/* ============================= */
+/* MAPA */
+/* ============================= */
+
 #map {
   height: 500px;
   margin: 20px 0;
 }
 
+/* ============================= */
+/* PANEL BASE */
+/* ============================= */
+
 #panel {
   border-top: 1px solid #ccc;
   padding-top: 10px;
 }
+
+/* ============================= */
+/* PANEL LATERAL (ESCRITORIO) */
+/* ============================= */
+
 #panel-lateral {
   position: fixed;
   top: 0;
@@ -26,13 +39,21 @@ body {
   flex-direction: column;
 }
 
+/* estado cerrado escritorio */
+
 .panel-cerrado {
   transform: translateX(100%);
 }
 
+/* estado abierto */
+
 .panel-abierto {
   transform: translateX(0);
 }
+
+/* ============================= */
+/* CABECERA PANEL */
+/* ============================= */
 
 .panel-header {
   background: #6a0000;
@@ -56,6 +77,10 @@ body {
   cursor: pointer;
 }
 
+/* ============================= */
+/* CONTENIDO PANEL */
+/* ============================= */
+
 .panel-contenido {
   padding: 20px;
   overflow-y: auto;
@@ -73,4 +98,72 @@ body {
 
 .panel-contenido a:hover {
   text-decoration: underline;
+}
+
+/* ============================= */
+/* ESTILOS LISTA PERSONAS */
+/* ============================= */
+
+.lista-detenidos{
+  list-style:none;
+  padding:0;
+  margin:0;
+}
+
+.lista-detenidos li{
+  padding:6px 0;
+  border-bottom:1px solid #eee;
+}
+
+.enlace-persona{
+  color:#6a0000;
+  font-weight:500;
+}
+
+.btn-volver{
+  background:#6a0000;
+  color:white;
+  border:none;
+  padding:8px 12px;
+  border-radius:4px;
+  cursor:pointer;
+}
+
+/* ============================= */
+/* RESPONSIVE MOVIL */
+/* ============================= */
+
+@media (max-width: 768px){
+
+  body{
+    margin:0;
+  }
+
+  #map{
+    height:100vh;
+    margin:0;
+  }
+
+  /* panel se transforma en panel superior */
+
+  #panel-lateral{
+
+    width:100%;
+    height:60vh;
+
+    top:0;
+    left:0;
+    right:0;
+
+    transform: translateY(-100%);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.25);
+
+  }
+
+  /* abierto en movil */
+
+  .panel-abierto{
+    transform: translateY(0);
+  }
+
 }
