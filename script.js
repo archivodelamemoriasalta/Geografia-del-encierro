@@ -6,7 +6,7 @@
 const map = L.map('map').setView([-24.8, -65.4], 7);
 
 // Capa base (puedes probar con CartoDB Positron para un look más limpio)
-L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
   attribution: '© OpenStreetMap'
 }).addTo(map);
 
