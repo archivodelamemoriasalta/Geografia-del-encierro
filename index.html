@@ -3,70 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-
-<button id="menu-info" type="button">☰ Info</button>
     <title>Geografías del Encierro</title>
 
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
-<div id="barra-superior">
-    <h1>Geografías del Encierro – Mapa interactivo</h1>
-    <button id="menu-info">☰ Info</button>
-</div>
-
-<div id="map"></div>
-
-<aside id="panel-izquierdo">
-    <div class="header-movil-solo">
-        <span>Menú Institucional</span>
-        <button id="cerrar-menu-izq">✕</button>
+    <div id="barra-superior">
+        <h1>Geografías del Encierro</h1>
+        <button id="menu-info" type="button">☰ Info</button>
     </div>
 
-    <div class="acordeon-item">
-        <div class="acordeon-titulo">Metodología de trabajo</div>
-        <div class="acordeon-contenido">Texto institucional aquí sobre la metodología detallada...</div>
+    <div id="map"></div>
+
+    <aside id="panel-izquierdo">
+        <div class="header-movil-solo">
+            <span>MENÚ</span>
+            <button id="cerrar-menu-izq">✕ Cerrar</button>
+        </div>
+
+        <div class="acordeon-item">
+            <div class="acordeon-titulo">Metodología de trabajo</div>
+            <div class="acordeon-contenido">Aquí va el texto descriptivo de la metodología.</div>
+        </div>
+        <div class="acordeon-item">
+            <div class="acordeon-titulo">Reseña histórica</div>
+            <div class="acordeon-contenido">Aquí va la reseña histórica del proyecto.</div>
+        </div>
+        <div class="acordeon-item">
+            <div class="acordeon-titulo">Contacto</div>
+            <div class="acordeon-contenido">correo@institucion.gob</div>
+        </div>
+    </aside>
+
+    <aside id="panel-lateral" class="panel-cerrado">
+        <div class="panel-header">
+            <h2 id="titulo-panel">Información</h2>
+            <button id="cerrar-panel">✕</button>
+        </div>
+        <div id="contenido-panel" class="panel-contenido"></div>
+    </aside>
+
+    <div id="barra-inferior">
+        © 2026 Proyecto Geografías del Encierro
     </div>
 
-    <div class="acordeon-item">
-        <div class="acordeon-titulo">Reseña histórica</div>
-        <div class="acordeon-contenido">Texto sobre la historia del proyecto...</div>
-    </div>
-
-    <div class="acordeon-item">
-        <div class="acordeon-titulo">Quiénes somos</div>
-        <div class="acordeon-contenido">Información sobre el equipo de investigación...</div>
-    </div>
-
-    <div class="acordeon-item">
-        <div class="acordeon-titulo">Objetivos del proyecto</div>
-        <div class="acordeon-contenido">Descripción de los objetivos alcanzados...</div>
-    </div>
-
-    <div class="acordeon-item">
-        <div class="acordeon-titulo">Contacto institucional</div>
-        <div class="acordeon-contenido">correo@institucion.gob</div>
-    </div>
-</aside>
-
-<aside id="panel-lateral" class="panel-cerrado">
-    <div class="panel-header">
-        <h2 id="titulo-panel">Información</h2>
-        <button id="cerrar-panel">✕</button>
-    </div>
-    <div id="contenido-panel" class="panel-contenido"></div>
-</aside>
-
-<div id="barra-inferior">
-    © 2026 Proyecto Geografías del Encierro – Todos los derechos reservados
-</div>
-
-<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-<script src="script.js"></script>
-
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
