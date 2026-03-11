@@ -1,23 +1,48 @@
+// ========================
+// 🌎 Configuración del Mapa
+// ========================
 const map = L.map('map').setView([-24.8, -65.4], 7);
 
-L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png').addTo(map);
+L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+    attribution: '© OpenStreetMap'
+}).addTo(map);
 
 let personas = [];
 let conteoPorDepto = {};
 
-// INTERFAZ
+// Elementos de la interfaz
 const menuIzq = document.getElementById("panel-izquierdo");
 const panelDato = document.getElementById("panel-lateral");
 
-document.getElementById("menu-info").addEventListener("click", () => menuIzq.classList.add("menu-activo"));
-document.getElementById("cerrar-menu-izq").addEventListener("click", () => menuIzq.classList.remove("menu-activo"));
-document.getElementById("cerrar-panel").addEventListener("click", () => panelDato.classList.add("panel-cerrado"));
+// ========================
+// 🔹 Funciones de Interfaz
+// ========================
 
+// Abrir/Cerrar menú institucional (Izquierdo)
+document.getElementById("menu-info").addEventListener("click", (e) => {
+    e.stopPropagation();
+    menuIzq.classList.add("menu-activo");
+});
+
+document.getElementById("cerrar-menu-izq").addEventListener("click", () => {
+    menuIzq.classList.remove("menu-activo");
+});
+
+// Cerrar panel de datos (Derecho)
+document.getElementById("cerrar-panel").addEventListener("click", () => {
+    panelDato.classList.add("panel-cerrado");
+    panelDato.classList.remove("panel-abierto");
+});
+
+// Acordeón institucional
 document.querySelectorAll(".acordeon-titulo").forEach(t => {
     t.addEventListener("click", () => t.parentElement.classList.toggle("activo"));
 });
 
-// LÓGICA DE DATOS
+// ========================
+// 🔹 Lógica de Datos y Mapa
+// ========================
+
 function normalizar(texto) {
     if (!texto) return "";
     return texto.toString().toUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
@@ -28,54 +53,85 @@ function getColor(d) {
 }
 
 function mostrarDepartamento(depto) {
+    const panelTitulo = document.getElementById("titulo-panel");
+    const panelContenido = document.getElementById("contenido-panel");
+    
     const deptoNorm = normalizar(depto);
     const filtradas = personas.filter(p => normalizar(p.departamento) === deptoNorm);
     
-    document.getElementById("titulo-panel").textContent = depto;
-    document.getElementById("contenido-panel").innerHTML = `
+    panelTitulo.textContent = depto;
+    panelContenido.innerHTML = `
         <div style="color:#6b0f1a; font-weight:bold; margin-bottom:10px;">${filtradas.length} Personas registradas</div>
-        <ul class="lista-detenidos">${filtradas.map(p => `<li>${p.nombre}</li>`).join("")}</ul>
+        <ul class="lista-detenidos">
+            ${filtradas.map(p => `<li>${p.nombre}</li>`).join("")}
+        </ul>
     `;
+    
     panelDato.classList.remove("panel-cerrado");
+    panelDato.classList.add("panel-abierto");
 }
 
-// CARGA COORDINADA
-async function cargarTodo() {
+// ========================
+// 🔹 Carga de Archivos (CSV + GeoJSON)
+// ========================
+
+async function cargarDatos() {
     try {
+        // 1. Cargar CSV con detección de columnas
         const resCsv = await fetch("presos_politicos_salta.csv");
-        const csvTxt = await resCsv.text();
-        const filas = csvTxt.split("\n").slice(1);
-        
-        filas.forEach(f => {
-            const c = f.split(";");
-            if(c[1]) {
-                const dNorm = normalizar(c[1]);
-                personas.push({ nombre: c[0], departamento: c[1] });
-                conteoPorDepto[dNorm] = (conteoPorDepto[dNorm] || 0) + 1;
+        const csvText = await resCsv.text();
+        const filas = csvText.split("\n").filter(f => f.trim() !== "");
+        const encabezados = filas[0].split(";");
+
+        const indexDepto = encabezados.findIndex(col => normalizar(col).includes("DEPARTAMEN"));
+        const indexNombre = encabezados.findIndex(col => normalizar(col).includes("NOMBRE"));
+
+        filas.slice(1).forEach(fila => {
+            const columnas = fila.split(";");
+            const nombre = columnas[indexNombre]?.trim();
+            const depto = columnas[indexDepto]?.trim();
+            
+            if (depto) {
+                const deptoNorm = normalizar(depto);
+                personas.push({ nombre: nombre, departamento: depto });
+                conteoPorDepto[deptoNorm] = (conteoPorDepto[deptoNorm] || 0) + 1;
             }
         });
 
+        // 2. Cargar GeoJSON y vincularlo
         const resGeo = await fetch("salta_departamentos.geojson");
-        const geoJson = await resGeo.json();
+        const geoData = await resGeo.json();
 
-        L.geoJSON(geoJson, {
-            style: f => {
-                const n = normalizar(f.properties.Departamen || f.properties.NAM);
-                return { fillColor: getColor(conteoPorDepto[n] || 0), weight: 1, color: "white", fillOpacity: 0.7 };
+        L.geoJSON(geoData, {
+            style: feature => {
+                const nombreGeo = normalizar(feature.properties.Departamen || feature.properties.NAM);
+                const valor = conteoPorDepto[nombreGeo] || 0;
+                return { 
+                    fillColor: getColor(valor), 
+                    weight: 1, 
+                    color: "white", 
+                    fillOpacity: 0.7 
+                };
             },
-            onEachFeature: (f, l) => {
-                l.on('click', (e) => {
+            onEachFeature: (feature, layer) => {
+                layer.on('click', (e) => {
                     L.DomEvent.stopPropagation(e);
-                    mostrarDepartamento(f.properties.Departamen || f.properties.NAM);
+                    const nombreReal = feature.properties.Departamen || feature.properties.NAM;
+                    mostrarDepartamento(nombreReal);
                 });
             }
         }).addTo(map);
-    } catch (e) { console.error("Error de archivos:", e); }
+
+    } catch (e) {
+        console.error("Error cargando archivos:", e);
+    }
 }
 
-cargarTodo();
+cargarDatos();
 
+// Cerrar todo al tocar el mapa vacío
 map.on('click', () => {
     panelDato.classList.add("panel-cerrado");
+    panelDato.classList.remove("panel-abierto");
     menuIzq.classList.remove("menu-activo");
 });
