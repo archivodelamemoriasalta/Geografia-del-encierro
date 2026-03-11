@@ -1,184 +1,95 @@
-/* ============================= */
-/* GENERAL */
-/* ============================= */
 body {
     margin: 0;
     font-family: 'Segoe UI', sans-serif;
-    background: #ffffff;
-    overflow: hidden; /* Evita doble scroll */
+    overflow: hidden;
 }
 
-/* ============================= */
-/* BARRA SUPERIOR */
-/* ============================= */
 #barra-superior {
     position: fixed;
     top: 0;
-    left: 0;
     width: 100%;
-    height: 70px;
+    height: 60px;
     background: #6b0f1a;
     color: white;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 20px;
-    z-index: 1000;
+    padding: 0 15px;
+    z-index: 9999 !important; /* Super arriba para que Android lo vea */
     box-sizing: border-box;
-}
-
-#barra-superior h1 {
-    font-size: 1rem;
-    margin: 0;
-    max-width: 70%;
 }
 
 #menu-info {
     background: white;
     color: #6b0f1a;
     border: none;
-    padding: 8px 15px;
-    border-radius: 6px;
-    font-weight: 600;
-    cursor: pointer;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-weight: bold;
+    z-index: 10000 !important;
 }
 
-/* ============================= */
-/* MAPA */
-/* ============================= */
 #map {
     position: absolute;
-    top: 70px;
-    bottom: 40px;
-    left: 0;
-    right: 0;
+    top: 60px;
+    bottom: 30px;
+    width: 100%;
     z-index: 1;
 }
 
-/* ============================= */
-/* PANEL IZQUIERDO (MENU) */
-/* ============================= */
+/* PANEL IZQUIERDO */
 #panel-izquierdo {
     position: fixed;
-    top: 90px;
-    left: 20px;
-    width: 320px;
-    height: calc(100vh - 150px);
+    top: 0;
+    left: 0;
+    width: 300px;
+    height: 100%;
     background: white;
-    border-left: 6px solid #6b0f1a;
-    border-radius: 12px;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+    z-index: 10001;
+    box-shadow: 5px 0 15px rgba(0,0,0,0.3);
+    transform: translateX(-105%); /* Escondido */
+    transition: transform 0.3s ease;
+    padding: 20px;
+    box-sizing: border-box;
     overflow-y: auto;
-    padding: 15px;
-    z-index: 1100;
-    transition: all 0.3s ease;
 }
 
-.header-movil-solo { display: none; } /* Oculto en PC */
-
-.acordeon-item { border-bottom: 1px solid #eee; }
-.acordeon-titulo {
-    padding: 15px 10px;
-    cursor: pointer;
-    font-weight: 600;
-    color: #6b0f1a;
+#panel-izquierdo.menu-activo {
+    transform: translateX(0); /* Se muestra */
 }
-.acordeon-contenido {
-    display: none;
-    padding: 10px;
-    font-size: 0.9rem;
-    color: #333;
-    background: #f9f9f9;
-}
-.acordeon-item.activo .acordeon-contenido { display: block; }
 
-/* ============================= */
 /* PANEL DERECHO (DATOS) */
-/* ============================= */
 #panel-lateral {
     position: fixed;
-    top: 80px;
     right: 20px;
+    top: 80px;
     width: 350px;
-    max-height: 70vh;
     background: white;
-    z-index: 1200;
-    border-radius: 12px;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.2);
-    display: flex;
-    flex-direction: column;
-    transition: transform 0.4s ease;
+    z-index: 5000;
+    box-shadow: 0 0 20px rgba(0,0,0,0.2);
+    border-radius: 8px;
+    transition: transform 0.3s ease;
 }
 
 .panel-cerrado { transform: translateX(120%); }
 
-.panel-header {
-    background: #111111;
-    color: white;
-    padding: 15px;
-    display: flex;
-    justify-content: space-between;
-}
+/* ACORDEON */
+.acordeon-titulo { padding: 10px; color: #6b0f1a; font-weight: bold; cursor: pointer; border-bottom: 1px solid #eee; }
+.acordeon-contenido { display: none; padding: 10px; font-size: 14px; }
+.activo .acordeon-contenido { display: block; }
 
-#cerrar-panel { background: none; border: none; color: white; cursor: pointer; font-size: 1.2rem; }
-
-/* ============================= */
-/* BARRA INFERIOR */
-/* ============================= */
-#barra-inferior {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    height: 40px;
-    background: #111111;
-    color: white;
-    font-size: 0.7rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
-}
-
-/* ============================= */
-/* MODO MOVIL (FULL SCREEN) */
-/* ============================= */
+/* AJUSTES PARA CELULAR */
 @media (max-width: 768px) {
-    #panel-izquierdo {
-        top: 0;
-        left: 0;
+    #panel-izquierdo { width: 100%; } /* Ocupa toda la pantalla */
+    
+    #panel-lateral {
+        right: 0;
+        bottom: 0;
+        top: auto;
         width: 100%;
-        height: 100%;
-        border-radius: 0;
-        border-left: none;
-        transform: translateX(-100%); /* Escondido */
-        z-index: 2000;
-    }
-
-    #panel-izquierdo.menu-activo { transform: translateX(0); }
-
-    .header-movil-solo {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding-bottom: 20px;
-        border-bottom: 2px solid #6b0f1a;
-        margin-bottom: 10px;
+        border-radius: 15px 15px 0 0;
+        transform: translateY(105%);
     }
     
-    #cerrar-menu-izq {
-        background: #6b0f1a;
-        color: white;
-        border: none;
-        padding: 5px 12px;
-        border-radius: 4px;
-        font-size: 1.2rem;
-    }
-
-    #panel-lateral {
-        width: 100%;
-        right: 0;
-        top: auto;
-        bottom: 0;
-        border-radius: 12px 12px 0 0;
-    }
+    .panel-abierto { transform: translateY(0) !important; }
 }
