@@ -1,329 +1,70 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Geografías del Encierro</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geografías del Encierro</title>
 
-<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-<link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600&display=swap" rel="stylesheet">
-
-<style>
-body {
-    margin: 0;
-    font-family: 'Segoe UI', sans-serif;
-    background: #ffffff;
-}
-
-/* ============================= */
-/* BARRA SUPERIOR */
-/* ============================= */
-
-#barra-superior {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 90px;
-    background: #6b0f1a;
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 0 40px;
-    z-index: 1000;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-}
-
-#barra-superior h1 {
-    font-size: 1.3rem;
-    margin: 0;
-    font-weight: 600;
-}
-
-/* BOTON MENU MOVIL */
-
-#menu-info{
-    position:absolute;
-    right:20px;
-    top:30px;
-    background:white;
-    color:#6b0f1a;
-    border:none;
-    padding:6px 12px;
-    border-radius:6px;
-    font-weight:600;
-    cursor:pointer;
-    display:none;
-}
-
-/* ============================= */
-/* MAPA */
-/* ============================= */
-
-#map {
-    position: fixed;
-    top: 90px;
-    bottom: 60px;
-    left: 0;
-    right: 0;
-    z-index: 1;
-}
-
-/* ============================= */
-/* PANEL IZQUIERDO */
-/* ============================= */
-
-#panel-izquierdo {
-    position: fixed;
-    top: 90px;
-    left: 20px;
-    width: 320px;
-    height: calc(100vh - 150px);
-    background: white;
-    border-left: 6px solid #6b0f1a;
-    border-radius: 12px;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
-    overflow-y: auto;
-    padding: 10px;
-    z-index: 900;
-}
-
-.acordeon-item {
-    border-bottom: 1px solid #ddd;
-}
-
-.acordeon-titulo {
-    padding: 12px;
-    cursor: pointer;
-    font-weight: 600;
-    color: #6b0f1a;
-}
-
-.acordeon-contenido {
-    display: none;
-    padding: 10px;
-    font-size: 0.9rem;
-    color: #333;
-}
-
-.acordeon-item.activo .acordeon-contenido {
-    display: block;
-}
-
-/* ============================= */
-/* PANEL DERECHO */
-/* ============================= */
-
-#panel-lateral {
-    position: fixed;
-    top: 90px;
-    right: 20px;
-    width: 350px;
-    max-height: calc(100vh - 200px);
-    background: rgba(255,255,255,0.95);
-    backdrop-filter: blur(10px);
-    z-index: 950;
-    border-radius: 12px;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.15);
-    display: flex;
-    flex-direction: column;
-    transition: all 0.4s ease-in-out;
-    border: 1px solid rgba(0,0,0,0.1);
-    overflow: hidden;
-}
-
-.panel-cerrado {
-    transform: translateX(120%);
-    opacity: 0;
-}
-
-.panel-header {
-    background: #111111;
-    color: white;
-    padding: 15px 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.panel-contenido {
-    padding: 20px;
-    overflow-y: auto;
-}
-
-/* ============================= */
-/* BARRA INFERIOR */
-/* ============================= */
-
-#barra-inferior {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 60px;
-    background: #111111;
-    color: white;
-    font-size: 0.75rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 0 20px;
-}
-
-/* ============================= */
-/* MODO MOVIL */
-/* ============================= */
-
-@media (max-width: 768px){
-
-#panel-izquierdo{
-    display:none;
-}
-
-#menu-info{
-    display:block;
-}
-
-/* el panel pasa a ser superior */
-
-#panel-lateral{
-
-    top:90px;
-    left:0;
-    right:0;
-    width:100%;
-    max-height:60vh;
-    border-radius:0 0 12px 12px;
-
-    transform: translateY(-120%);
-    opacity:0;
-}
-
-#panel-lateral.panel-abierto{
-
-    transform: translateY(0);
-    opacity:1;
-
-}
-
-}
-
-</style>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
 <div id="barra-superior">
-<h1>Geografías del Encierro – Mapa interactivo de investigación histórica</h1>
-<button id="menu-info">☰ Info</button>
+    <h1>Geografías del Encierro – Mapa interactivo</h1>
+    <button id="menu-info">☰ Info</button>
 </div>
 
 <div id="map"></div>
 
-<!-- PANEL IZQUIERDO -->
-
 <aside id="panel-izquierdo">
+    <div class="header-movil-solo">
+        <span>Menú Institucional</span>
+        <button id="cerrar-menu-izq">✕</button>
+    </div>
 
-<div class="acordeon-item">
-<div class="acordeon-titulo">Metodología de trabajo</div>
-<div class="acordeon-contenido">Texto institucional aquí...</div>
-</div>
+    <div class="acordeon-item">
+        <div class="acordeon-titulo">Metodología de trabajo</div>
+        <div class="acordeon-contenido">Texto institucional aquí sobre la metodología detallada...</div>
+    </div>
 
-<div class="acordeon-item">
-<div class="acordeon-titulo">Reseña histórica</div>
-<div class="acordeon-contenido">Texto institucional aquí...</div>
-</div>
+    <div class="acordeon-item">
+        <div class="acordeon-titulo">Reseña histórica</div>
+        <div class="acordeon-contenido">Texto sobre la historia del proyecto...</div>
+    </div>
 
-<div class="acordeon-item">
-<div class="acordeon-titulo">Quiénes somos</div>
-<div class="acordeon-contenido">Texto institucional aquí...</div>
-</div>
+    <div class="acordeon-item">
+        <div class="acordeon-titulo">Quiénes somos</div>
+        <div class="acordeon-contenido">Información sobre el equipo de investigación...</div>
+    </div>
 
-<div class="acordeon-item">
-<div class="acordeon-titulo">Objetivos del proyecto</div>
-<div class="acordeon-contenido">Texto institucional aquí...</div>
-</div>
+    <div class="acordeon-item">
+        <div class="acordeon-titulo">Objetivos del proyecto</div>
+        <div class="acordeon-contenido">Descripción de los objetivos alcanzados...</div>
+    </div>
 
-<div class="acordeon-item">
-<div class="acordeon-titulo">Marco institucional</div>
-<div class="acordeon-contenido">Texto institucional aquí...</div>
-</div>
-
-<div class="acordeon-item">
-<div class="acordeon-titulo">Fuentes documentales</div>
-<div class="acordeon-contenido">Texto institucional aquí...</div>
-</div>
-
-<div class="acordeon-item">
-<div class="acordeon-titulo">Equipo de investigación</div>
-<div class="acordeon-contenido">Texto institucional aquí...</div>
-</div>
-
-<div class="acordeon-item">
-<div class="acordeon-titulo">Cómo utilizar el mapa</div>
-<div class="acordeon-contenido">Texto institucional aquí...</div>
-</div>
-
-<div class="acordeon-item">
-<div class="acordeon-titulo">Contacto institucional</div>
-<div class="acordeon-contenido">correo@institucion.gob</div>
-</div>
-
+    <div class="acordeon-item">
+        <div class="acordeon-titulo">Contacto institucional</div>
+        <div class="acordeon-contenido">correo@institucion.gob</div>
+    </div>
 </aside>
 
-<!-- PANEL DERECHO -->
-
 <aside id="panel-lateral" class="panel-cerrado">
-
-<div class="panel-header">
-<h2 id="titulo-panel">Información</h2>
-<button id="cerrar-panel">✕</button>
-</div>
-
-<div id="contenido-panel" class="panel-contenido"></div>
-
+    <div class="panel-header">
+        <h2 id="titulo-panel">Información</h2>
+        <button id="cerrar-panel">✕</button>
+    </div>
+    <div id="contenido-panel" class="panel-contenido"></div>
 </aside>
 
 <div id="barra-inferior">
-© 2026 Proyecto Geografías del Encierro – Ministerio / Programa institucional – Todos los derechos reservados
+    © 2026 Proyecto Geografías del Encierro – Todos los derechos reservados
 </div>
 
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script src="script.js"></script>
-
-<script>
-
-/* acordeon */
-
-document.querySelectorAll(".acordeon-titulo").forEach(titulo => {
-titulo.addEventListener("click", () => {
-
-const item = titulo.parentElement;
-
-document.querySelectorAll(".acordeon-item").forEach(i => {
-if(i !== item) i.classList.remove("activo");
-});
-
-item.classList.toggle("activo");
-
-});
-});
-
-/* menu movil */
-
-const botonMenu = document.getElementById("menu-info");
-const panel = document.getElementById("panel-lateral");
-
-botonMenu.addEventListener("click", () => {
-
-panel.classList.toggle("panel-abierto");
-
-});
-
-</script>
 
 </body>
 </html>
