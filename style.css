@@ -75,3 +75,105 @@ button {
     font-size: 14px;
     color: #ccc;
 }
+
+
+/* =========================
+   🔝 BARRA SUPERIOR PRO
+========================= */
+
+#barra-superior {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    background: rgba(0,0,0,0.85);
+    backdrop-filter: blur(6px);
+    padding: 8px 15px;
+    z-index: 1000;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Contenedor izquierdo */
+.header-izq {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* Logo */
+.logo-header {
+    height: 50px;
+    width: auto;
+}
+
+/* Contenedor texto */
+.titulo-header {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.1;
+}
+
+/* Línea superior */
+.linea-superior {
+    font-size: 11px;
+    font-style: italic;
+    color: #aaa;
+    letter-spacing: 1px;
+}
+
+/* Línea principal (protagonista) */
+.linea-principal {
+    font-size: 16px;
+    font-weight: 700;
+    color: white;
+    letter-spacing: 1px;
+}
+
+/* Línea inferior */
+.linea-inferior {
+    font-size: 11px;
+    font-style: italic;
+    color: #aaa;
+}
+
+/* Botón menú */
+#menu-info {
+    background: none;
+    border: 1px solid #444;
+    color: white;
+    padding: 6px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+@media (max-width: 600px) {
+    .linea-superior,
+    .linea-inferior {
+        display: none;
+    }
+
+    .linea-principal {
+        font-size: 13px;
+    }
+
+    .logo-header {
+        height: 40px;
+    }
+}
+
+@media (max-width: 600px) {
+    .linea-superior,
+    .linea-inferior {
+        display: none;
+    }
+
+    .linea-principal {
+        font-size: 13px;
+    }
+
+    .logo-header {
+        height: 40px;
+    }
+}
