@@ -1,165 +1,77 @@
-/* GENERAL */
 body {
     margin: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: #ffffff;
-    overflow: hidden;
-}
-
-/* BARRA SUPERIOR */
-#barra-superior {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 70px;
-    background: #6b0f1a; /* Bordó Institucional */
+    font-family: Arial, sans-serif;
+    background: #111;
     color: white;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 20px;
-    z-index: 2000;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-    box-sizing: border-box;
 }
 
-#barra-superior h1 {
-    font-size: 1.1rem;
-    margin: 0;
-    font-weight: 600;
-}
-
-#menu-info {
-    background: white;
-    color: #6b0f1a;
-    border: none;
-    padding: 8px 15px;
-    border-radius: 6px;
-    font-weight: bold;
-    cursor: pointer;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-}
-
-/* MAPA */
 #map {
+    height: 100vh;
+}
+
+#barra-superior {
     position: absolute;
-    top: 70px;
-    bottom: 40px;
-    left: 0;
-    right: 0;
-    z-index: 1;
-    background: #1a1a1a;
-}
-
-/* PANEL IZQUIERDO (INSTITUCIONAL) */
-#panel-izquierdo {
-    position: fixed;
     top: 0;
-    left: 0;
-    width: 350px;
-    height: 100%;
-    background: white;
-    z-index: 3000;
-    transform: translateX(-105%);
-    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    padding: 25px;
-    box-sizing: border-box;
-    overflow-y: auto;
-    border-right: 8px solid #6b0f1a;
-}
-
-#panel-izquierdo.menu-activo { transform: translateX(0); }
-
-.header-movil-solo {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #ddd;
-}
-
-#cerrar-menu-izq {
-    background: #6b0f1a;
-    color: white;
-    border: none;
-    padding: 5px 12px;
-    border-radius: 4px;
-}
-
-/* PANEL DERECHO (INFORMACIÓN DE DEPTOS) */
-#panel-lateral {
-    position: fixed;
-    top: 90px;
-    right: 20px;
-    width: 350px;
-    max-height: calc(100vh - 150px);
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    z-index: 1500;
-    border-radius: 12px;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    transition: transform 0.4s ease, opacity 0.3s ease;
-    border: 1px solid rgba(0,0,0,0.1);
-}
-
-.panel-cerrado { transform: translateX(120%); opacity: 0; }
-.panel-abierto { transform: translateX(0); opacity: 1; }
-
-.panel-header {
-    background: #111111;
-    color: white;
-    padding: 15px 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.panel-contenido { padding: 20px; overflow-y: auto; }
-
-/* ESTILOS DE LISTA Y ACORDEÓN */
-.acordeon-item { border-bottom: 1px solid #eee; }
-.acordeon-titulo { padding: 15px 5px; cursor: pointer; color: #6b0f1a; font-weight: 600; }
-.acordeon-contenido { display: none; padding: 10px; font-size: 0.9rem; color: #444; background: #f9f9f9; }
-.activo .acordeon-contenido { display: block; }
-
-.lista-detenidos { list-style: none; padding: 0; }
-.lista-detenidos li { 
-    padding: 8px 0; 
-    border-bottom: 1px solid #eee; 
-    color: #333;
-    font-size: 0.95rem;
-}
-
-/* BARRA INFERIOR */
-#barra-inferior {
-    position: fixed;
-    bottom: 0;
     width: 100%;
-    height: 40px;
-    background: #111111;
-    color: #999;
-    font-size: 0.7rem;
+    background: #000;
+    padding: 10px;
+    z-index: 1000;
     display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 2000;
+    justify-content: space-between;
 }
 
-/* AJUSTE MOVIL FINAL */
-@media (max-width: 768px) {
-    #panel-izquierdo { width: 100%; border-right: none; }
-    #panel-lateral {
-        top: auto;
-        bottom: 0;
-        right: 0;
-        width: 100%;
-        border-radius: 20px 20px 0 0;
-        max-height: 60vh;
-    }
-    .panel-cerrado { transform: translateY(100%); }
+#panel-lateral {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 300px;
+    height: 100%;
+    background: #222;
+    transform: translateX(100%);
+    transition: 0.3s;
+    z-index: 1000;
+}
+
+.panel-abierto {
+    transform: translateX(0) !important;
+}
+
+#panel-izquierdo {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 250px;
+    height: 100%;
+    background: #222;
+    transform: translateX(-100%);
+    transition: 0.3s;
+    z-index: 1000;
+}
+
+.menu-activo {
+    transform: translateX(0) !important;
+}
+
+input {
+    width: 90%;
+    margin: 10px;
+    padding: 8px;
+    border-radius: 5px;
+    border: none;
+}
+
+.ficha-persona {
+    padding: 10px;
+}
+
+button {
+    cursor: pointer;
+    padding: 6px;
+    margin-top: 10px;
+}
+
+.intro-panel {
+    padding: 10px;
+    font-size: 14px;
+    color: #ccc;
 }
