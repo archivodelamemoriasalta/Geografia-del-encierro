@@ -4,69 +4,94 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Geografías del Encierro</title>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<header id="barra-superior">
-    <div class="header-izq">
-        <img src="logo-recort-memoria.PNG" alt="Logo APM" class="logo-header">
-        <div class="titulo-header">
-            <div class="linea-superior">ARCHIVO PROVINCIAL DE LA MEMORIA</div>
-            <div class="linea-principal">GEOGRAFÍAS DEL ENCIERRO (1974 - 1983)</div>
-            <div class="linea-inferior">FONDO DOCUMENTAL PRESOS POLÍTICOS</div>
-        </div>
-    </div>
-    <button id="menu-info" aria-label="Abrir menú">MENÚ INFORMATIVO</button>
-</header>
-
-<main id="map"></main>
-
-<aside id="panel-izquierdo">
-    <div class="header-movil-solo">
-        <span>MENÚ INFORMATIVO</span>
-        <button id="cerrar-menu-izq">✕</button>
-    </div>
-    
-    <!-- CONTENEDOR QUE VAMOS A REEMPLAZAR PARA LA FICHA -->
-    <div id="contenido-menu-izq">
-        <div class="acordeon-item">
-            <div class="acordeon-titulo">Quiénes somos</div>
-            <div class="acordeon-contenido">
-                <p>El Archivo Provincial de la Memoria (Decreto Nº 1741, 2008) busca garantizar espacios de reflexión y respeto a los DD.HH.</p>
-            </div>
-        </div>
-        <div class="acordeon-item">
-            <div class="acordeon-titulo">Metodología</div>
-            <div class="acordeon-contenido">
-                <p>Datos extraídos del Fondo Documental de Prontuarios AR-AL-APM-PRESOS POLÍTICOS. Actualmente en desarrollo (125 prontuarios).</p>
-            </div>
-        </div>
-        <div class="acordeon-item">
-            <div class="acordeon-titulo">Contacto</div>
-            <div class="acordeon-contenido">
-                <p>📍 Av. Belgrano y Av. Sarmiento – 2° Piso – Salta Capital</p>
-                <p>📧 archivoprovincialdelamemoria@gmail.com</p>
+    <!-- BARRA SUPERIOR -->
+    <div id="barra-superior">
+        <div class="header-izq">
+            <button id="menu-info">MENU</button>
+            <img src="logo.PNG" class="logo-header" alt="Logo">
+            <div class="titulo-header">
+                <div class="linea-superior">ARCHIVO PROVINCIAL DE LA MEMORIA</div>
+                <div class="linea-principal">GEOGRAFÍAS DEL ENCIERRO (1974 - 1983)</div>
+                <div class="linea-inferior">FONDO DOCUMENTAL PRESOS POLÍTICOS</div>
             </div>
         </div>
     </div>
-</aside>
 
-<aside id="panel-lateral" class="panel-cerrado">
-    <div class="panel-header">
+    <!-- PANEL IZQUIERDO - SOLO MENU INFORMATIVO -->
+    <aside id="panel-izquierdo">
+        <div class="panel-header">
+            <h2>MENU</h2>
+            <button id="cerrar-menu-izq">✕</button>
+        </div>
+
+        <details>
+            <summary>Quiénes somos</summary>
+            <p>El Archivo Provincial de la Memoria es creado por el decreto 1741, el 28 de abril del año 2008. Objetivo transversal es generar acciones que garanticen espacios de reflexión y respeto a los Derechos Humanos, la Democracia para la no repetición de los Crímenes de Lesa Humanidad. A través de la Gestión Integral de los Fondos Documentales, la Puesta en Acceso y el Uso Pedagógico de las fuentes documentales.</p>
+        </details>
+
+        <details>
+            <summary>Denominación</summary>
+            <p>Ministerio de Gobierno y Justicia – Secretaría de Justicia y DDHH – Sub Secretaría de DDHH - Dirección del Archivo Provincial de la Memoria.</p>
+        </details>
+
+        <details>
+            <summary>Metodología de trabajo</summary>
+            <p>Esta herramienta se construye a partir de los datos extraídos del mapeo del Fondo Documental de los Prontuarios AR-AL-APM-PRESOS POLÍTICOS (1974-1983) de la Unidad Carcelaria N.º 1 Villa Las Rosas.</p>
+            <p>La primera intervención sobre el fondo documental se realiza mediante técnicas de restauración y preservación. En una segunda instancia se abordan procedimientos archivísticos: acopio, clasificación, identificación, mapeo y construcción de fichas descriptivas.</p>
+            <ul>
+                <li>acopio</li>
+                <li>clasificación</li>
+                <li>identificación</li>
+                <li>mapeo y construcción de fichas descriptivas</li>
+            </ul>
+            <p>Las fichas son digitalizadas y estructuradas en base de datos. Actualmente se trabajó sobre varios prontuarios de los 125 que componen el fondo (proceso en desarrollo). Próximamente se intervendrá el fondo Mesa de Control Ingresos y Egresos (1976-1983).</p>
+        </details>
+
+        <details>
+            <summary>Equipo de Trabajo</summary>
+            <ul>
+                <li><strong>Coordinación del Equipo de Trabajo:</strong> Alba Eugenia Fernández</li>
+                <li><strong>Restauración y preservación:</strong> Federico Viztaz<br>Dalma Araceli Gonzalez (colaboradora)</li>
+                <li><strong>Procedimientos de acopio, clasificación e identificación:</strong> Federico Viztaz<br>Daniel Estevez (colaborador)</li>
+                <li><strong>Mapeo y construcción de fichas descriptivas:</strong> Alba Eugenia Fernández<br>Daniel Estevez (colaborador)</li>
+                <li><strong>Desarrollo Cartográfico y programación:</strong> Fernando Tortosa</li>
+                <li><strong>Registro fotográfico:</strong> Facundo Hessling<br>Daniel Lopez</li>
+            </ul>
+        </details>
+
+        <details>
+            <summary>Medios de contacto</summary>
+            <p><strong>Ubicación:</strong> Avenida Belgrano y Avenida Sarmiento – 2do Piso – Capital – Salta</p>
+            <p><strong>Teléfono:</strong> 0387 – 155838105</p>
+            <p><strong>Email:</strong> archivoprovincialdelamemoria@gmail.com</p>
+        </details>
+    </aside>
+
+    <!-- MAPA -->
+    <div id="map"></div>
+
+    <!-- PANEL DERECHO (presos) -->
+    <aside id="panel-lateral">
+        <div class="panel-header">
+            <h2 id="titulo-panel">Detalles</h2>
+            <button id="cerrar-panel">✕</button>
+        </div>
         <div class="handle-mobile"></div>
-        <h2 id="titulo-panel">Información</h2>
-        <button id="cerrar-panel">✕</button>
+        <div id="contenido-panel"></div>
+    </aside>
+
+    <!-- BARRA INFERIOR -->
+    <div id="barra-inferior">
+        Archivo Provincial de la Memoria - Salta © 2026
+        Derrallorador Web - Fernando Tortosa - Ing.tortosanf@gmail.com - Tel: (0387) - 155507050 
     </div>
-    <div id="contenido-panel"></div>
-</aside>
 
-<footer id="barra-inferior">
-    © 2026 Proyecto Geografías del Encierro
-</footer>
-
-<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-<script src="script.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
