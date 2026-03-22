@@ -4,71 +4,71 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Geografías del Encierro</title>
-
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <!-- Leaflet (obligatorio para el mapa) -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-<header id="barra-superior">
-    <div class="header-izq">
-        <img src="logo-recort-memoria.PNG" alt="Logo APM" class="logo-header">
-        <div class="titulo-header">
-            <div class="linea-superior">ARCHIVO PROVINCIAL DE LA MEMORIA</div>
-            <div class="linea-principal">GEOGRAFÍAS DEL ENCIERRO (1974 - 1983)</div>
-            <div class="linea-inferior">FONDO DOCUMENTAL PRESOS POLÍTICOS</div>
+    <!-- BARRA SUPERIOR -->
+    <div id="barra-superior">
+        <div class="header-izq">
+            <img src="logo.PNG" class="logo-header" alt="Logo">
+            <div class="titulo-header">
+                <div class="linea-superior">ARCHIVO PROVINCIAL DE LA MEMORIA</div>
+                <div class="linea-principal">GEOGRAFÍAS DEL ENCIERRO (1974 - 1983)</div>
+                <div class="linea-inferior">FONDO DOCUMENTAL PRESOS POLÍTICOS</div>
+            </div>
         </div>
-    </div>
-    <button id="menu-info" aria-label="Abrir menú">☰</button>
-</header>
-
-<main id="map"></main>
-
-<aside id="panel-izquierdo">
-    <div class="header-movil-solo">
-        <span>MENÚ INFORMATIVO</span>
-        <button id="cerrar-menu-izq">✕ Cerrar</button>
+        <button id="menu-info">MENÚ INFORMATIVO</button>
     </div>
 
-    <div class="acordeon-item">
-        <div class="acordeon-titulo">Quiénes somos</div>
-        <div class="acordeon-contenido">
+    <!-- PANEL IZQUIERDO - ACORDIÓN (ERROR 1 CORREGIDO) -->
+    <aside id="panel-izquierdo">
+        <div class="panel-header">
+            <h2>MENÚ INFORMATIVO</h2>
+            <button id="cerrar-menu-izq">✕ Cerrar</button>
+        </div>
+        
+        <!-- Solo títulos visibles al abrir -->
+        <details>
+            <summary>Quiénes somos</summary>
             <p>El Archivo Provincial de la Memoria (Decreto Nº 1741, 2008) busca garantizar espacios de reflexión y respeto a los DD.HH.</p>
-        </div>
-    </div>
-
-    <div class="acordeon-item">
-        <div class="acordeon-titulo">Metodología</div>
-        <div class="acordeon-contenido">
+        </details>
+        
+        <details>
+            <summary>Metodología</summary>
             <p>Datos extraídos del Fondo Documental de Prontuarios AR-AL-APM-PRESOS POLÍTICOS. Actualmente en desarrollo (125 prontuarios).</p>
-        </div>
-    </div>
-
-    <div class="acordeon-item">
-        <div class="acordeon-titulo">Contacto</div>
-        <div class="acordeon-contenido">
+        </details>
+        
+        <details>
+            <summary>Contacto</summary>
             <p>📍 Av. Belgrano y Av. Sarmiento – 2° Piso – Salta Capital</p>
             <p>📧 archivoprovincialdelamemoria@gmail.com</p>
-        </div>
-    </div>
-</aside>
+        </details>
+    </aside>
 
-<aside id="panel-lateral" class="panel-cerrado">
-    <div class="panel-header">
+    <!-- MAPA -->
+    <div id="map"></div>
+
+    <!-- PANEL DERECHO -->
+    <aside id="panel-lateral">
+        <div class="panel-header">
+            <h2 id="titulo-panel">Detalles</h2>
+            <button id="cerrar-panel">✕</button>
+        </div>
         <div class="handle-mobile"></div>
-        <h2 id="titulo-panel">Información</h2>
-        <button id="cerrar-panel">✕</button>
-    </div>
-    <div id="contenido-panel">
+        <div id="contenido-panel">
+            <!-- JS llena aquí -->
         </div>
-</aside>
+    </aside>
 
-<footer id="barra-inferior">
-    © 2026 Proyecto Geografías del Encierro | Desarrollo: <strong><a href="https://wa.me/+65493875507050" target="_blank">Fernando Tortosa</a></strong>
-</footer>
+    <!-- BARRA INFERIOR -->
+    <div id="barra-inferior">
+        Proyecto Archivo Provincial de la Memoria - Salta © 2026
+    </div>
 
-<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-<script src="script.js"></script>
-
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
