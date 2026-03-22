@@ -1,5 +1,7 @@
 const map = L.map('map', { zoomControl: false }).setView([-24.8, -65.4], 7);
-L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png').addTo(map);
+L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+    attribution: 'Map tiles by Carto • Data by OpenStreetMap'
+}).addTo(map);
 L.control.zoom({ position: 'bottomright' }).addTo(map);
 
 let personas = [];
