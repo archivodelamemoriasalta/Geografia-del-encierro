@@ -54,16 +54,34 @@ aside {
     box-shadow: 0 0 20px rgba(0,0,0,0.7);
 }
 
-/* PANEL IZQUIERDO (MENU) */
+/* PANEL IZQUIERDO (ERROR 1) */
 #panel-izquierdo {
     left: 0; top: 0; width: 300px; height: 100%;
     transform: translateX(-100%);
     padding: 20px;
     box-sizing: border-box;
+    overflow-y: auto;
 }
 .menu-activo { transform: translateX(0) !important; }
 
-/* PANEL DERECHO / INFERIOR (DATOS) */
+/* ACORDIÓN (nuevo estilo para ERROR 1) */
+details {
+    margin-bottom: 12px;
+    border-radius: 4px;
+    overflow: hidden;
+}
+summary {
+    font-weight: bold;
+    cursor: pointer;
+    padding: 12px 15px;
+    background: #222;
+    border-radius: 4px;
+    list-style: none;
+}
+summary::-webkit-details-marker { display: none; }
+details[open] summary { background: #333; }
+
+/* PANEL DERECHO */
 #panel-lateral {
     right: 0; top: 0; width: 350px; height: 100%;
     transform: translateX(100%);
@@ -89,41 +107,29 @@ aside {
     padding: 20px;
 }
 
-/* FICHA Y LISTADO */
 .enlace-persona {
     color: #cc4444;
     text-decoration: none;
     display: block;
-    padding: 10px 0;
+    padding: 12px 0;
     border-bottom: 1px solid #222;
     transition: 0.2s;
 }
-.enlace-persona:hover { color: #ff6666; padding-left: 5px; }
+.enlace-persona:hover { color: #ff6666; padding-left: 10px; }
 
-#volver-depto {
-    background: #333;
-    color: #fff;
-    border: none;
-    padding: 10px;
-    width: 100%;
-    margin-top: 20px;
-    cursor: pointer;
-}
-
-/* RESPONSIVE MÓVIL */
-@media (max-width: 600px) {
-    .linea-superior, .linea-inferior { display: none; }
-    .linea-principal { font-size: 13px; }
-
+/* RESPONSIVE (ERROR 4 MEJORADO) */
+@media (max-width: 768px) {
+    #panel-izquierdo { width: 85%; }
     #panel-lateral {
-        top: auto; bottom: 0; width: 100%; height: 70vh;
+        top: auto; bottom: 0; width: 100%; height: 75vh;
         border-radius: 20px 20px 0 0;
         transform: translateY(100%);
     }
     .panel-abierto { transform: translateY(0) !important; }
     .handle-mobile { display: block; }
     
-    #panel-izquierdo { width: 85%; }
+    .linea-superior, .linea-inferior { display: none; }
+    .linea-principal { font-size: 13px; }
 }
 
 #barra-inferior {
@@ -135,4 +141,3 @@ aside {
     text-align: center;
     padding: 5px;
     z-index: 1000;
-}
