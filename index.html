@@ -50,6 +50,7 @@
 
 <div id="barra-superior">
     <button id="menu-info">MENÚ</button>
+    <button id="toggle-tema" title="Cambiar tema">🌙</button>
     <img src="logo.PNG" class="logo-header" alt="Logo" style="height:52px;">
     <div>
         <div style="font-size:11px; color:#aaa; letter-spacing:1px;">ARCHIVO PROVINCIAL DE LA MEMORIA</div>
@@ -86,5 +87,13 @@
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="script.js"></script>
+    <script>
+  const toggleTema = document.getElementById('toggle-tema');
+  if (toggleTema) {
+    toggleTema.addEventListener('click', () => {
+      document.body.classList.toggle('tema-memoria');
+    });
+  }
+</script>
 </body>
 </html>
