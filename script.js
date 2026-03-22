@@ -8,10 +8,8 @@ L.control.zoom({ position: 'bottomright' }).addTo(map);
 
 let personas = [];
 let conteoPorDepto = {};
-let originalContenidoIzq = "";
 
 const menuIzq = document.getElementById("panel-izquierdo");
-const contenidoIzq = document.getElementById("contenido-menu-izq");
 const panelDato = document.getElementById("panel-lateral");
 const contenidoPanel = document.getElementById("contenido-panel");
 const tituloPanel = document.getElementById("titulo-panel");
@@ -19,51 +17,20 @@ const tituloPanel = document.getElementById("titulo-panel");
 function normalizar(texto) {
     if (!texto) return "";
     return texto.toString().toUpperCase().normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "")
-        .replace(/[^A-Z0-9]/g, "")
-        .trim();
+        .replace(/[\u0300-\u036f]/g, "").replace(/[^A-Z0-9]/g, "").trim();
 }
 
 function getColor(d) {
     return d > 20 ? "#4a0000" : d > 10 ? "#7a0000" : d > 5 ? "#a52a2a" : d > 0 ? "#cd5c5c" : "#222222";
 }
 
-// RESTAURAR MENÚ IZQUIERDO
-window.restaurarMenuIzquierdo = function() {
-    contenidoIzq.innerHTML = originalContenidoIzq;
-    panelDato.classList.remove("panel-abierto");
-};
-
-// MOSTRAR FICHA EN EL MENÚ IZQUIERDO
-function mostrarFichaEnIzquierdo(nombre) {
-    const p = personas.find(per => per.nombre === nombre);
-    if (!p) return;
-
-    panelDato.classList.remove("panel-abierto");
-
-    const fichaHTML = `
-        <div class="ficha-persona">
-            <h3>${p.nombre}</h3>
-            <p><strong>Fecha de Ingreso:</strong> ${p.fechaIngreso}</p>
-            <p><strong>Fecha de Egreso:</strong> ${p.fechaEgreso}</p>
-            <p><strong>Unidad de Destino:</strong> ${p.unidadDestino}</p>
-            <p><strong>Liberado:</strong> ${p.liberado}</p>
-            <p><strong>Departamento:</strong> ${p.departamento}</p>
-            <p><strong>Profesion:</strong> ${p.profesion}</p>
-            <button id="volver-menu-btn" onclick="restaurarMenuIzquierdo()">← Volver al Menú Informativo</button>
-        </div>
-    `;
-    contenidoIzq.innerHTML = fichaHTML;
-}
-
-// MOSTRAR LISTA DE NOMBRES EN PANEL DERECHO
 function mostrarDepartamento(depto) {
     const deptoNorm = normalizar(depto);
     const filtradas = personas.filter(p => normalizar(p.departamento) === deptoNorm);
 
     tituloPanel.textContent = depto;
     contenidoPanel.innerHTML = `
-        <p style="color:#888; font-size:0.9em;">${filtradas.length} personas registradas</p>
+        <h3>${filtradas.length} personas registradas en ${depto}</h3>
         <div class="lista-nombres">
             ${filtradas.map(p => `
                 <a href="#" class="enlace-persona" data-nombre="${p.nombre}">${p.nombre}</a>
@@ -76,12 +43,35 @@ function mostrarDepartamento(depto) {
     contenidoPanel.querySelectorAll(".enlace-persona").forEach(a => {
         a.onclick = (e) => {
             e.preventDefault();
-            mostrarFichaEnIzquierdo(a.dataset.nombre);
+            mostrarFicha(a.dataset.nombre);
         };
     });
 }
 
-// CARGAR CSV + GEOJSON (con CAPITAL para vacíos)
+function mostrarFicha(nombre) {
+    const p = personas.find(per => per.nombre === nombre);
+    if (!p) return;
+
+    tituloPanel.textContent = p.nombre;
+    contenidoPanel.innerHTML = `
+        <h3>${p.nombre}</h3>
+        <p><strong>Fecha de Ingreso:</strong> ${p.fechaIngreso}</p>
+        <p><strong>Fecha de Egreso:</strong> ${p.fechaEgreso}</p>
+        <p><strong>Unidad de Destino:</strong> ${p.unidadDestino}</p>
+        <p><strong>Liberado:</strong> ${p.liberado}</p>
+        <p><strong>Departamento:</strong> ${p.departamento}</p>
+        <p><strong>Profesión:</strong> ${p.profesion}</p>
+        <button onclick="mostrarDepartamento('${p.departamento}')">← Volver al departamento</button>
+    `;
+}
+
+// CERRAR AL HACER CLIC EN EL MAPA
+function cerrarConClickMapa() {
+    map.on('click', () => {
+        panelDato.classList.remove("panel-abierto");
+    });
+}
+
 async function cargarTodo() {
     try {
         const resCsv = await fetch("presos_politicos_salta.csv");
@@ -91,16 +81,16 @@ async function cargarTodo() {
         filas.slice(1).forEach(f => {
             const c = f.split(";");
             let depto = (c[7] || "").trim();
-            if (!depto || depto === "null") depto = "CAPITAL";
+            if (!depto || depto.toUpperCase() === "NULL") depto = "CAPITAL";
 
             const p = {
-                nombre: c[1] || "Sin Informacion",
-                fechaIngreso: (c[3] && c[3] !== "null") ? c[3] : "Sin Informacion",
-                fechaEgreso: (c[5] && c[5] !== "null") ? c[5] : "Sin Informacion",
-                unidadDestino: (c[6] && c[6] !== "null") ? c[6] : "Sin Informacion",
-                liberado: (c[10] && c[10] !== "null") ? c[10] : "Sin Informacion",
+                nombre: c[1] || "Sin Información",
+                fechaIngreso: (c[3] && c[3] !== "null") ? c[3] : "Sin Información",
+                fechaEgreso: (c[5] && c[5] !== "null") ? c[5] : "Sin Información",
+                unidadDestino: (c[6] && c[6] !== "null") ? c[6] : "Sin Información",
+                liberado: (c[10] && c[10] !== "null") ? c[10] : "Sin Información",
                 departamento: depto,
-                profesion: (c[9] && c[9] !== "null") ? c[9] : "Sin Informacion"
+                profesion: (c[9] && c[9] !== "null") ? c[9] : "Sin Información"
             };
 
             personas.push(p);
@@ -108,39 +98,30 @@ async function cargarTodo() {
             conteoPorDepto[key] = (conteoPorDepto[key] || 0) + 1;
         });
 
-        originalContenidoIzq = contenidoIzq.innerHTML;
-
         const geo = await fetch("salta_departamentos.geojson").then(r => r.json());
 
         L.geoJSON(geo, {
             style: f => ({
                 fillColor: getColor(conteoPorDepto[normalizar(f.properties.Departamen)] || 0),
-                color: "#444",
-                weight: 1,
-                fillOpacity: 0.8
+                color: "#444", weight: 1, fillOpacity: 0.8
             }),
             onEachFeature: (f, layer) => {
-                layer.on("click", () => {
+                layer.on("click", (e) => {
+                    L.DomEvent.stopPropagation(e); // evita cerrar al clic en polígono
                     map.fitBounds(layer.getBounds());
                     mostrarDepartamento(f.properties.Departamen);
                 });
             }
         }).addTo(map);
 
+        cerrarConClickMapa();
+
     } catch (error) {
         console.error("Error cargando datos:", error);
     }
 }
 
-// Acordeón
-document.querySelectorAll(".acordeon-titulo").forEach(titulo => {
-    titulo.addEventListener("click", () => {
-        const item = titulo.parentElement;
-        item.classList.toggle("activo");
-    });
-});
-
-// Botones
+// BOTONES
 document.getElementById("menu-info").onclick = () => menuIzq.classList.add("menu-activo");
 document.getElementById("cerrar-menu-izq").onclick = () => menuIzq.classList.remove("menu-activo");
 document.getElementById("cerrar-panel").onclick = () => panelDato.classList.remove("panel-abierto");
