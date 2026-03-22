@@ -7,7 +7,11 @@ body {
     overflow: hidden;
 }
 
+/* MAPA - CORRECCIÓN AQUÍ (esto hace que aparezca) */
 #map {
+    position: absolute;
+    top: 0;
+    left: 0;
     height: 100vh;
     width: 100%;
     z-index: 1;
@@ -45,7 +49,7 @@ body {
     cursor: pointer;
 }
 
-/* PANELES GENERALES */
+/* PANELES */
 aside {
     position: absolute;
     background: #151515;
@@ -54,7 +58,6 @@ aside {
     box-shadow: 0 0 20px rgba(0,0,0,0.7);
 }
 
-/* PANEL IZQUIERDO */
 #panel-izquierdo {
     left: 0; top: 0; width: 300px; height: 100%;
     transform: translateX(-100%);
@@ -63,58 +66,6 @@ aside {
     overflow-y: auto;
 }
 .menu-activo { transform: translateX(0) !important; }
-
-/* ACORDEÓN NUEVO */
-.acordeon-item {
-    margin-bottom: 8px;
-    border-radius: 4px;
-    overflow: hidden;
-}
-.acordeon-titulo {
-    background: #222;
-    padding: 14px 16px;
-    font-weight: bold;
-    cursor: pointer;
-    user-select: none;
-}
-.acordeon-contenido {
-    display: none;
-    padding: 14px 16px;
-    background: #1a1a1a;
-}
-.acordeon-item.activo .acordeon-contenido {
-    display: block;
-}
-
-/* FICHA EN MENÚ IZQUIERDO */
-.ficha-persona {
-    padding: 20px;
-}
-.ficha-persona h3 {
-    color: #ff6666;
-    margin-bottom: 20px;
-    border-bottom: 1px solid #333;
-    padding-bottom: 10px;
-}
-.ficha-persona p {
-    margin: 12px 0;
-    line-height: 1.5;
-}
-.ficha-persona strong {
-    color: #aaa;
-    display: inline-block;
-    width: 160px;
-}
-#volver-menu-btn {
-    width: 100%;
-    padding: 12px;
-    background: #333;
-    color: white;
-    border: none;
-    margin-top: 30px;
-    cursor: pointer;
-    font-size: 15px;
-}
 
 /* PANEL DERECHO */
 #panel-lateral {
@@ -152,7 +103,7 @@ aside {
 }
 .enlace-persona:hover { color: #ff6666; padding-left: 10px; }
 
-/* RESPONSIVE - CORRECCIÓN AQUÍ */
+/* RESPONSIVE - MOSTRAMOS LA LÍNEA SUPERIOR EN MÓVIL */
 @media (max-width: 768px) {
     #panel-izquierdo { width: 85%; }
     #panel-lateral {
@@ -163,9 +114,8 @@ aside {
     .panel-abierto { transform: translateY(0) !important; }
     .handle-mobile { display: block; }
     
-    /* SOLO ocultamos la línea inferior - mostramos la superior como en escritorio */
-    .linea-inferior { display: none; }
-    .linea-superior { font-size: 9px; } /* un poquito más pequeña para móviles */
+    .linea-inferior { display: none; }           /* solo ocultamos la inferior */
+    .linea-superior { display: block; font-size: 9px; } /* MOSTRAMOS LA SUPERIOR */
     .linea-principal { font-size: 13px; }
 }
 
