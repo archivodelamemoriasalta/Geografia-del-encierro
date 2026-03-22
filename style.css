@@ -1,19 +1,46 @@
-/* ====================== NUEVA ESTÉTICA ====================== */
 :root {
     --bg-body: #0f0f0f;
     --bg-panel: #1a1a1a;
-    --bg-bar: #111111;
     --accent-red: #d32f2f;
     --accent-red-hover: #ff5252;
-    --text-primary: #f0f0f0;
-    --text-secondary: #a0a0a0;
-    --border: #333333;
 }
 
-/* ... todo tu CSS anterior (lo mantengo igual) ... */
-body { margin:0; font-family:'Inter',sans-serif; background:var(--bg-body); color:var(--text-primary); overflow:hidden; }
-#barra-superior, .titulo-header, .logo-header, #menu-info, #panel-izquierdo, #panel-lateral, .panel-header, #map, #barra-inferior { /* tus reglas */ }
+body { margin:0; font-family:'Inter',sans-serif; background:var(--bg-body); color:#f0f0f0; overflow:hidden; line-height:1.6; }
 
-/* ====================== CLASES QUE FALTABAN (esto arregla el menú y el panel derecho) ====================== */
+/* PANEL IZQUIERDO Y DERECHO */
+#panel-izquierdo {
+    position:absolute; top:0; left:-320px; width:320px; height:100%; background:var(--bg-panel);
+    box-shadow:4px 0 30px rgba(0,0,0,0.8); z-index:999; transition:left 0.4s ease; overflow-y:auto;
+}
+#panel-lateral {
+    position:absolute; top:0; right:-360px; width:360px; height:100%; background:var(--bg-panel);
+    box-shadow:-4px 0 30px rgba(0,0,0,0.8); z-index:999; transition:right 0.4s ease; overflow-y:auto;
+}
+
+/* CLASES QUE HACEN QUE SE ABRA EL MENÚ Y EL PANEL (esto era lo que estaba roto) */
 #panel-izquierdo.menu-activo { left: 0 !important; }
 #panel-lateral.panel-abierto { right: 0 !important; }
+
+.panel-header {
+    background:#111; padding:16px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #333;
+}
+.panel-header h2 { font-family:'Playfair Display',serif; font-size:18px; margin:0; color:#fff; }
+
+/* LISTA DE PRESOS (filas limpias como pediste) */
+.lista-personas {
+    list-style:none; padding:0; margin:12px 0;
+}
+.lista-personas li {
+    background:#222; margin:8px 0; border-radius:8px; padding:12px 16px;
+    transition:all 0.3s;
+}
+.lista-personas li:hover {
+    background:#2a2a2a; transform:translateX(8px);
+}
+.lista-personas a {
+    color:#f0f0f0; text-decoration:none; display:flex; align-items:center; gap:8px;
+}
+.lista-personas a:hover { color:var(--accent-red); }
+
+/* Resto de estilos (barra superior, mapa, etc.) */
+#barra-superior, #map, #barra-inferior { /* tus estilos anteriores */ }
