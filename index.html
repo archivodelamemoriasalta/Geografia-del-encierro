@@ -2,122 +2,100 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <title>Geografías del Encierro</title>
 
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
-
-    <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-
-    <!-- Tu CSS -->
     <link rel="stylesheet" href="style.css">
 
-    <!-- Estilos inline (mantengo los que ya tenías) -->
     <style>
         :root {
-            --bg-body: #0f0f0f;
-            --bg-panel: #1a1a1a;
-            --bg-bar: #111111;
-            --accent-red: #d32f2f;
-            --accent-red-hover: #ff5252;
-            --text-primary: #f0f0f0;
-            --text-secondary: #a0a0a0;
-            --border: #333333;
+            --bg-body: #0f0f0f; --bg-panel: #1a1a1a; --accent-red: #d32f2f;
         }
-
-        body { margin:0; font-family:'Inter',sans-serif; background:var(--bg-body); color:var(--text-primary); overflow:hidden; line-height:1.6; }
-
-        #barra-superior {
-            position:absolute; top:0; width:100%; background:rgba(17,17,17,0.95); backdrop-filter:blur(12px);
-            padding:12px 20px; z-index:1000; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border);
-        }
-        .header-izq { display:flex; align-items:center; gap:16px; }
-        .titulo-header { display:flex; flex-direction:column; }
-        .linea-superior, .linea-inferior { font-size:11px; color:var(--text-secondary); letter-spacing:1.2px; text-transform:uppercase; }
-        .linea-principal { font-family:'Playfair Display',serif; font-size:18px; font-weight:700; color:#fff; }
-
-        #menu-info {
-            background:#222; border:1px solid #444; color:white; padding:10px 16px; border-radius:6px;
-            cursor:pointer; font-weight:500; transition:all 0.3s;
-        }
-        #menu-info:hover { background:var(--accent-red); border-color:var(--accent-red); }
-
-        #panel-izquierdo {
-            position:absolute; top:0; left:-320px; width:320px; height:100%; background:var(--bg-panel);
-            box-shadow:4px 0 30px rgba(0,0,0,0.8); z-index:999; transition:left 0.4s ease; overflow-y:auto;
-        }
-        #panel-lateral {
-            position:absolute; top:0; right:-360px; width:360px; height:100%; background:var(--bg-panel);
-            box-shadow:-4px 0 30px rgba(0,0,0,0.8); z-index:999; transition:right 0.4s ease; overflow-y:auto;
-        }
-
-        .panel-header {
-            background:#111; padding:16px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border);
-        }
-        .panel-header h2 { font-family:'Playfair Display',serif; font-size:18px; margin:0; color:#fff; }
-
-        #map { height:100vh; width:100%; z-index:1; }
-
-        #barra-inferior {
-            position:absolute; bottom:0; width:100%; background:rgba(15,15,15,0.95); color:#777; font-size:11.5px;
-            text-align:center; padding:8px 0; border-top:1px solid var(--border); z-index:1000;
-        }
-
-        @media (max-width:768px) {
-            #panel-izquierdo, #panel-lateral { width:90%; }
-        }
+        body { margin:0; font-family:'Inter',sans-serif; background:var(--bg-body); color:#f0f0f0; overflow:hidden; }
+        #barra-superior { position:absolute; top:0; width:100%; background:rgba(17,17,17,0.95); padding:12px 20px; z-index:1000; display:flex; align-items:center; gap:16px; border-bottom:1px solid #333; }
+        #menu-info { background:#222; border:1px solid #444; color:white; padding:10px 16px; border-radius:6px; cursor:pointer; }
+        #menu-info:hover { background:var(--accent-red); }
+        #map { height:100vh; width:100%; }
     </style>
 </head>
 <body>
 
-    <!-- BARRA SUPERIOR -->
-    <div id="barra-superior">
-        <div class="header-izq">
-            <button id="menu-info">MENÚ</button>
-            <img src="logo.PNG" class="logo-header" alt="Logo Archivo Provincial de la Memoria" style="height:52px;">
-            <div class="titulo-header">
-                <div class="linea-superior">ARCHIVO PROVINCIAL DE LA MEMORIA</div>
-                <div class="linea-principal">GEOGRAFÍAS DEL ENCIERRO (1974 - 1983)</div>
-                <div class="linea-inferior">FONDO DOCUMENTAL PRESOS POLÍTICOS</div>
-            </div>
-        </div>
+<div id="barra-superior">
+    <button id="menu-info">MENÚ</button>
+    <img src="logo.PNG" class="logo-header" alt="Logo" style="height:52px;">
+    <div>
+        <div style="font-size:11px; color:#aaa; letter-spacing:1px;">ARCHIVO PROVINCIAL DE LA MEMORIA</div>
+        <div style="font-family:'Playfair Display',serif; font-size:18px; font-weight:700;">GEOGRAFÍAS DEL ENCIERRO (1974-1983)</div>
+    </div>
+</div>
+
+<!-- ====================== PANEL IZQUIERDO (con tus textos exactos) ====================== -->
+<aside id="panel-izquierdo">
+    <div class="panel-header">
+        <h2>MENÚ</h2>
+        <button id="cerrar-menu-izq">✕</button>
     </div>
 
-    <!-- PANEL IZQUIERDO (menú) -->
-    <aside id="panel-izquierdo">
-        <div class="panel-header">
-            <h2>MENÚ</h2>
-            <button id="cerrar-menu-izq">X</button>
-        </div>
-        <div style="padding:20px;">
-            <!-- ← Aquí pega tu texto original completo (Quiénes somos, Equipo, etc.) -->
-            <!-- El que tenías antes funciona perfecto. Solo déjalo tal cual. -->
-            <details open><summary>Quiénes somos</summary><p>El Archivo Provincial de la Memoria es creado por el decreto 1741...</p></details>
-            <!-- ... resto de tus <details> ... -->
-        </div>
-    </aside>
+    <div style="padding:20px 16px;">
 
-    <!-- PANEL DERECHO (info departamentos/personas) -->
-    <aside id="panel-lateral">
-        <div class="panel-header">
-            <h2 id="titulo-panel">Departamento</h2>
-            <button id="cerrar-panel">X</button>
-        </div>
-        <div id="contenido-panel" style="padding:20px;"></div>
-    </aside>
+        <details open>
+            <summary>📖 Quienes somos</summary>
+            <p>El Archivo Provincial de la Memoria es creado por el decreto 1741, el 28 de Abril del año 2008. Objetivo transversal es generar acciones que garanticen espacios de reflexión y respeto a los Derechos Humanos, la Democracia para la No Repetición de los Crímenes de Lesa Humanidad. A través La Gestión Integral de los Fondos Documentales, la Puesta en Acceso y el Uso Pedagógico de las fuentes documentales.</p>
+        </details>
 
-    <!-- MAPA -->
-    <div id="map"></div>
+        <details open>
+            <summary>🏛️ Denominación</summary>
+            <p>Ministerio de Gobierno y Justicia – Secretaría de Justicia y DD:HH – Sub Secretaria de DD.HH - Dirección del Archivo Provincial de la Memoria.</p>
+        </details>
 
-    <!-- BARRA INFERIOR -->
-    <div id="barra-inferior">
-        Archivo Provincial de la Memoria de Salta • 2025
+        <details open>
+            <summary>🔬 Metodología de trabajo</summary>
+            <p>Esta herramienta se construye a partir de los datos extraídos del mapeo del Fondo Documental de los Prontuarios AR-AL-APM-PRESOS POLÍTICOS (1974-1983) de la Unidad Carcelaria N.º 1 Villa Las Rosas.</p>
+            <p>La primera intervención sobre el fondo documental AR-AL-APM-PRESOSPOLITICOS se realiza mediante técnicas de restauración y preservación...</p>
+            <ul>
+                <li>acopio</li>
+                <li>clasificación</li>
+                <li>identificación</li>
+                <li>mapeo y construcción de fichas descriptivas</li>
+            </ul>
+            <p>Las fichas descriptivas de cada uno de los prontuarios son posteriormente digitalizadas y estructuradas en una base de datos en formato Excel...</p>
+            <p>El trabajo se desarrolla de manera procesual. Como parte de una primera etapa, se trabajó sobre (X) prontuarios de los 125 que componen el fondo documental...</p>
+        </details>
+
+        <details open>
+            <summary>👥 Equipo de Trabajo</summary>
+            <p><strong>Coordinación del Equipo de Trabajo:</strong> Alba Eugenia Fernández</p>
+            <p><strong>Restauración y preservación:</strong><br>Federico Viztas<br>Dalma Araceli Gonzalez (colaboradora)</p>
+            <p><strong>Procedimientos de acopio, clasificación e identificación:</strong><br>Federico Viztaz<br>Daniel Estevez (colaborador)</p>
+            <p><strong>Mapeo y construcción de fichas descriptivas:</strong><br>Alba Eugenia Fernández<br>Daniel Estevez (colaborador)</p>
+            <p><strong>Desarrollo Cartográfico y programación:</strong> Fernando Tortosa</p>
+            <p><strong>Registro fotográfico:</strong><br>Facundo Hessling<br>Daniel Lopez</p>
+        </details>
+
+        <details open>
+            <summary>📧 Medios de contacto</summary>
+            <p><strong>Ubicación:</strong> Avenida Belgrano y Avenida Sarmiento – 2do Piso – Capital – Salta</p>
+            <p><strong>Teléfono:</strong> 0387 – 155838105</p>
+            <p><strong>Email:</strong> archivoprovincialdelamemoria@gmail.com</p>
+        </details>
+
     </div>
+</aside>
 
-    <!-- Leaflet JS + tu script -->
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="script.js"></script>
+<!-- ====================== PANEL DERECHO ====================== -->
+<aside id="panel-lateral">
+    <div class="panel-header">
+        <h2 id="titulo-panel">Departamento</h2>
+        <button id="cerrar-panel">✕</button>
+    </div>
+    <div id="contenido-panel" style="padding:20px;"></div>
+</aside>
+
+<div id="map"></div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
