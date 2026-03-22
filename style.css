@@ -1,20 +1,22 @@
-/* BASE */
-body {
-    margin: 0;
-    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-    background: #0a0a0a;
-    color: #eee;
-    overflow: hidden;
+/* ====================== NUEVA ESTÉTICA ====================== */
+:root {
+    --bg-body: #0f0f0f;
+    --bg-panel: #1a1a1a;
+    --bg-bar: #111111;
+    --accent-red: #d32f2f;
+    --accent-red-hover: #ff5252;
+    --text-primary: #f0f0f0;
+    --text-secondary: #a0a0a0;
+    --border: #333333;
 }
 
-/* MAPA - CORRECCIÓN AQUÍ (esto hace que aparezca) */
-#map {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100vh;
-    width: 100%;
-    z-index: 1;
+body {
+    margin: 0;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background: var(--bg-body);
+    color: var(--text-primary);
+    overflow: hidden;
+    line-height: 1.6;
 }
 
 /* BARRA SUPERIOR */
@@ -22,110 +24,117 @@ body {
     position: absolute;
     top: 0;
     width: 100%;
-    background: rgba(0, 0, 0, 0.85);
-    backdrop-filter: blur(10px);
-    padding: 10px 20px;
+    background: rgba(17, 17, 17, 0.95);
+    backdrop-filter: blur(12px);
+    padding: 12px 20px;
     z-index: 1000;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-sizing: border-box;
-    border-bottom: 1px solid #333;
+    border-bottom: 1px solid var(--border);
 }
 
-.header-izq { display: flex; align-items: center; gap: 15px; }
-.logo-header { height: 50px; width: auto; }
-.titulo-header { display: flex; flex-direction: column; }
-.linea-superior { font-size: 10px; color: #888; letter-spacing: 1px; }
-.linea-principal { font-size: 16px; font-weight: bold; color: #fff; }
-.linea-inferior { font-size: 10px; color: #888; }
+.titulo-header .linea-principal {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: -0.5px;
+}
 
-#menu-info {
-    background: #222;
-    border: 1px solid #444;
-    color: white;
-    padding: 8px 12px;
-    border-radius: 4px;
+.titulo-header .linea-superior,
+.titulo-header .linea-inferior {
+    font-size: 11px;
+    color: var(--text-secondary);
+    letter-spacing: 1.5px;
+}
+
+.logo-header {
+    height: 52px;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+}
+
+/* PANEL IZQUIERDO Y DERECHO */
+aside {
+    background: var(--bg-panel);
+    box-shadow: 0 0 30px rgba(0,0,0,0.8);
+}
+
+/* Títulos de paneles */
+.panel-header {
+    background: #111111;
+    border-bottom: 1px solid var(--border);
+}
+
+.panel-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    color: #fff;
+}
+
+/* Acordeón (details/summary) mejorado */
+details summary {
+    font-weight: 600;
+    color: var(--text-primary);
+    padding: 14px 16px;
+    background: #222222;
+    border-radius: 6px;
     cursor: pointer;
 }
 
-/* PANELES */
-aside {
-    position: absolute;
-    background: #151515;
-    z-index: 2000;
-    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 0 20px rgba(0,0,0,0.7);
+details[open] summary {
+    border-bottom: 1px solid var(--border);
 }
 
-#panel-izquierdo {
-    left: 0; top: 0; width: 300px; height: 100%;
-    transform: translateX(-100%);
-    padding: 20px;
-    box-sizing: border-box;
-    overflow-y: auto;
-}
-.menu-activo { transform: translateX(0) !important; }
-
-/* PANEL DERECHO */
-#panel-lateral {
-    right: 0; top: 0; width: 350px; height: 100%;
-    transform: translateX(100%);
-    display: flex;
-    flex-direction: column;
-}
-.panel-abierto { transform: translateX(0) !important; }
-
-.panel-header {
-    padding: 15px 20px;
-    background: #1f1f1f;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid #333;
-}
-
-.handle-mobile { display: none; width: 40px; height: 4px; background: #444; margin: 0 auto 10px; border-radius: 2px; }
-
-#contenido-panel {
-    flex: 1;
-    overflow-y: auto;
-    padding: 20px;
-}
-
+/* Rojo de memoria */
+.ficha-persona h3,
 .enlace-persona {
-    color: #cc4444;
-    text-decoration: none;
-    display: block;
-    padding: 12px 0;
-    border-bottom: 1px solid #222;
-    transition: 0.2s;
-}
-.enlace-persona:hover { color: #ff6666; padding-left: 10px; }
-
-/* RESPONSIVE - MOSTRAMOS LA LÍNEA SUPERIOR EN MÓVIL */
-@media (max-width: 768px) {
-    #panel-izquierdo { width: 85%; }
-    #panel-lateral {
-        top: auto; bottom: 0; width: 100%; height: 75vh;
-        border-radius: 20px 20px 0 0;
-        transform: translateY(100%);
-    }
-    .panel-abierto { transform: translateY(0) !important; }
-    .handle-mobile { display: block; }
-    
-    .linea-inferior { display: none; }           /* solo ocultamos la inferior */
-    .linea-superior { display: block; font-size: 9px; } /* MOSTRAMOS LA SUPERIOR */
-    .linea-principal { font-size: 13px; }
+    color: var(--accent-red);
 }
 
+.enlace-persona:hover {
+    color: var(--accent-red-hover);
+    padding-left: 12px;
+}
+
+/* Botones */
+button {
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+#menu-info {
+    background: #222222;
+    border: 1px solid #444;
+    color: white;
+    padding: 10px 16px;
+    border-radius: 6px;
+}
+
+#menu-info:hover {
+    background: var(--accent-red);
+    border-color: var(--accent-red);
+}
+
+/* Barra inferior */
 #barra-inferior {
-    position: absolute;
-    bottom: 0; width: 100%;
-    background: rgba(0,0,0,0.8);
-    color: #666;
-    font-size: 11px;
-    text-align: center;
-    padding: 5px;
-    z-index: 1000;
+    background: rgba(15, 15, 15, 0.95);
+    color: #777;
+    font-size: 11.5px;
+    padding: 8px;
+}
+
+/* MAPA */
+#map {
+    height: 100vh;
+    width: 100%;
+    z-index: 1;
+}
+
+/* RESPONSIVE (mejorado) */
+@media (max-width: 768px) {
+    #panel-izquierdo { width: 90%; }
+    #panel-lateral { height: 70vh; }
+    .linea-principal { font-size: 15px; }
 }
