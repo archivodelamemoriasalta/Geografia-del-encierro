@@ -17,12 +17,12 @@ function normalizar(texto) {
 }
 
 function getColor(d) {
-    if (d === 0) return "#222222";
-    if (d === 1) return "#cd5c5c";
-    if (d <= 5) return "#a52a2a";
-    if (d <= 10) return "#7a0000";
-    if (d <= 15) return "#4a0000";
-    return "#300000";
+    return d > 15  ? '#7f0000' :
+           d > 10  ? '#a50026' :
+           d > 5   ? '#d73027' :
+           d > 2   ? '#f46d43' :
+           d > 0   ? '#fdae61' :
+                     '#ffffb2';
 }
 
 function mostrarDepartamento(depto) {
