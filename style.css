@@ -54,7 +54,7 @@ aside {
     box-shadow: 0 0 20px rgba(0,0,0,0.7);
 }
 
-/* PANEL IZQUIERDO (ERROR 1) */
+/* PANEL IZQUIERDO */
 #panel-izquierdo {
     left: 0; top: 0; width: 300px; height: 100%;
     transform: translateX(-100%);
@@ -64,22 +64,57 @@ aside {
 }
 .menu-activo { transform: translateX(0) !important; }
 
-/* ACORDIÓN (nuevo estilo para ERROR 1) */
-details {
-    margin-bottom: 12px;
+/* ACORDEÓN NUEVO (para que funcione con la nueva estructura) */
+.acordeon-item {
+    margin-bottom: 8px;
     border-radius: 4px;
     overflow: hidden;
 }
-summary {
+.acordeon-titulo {
+    background: #222;
+    padding: 14px 16px;
     font-weight: bold;
     cursor: pointer;
-    padding: 12px 15px;
-    background: #222;
-    border-radius: 4px;
-    list-style: none;
+    user-select: none;
 }
-summary::-webkit-details-marker { display: none; }
-details[open] summary { background: #333; }
+.acordeon-contenido {
+    display: none;
+    padding: 14px 16px;
+    background: #1a1a1a;
+}
+.acordeon-item.activo .acordeon-contenido {
+    display: block;
+}
+
+/* FICHA EN MENÚ IZQUIERDO (nuevo) */
+.ficha-persona {
+    padding: 20px;
+}
+.ficha-persona h3 {
+    color: #ff6666;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #333;
+    padding-bottom: 10px;
+}
+.ficha-persona p {
+    margin: 12px 0;
+    line-height: 1.5;
+}
+.ficha-persona strong {
+    color: #aaa;
+    display: inline-block;
+    width: 160px;
+}
+#volver-menu-btn {
+    width: 100%;
+    padding: 12px;
+    background: #333;
+    color: white;
+    border: none;
+    margin-top: 30px;
+    cursor: pointer;
+    font-size: 15px;
+}
 
 /* PANEL DERECHO */
 #panel-lateral {
@@ -117,7 +152,7 @@ details[open] summary { background: #333; }
 }
 .enlace-persona:hover { color: #ff6666; padding-left: 10px; }
 
-/* RESPONSIVE (ERROR 4 MEJORADO) */
+/* RESPONSIVE */
 @media (max-width: 768px) {
     #panel-izquierdo { width: 85%; }
     #panel-lateral {
@@ -141,3 +176,4 @@ details[open] summary { background: #333; }
     text-align: center;
     padding: 5px;
     z-index: 1000;
+}
