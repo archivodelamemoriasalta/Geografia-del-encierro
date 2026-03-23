@@ -121,81 +121,86 @@ body { margin:0; font-family:'Inter',sans-serif; background:var(--bg-body); colo
     color: #4da6ff;
     text-decoration: none;
 }
-/* ====================== BARRA SUPERIOR (geometría conservada + logos pegados) ====================== */
+/* ====================== BARRA SUPERIOR (nueva versión limpia) ====================== */
 #barra-superior {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
-    height: 77px;                    /* aumentada para que entre el título 2.5x sin cortar */
-    background: #1a1a1a;
+    height: 140px;                    /* altura para escritorio (logo-titulo 2.5x) */
+    background: rgba(17,17,17,0.95);
     display: flex;
     align-items: center;
     padding: 0 20px;
     z-index: 1002;
-    gap: 8px;                         /* pegado inmediatamente (solo 8px de separación natural) */
+    gap: 16px;
+    border-bottom: 1px solid #333;
     box-shadow: 0 4px 15px rgba(0,0,0,0.6);
-    flex-wrap: nowrap;
 }
 
-/* LOGOS SIN DEFORMACIÓN */
+/* Contenedor de logos */
+.logos-container {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+/* Logos sin deformación */
 .logo-gobierno {
     height: 52px;
     width: auto;
-    flex-shrink: 0;
     object-fit: contain;
 }
 
 .logo-titulo {
-    height: 77px;                    /* ≈2.5× el logo-gobierno (52 × 2.5) */
+    height: 130px;                    /* exactamente 2.5× como pediste */
     width: auto;
-    flex-shrink: 0;
     object-fit: contain;
-    max-width: 520px;                 /* evita que desborde en pantallas anchas */
+    max-width: 520px;
 }
 
-/* ====================== MENÚ INFERIOR Y RESPONSIVE MÓVIL (corregido) ====================== */
+/* ====================== MAPA Y PANELS (altura exacta según barra) ====================== */
 #map {
-    height: calc(100vh - 140px - 48px) !important;   /* ajustado a la nueva altura del header */
+    height: calc(100vh - 140px - 48px) !important;
 }
-
 #panel-izquierdo,
 #panel-lateral {
     top: 140px !important;
     height: calc(100vh - 140px - 48px) !important;
 }
 
-/* ====================== MÓVIL (todo corregido - ya no falla) ====================== */
+/* ====================== MÓVIL: BARRA MÁS ANGOSTA + LOGOS APILADOS ====================== */
 @media (max-width: 768px) {
     #barra-superior {
-        height: 92px;                 /* más compacto pero proporcional */
+        height: 118px;                /* más angosta (menos alta) */
         padding: 8px 12px;
+        flex-direction: column;       /* botón arriba, logos abajo */
         gap: 6px;
+        align-items: center;
     }
     
-    .logo-gobierno { height: 42px; }
-    .logo-titulo   { 
-        height: 78px;                 /* mantiene ≈2× en móvil para que no se vea gigante */
-        max-width: 280px;
+    .logos-container {
+        flex-direction: column;       /* logos uno arriba del otro */
+        gap: 4px;
+        align-items: center;
     }
+    
+    .logo-gobierno { height: 38px; }
+    .logo-titulo   { height: 72px; }   /* mantiene proporción pero cabe perfecto */
     
     #map {
-        height: calc(100vh - 92px - 44px) !important;
+        height: calc(100vh - 118px - 44px) !important;
     }
-    
     #panel-izquierdo,
     #panel-lateral {
-        top: 92px !important;
-        height: calc(100vh - 92px - 44px) !important;
+        top: 118px !important;
+        height: calc(100vh - 118px - 44px) !important;
         width: 100% !important;
-        border-radius: 0;
     }
     
     .footer-fixed {
         height: 44px;
         padding: 8px 10px;
-        font-size: 0.78rem;
-        z-index: 1003;
     }
 }
-
