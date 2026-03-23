@@ -147,7 +147,7 @@ body { margin:0; font-family:'Inter',sans-serif; background:var(--bg-body); colo
 }
 
 .logo-titulo {
-    height: 130px;                    /* ≈2.5× el logo-gobierno (52 × 2.5) */
+    height: 77px;                    /* ≈2.5× el logo-gobierno (52 × 2.5) */
     width: auto;
     flex-shrink: 0;
     object-fit: contain;
