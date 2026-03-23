@@ -13,24 +13,6 @@
         :root { --bg-body: #0f0f0f; --bg-panel: #1a1a1a; --accent-red: #d32f2f; }
         body { margin:0; font-family:'Inter',sans-serif; background:var(--bg-body); color:#f0f0f0; overflow:hidden; }
 
-        #barra-superior {
-            position:absolute; top:0; left:0; width:100%; height:70px; background:rgba(17,17,17,0.95);
-            padding:12px 20px; z-index:1000; display:flex; align-items:center; gap:16px; border-bottom:1px solid #333;
-        }
-        #menu-info { background:#222; border:1px solid #444; color:white; padding:10px 16px; border-radius:6px; cursor:pointer; }
-        #menu-info:hover { background:var(--accent-red); }
-        #map { height:100vh; width:100%; }
-
-        /* PANEL IZQUIERDO Y DERECHO – ahora bajados para que el botón cerrar quede visible */
-        #panel-izquierdo, #panel-lateral {
-            position:absolute; top:70px; height:calc(100vh - 70px); 
-            background:var(--bg-panel); box-shadow:4px 0 30px rgba(0,0,0,0.8); z-index:999; overflow-y:auto;
-        }
-        #panel-izquierdo { left:-320px; width:320px; transition:left 0.4s ease; }
-        #panel-lateral { right:-360px; width:360px; transition:right 0.4s ease; }
-
-        #panel-izquierdo.menu-activo { left:0 !important; }
-        #panel-lateral.panel-abierto { right:0 !important; }
 
         .panel-header {
             background:#111; padding:16px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #333;
