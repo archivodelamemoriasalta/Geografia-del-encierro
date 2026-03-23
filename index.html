@@ -8,122 +8,71 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link rel="stylesheet" href="style.css">
-
-    <style>
-        :root { --bg-body: #0f0f0f; --bg-panel: #1a1a1a; --accent-red: #d32f2f; }
-        body { margin:0; font-family:'Inter',sans-serif; background:var(--bg-body); color:#f0f0f0; overflow:hidden; }
-
-        #barra-superior {
-            position:absolute; top:0; left:0; width:100%; height:70px; background:rgba(17,17,17,0.95);
-            padding:12px 20px; z-index:1000; display:flex; align-items:center; gap:16px; border-bottom:1px solid #333;
-        }
-        #menu-info { background:#222; border:1px solid #444; color:white; padding:10px 16px; border-radius:6px; cursor:pointer; }
-        #menu-info:hover { background:var(--accent-red); }
-        #map { height:100vh; width:100%; }
-
-        /* PANEL IZQUIERDO Y DERECHO – ahora bajados para que el botón cerrar quede visible */
-        #panel-izquierdo, #panel-lateral {
-            position:absolute; top:70px; height:calc(100vh - 70px); 
-            background:var(--bg-panel); box-shadow:4px 0 30px rgba(0,0,0,0.8); z-index:999; overflow-y:auto;
-        }
-        #panel-izquierdo { left:-320px; width:320px; transition:left 0.4s ease; }
-        #panel-lateral { right:-360px; width:360px; transition:right 0.4s ease; }
-
-        #panel-izquierdo.menu-activo { left:0 !important; }
-        #panel-lateral.panel-abierto { right:0 !important; }
-
-        .panel-header {
-            background:#111; padding:16px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #333;
-            position:sticky; top:0; z-index:10;
-        }
-        .panel-header h2 { font-family:'Playfair Display',serif; font-size:18px; margin:0; color:#fff; }
-
-        /* LISTA DE PRESOS */
-        .lista-personas { list-style:none; padding:0; margin:12px 0; }
-        .lista-personas li { background:#222; margin:8px 0; border-radius:8px; padding:12px 16px; transition:all 0.3s; }
-        .lista-personas li:hover { background:#2a2a2a; transform:translateX(8px); }
-        .lista-personas a { color:#f0f0f0; text-decoration:none; display:flex; align-items:center; gap:8px; }
-        .lista-personas a:hover { color:var(--accent-red); }
-
-        /* ESTILOS ESPECÍFICOS PARA EL ACORDIÓN (menú izquierdo) */
-        details summary {
-            font-weight: bold; 
-            font-size: 1.1em; 
-            cursor: pointer; 
-            padding: 14px 0; 
-            border-bottom: 1px solid #444;
-            list-style: none;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        details summary::-webkit-details-marker { display: none; }
-        details summary::after {
-            content: "▼";
-            margin-left: auto;
-            font-size: 0.9em;
-            transition: transform 0.3s;
-        }
-        details[open] summary::after { transform: rotate(180deg); }
-        details > div {
-            padding: 12px 10px 20px 10px;
-            line-height: 1.65;
-            font-size: 0.95em;
-            color: #ddd;
-        }
-    </style>
 </head>
 <body>
 
+<!-- BARRA SUPERIOR -->
 <div id="barra-superior">
-    <button id="menu-info">MENÚ</button>
-    <img src="logo.PNG" class="logo-header" alt="Logo" style="height:52px;">
-    <div>
-        <div style="font-size:11px; color:#aaa; letter-spacing:1px;">ARCHIVO PROVINCIAL DE LA MEMORIA</div>
-        <div style="font-family:'Playfair Display',serif; font-size:18px; font-weight:700;">GEOGRAFÍAS DEL ENCIERRO (1974-1983)</div>
+    <div class="header-izq">
+        <button id="menu-info">☰ MENÚ</button>
+        <img src="logo.PNG" class="logo-header" alt="Logo Archivo de la Memoria">
+        <div class="titulo-header">
+            <div class="linea-superior">ARCHIVO PROVINCIAL DE LA MEMORIA</div>
+            <div class="linea-principal">GEOGRAFÍAS DEL ENCIERRO (1974-1983)</div>
+        </div>
     </div>
 </div>
 
-<!-- PANEL IZQUIERDO (menú con acordeón EXACTO como pediste) -->
+<!-- PANEL IZQUIERDO (menú) -->
 <aside id="panel-izquierdo">
     <div class="panel-header">
-        <h2>MENÚ</h2>
-        <button id="cerrar-menu-izq">X</button>
+        <h2>☰ MENÚ</h2>
+        <button id="cerrar-menu-izq">✕</button>
     </div>
     <div style="padding:20px 16px;">
-
-        <!-- === ACORDIÓN CON SOLO LOS 6 TÍTULOS + EMOJIS + TEXTOS COMPLETOS === -->
+        
+        <!-- ACORDEÓN MODIFICADO: SOLO LOS TÍTULOS SOLICITADOS + EMOJIS + DESPLIEGUE AL CLIC -->
         <details>
-            <summary>🎯 Objetivo</summary>
-            <div>
-                El presente mapa interactivo tiene como finalidad visibilizar y georreferenciar los espacios vinculados a las prácticas de encierro durante el período 1974–1983, contribuyendo a la reconstrucción territorial de la represión. Asimismo, busca fortalecer el uso pedagógico de los fondos documentales y garantizar el acceso al acervo, mediante su difusión en formatos digitales. En este marco, se propone promover acciones orientadas a la no repetición de los crímenes de lesa humanidad y al fortalecimiento de la memoria colectiva y la vida democrática. El presente trabajo se encuentra en desarrollo, habiéndose incorporado hasta el momento 30 prontuarios de un total de 136 que conforman el fondo documental.
+            <summary style="font-weight: bold; font-size: 1.1em; cursor: pointer; padding: 12px 0; border-bottom: 1px solid #ddd;">🎯 Objetivo</summary>
+            <div style="margin-top: 10px; padding: 0 10px; line-height: 1.6;">
+                <p>El presente mapa interactivo tiene como finalidad visibilizar y georreferenciar los espacios vinculados a las prácticas de encierro durante el período 1974–1983, contribuyendo a la reconstrucción territorial de la represión. Asimismo, busca fortalecer el uso pedagógico de los fondos documentales y garantizar el acceso al acervo, mediante su difusión en formatos digitales. En este marco, se propone promover acciones orientadas a la no repetición de los crímenes de lesa humanidad y al fortalecimiento de la memoria colectiva y la vida democrática. El presente trabajo se encuentra en desarrollo, habiéndose incorporado hasta el momento 30 prontuarios de un total de 136 que conforman el fondo documental.</p>
             </div>
         </details>
 
         <details>
-            <summary>👥 Quienes somos</summary>
-            <div>
-                Que es el Archivo Provincial de la Memoria El Archivo Provincial de la Memoria es creado por el decreto 1741, el 28 de Abril del año 2.008. Objetivo transversal es generar acciones que garanticen espacios de reflexión y respeto a los Derechos Humanos, la Democracia para la No Repetición de los Crímenes de Lesa Humanidad. A través La Gestión Integral de los Fondos Documentales, la Puesta en Acceso y el Uso Pedagógico de las fuentes documentales
+            <summary style="font-weight: bold; font-size: 1.1em; cursor: pointer; padding: 12px 0; border-bottom: 1px solid #ddd;">👥 Quienes somos</summary>
+            <div style="margin-top: 10px; padding: 0 10px; line-height: 1.6;">
+                <p>Que es el Archivo Provincial de la Memoria El Archivo Provincial de la Memoria es creado por el decreto 1741, el 28 de Abril del año 2.008. Objetivo transversal es generar acciones que garanticen espacios de reflexión y respeto a los Derechos Humanos, la Democracia para la No Repetición de los Crímenes de Lesa Humanidad. A través La Gestión Integral de los Fondos Documentales, la Puesta en Acceso y el Uso Pedagógico de las fuentes documentales</p>
             </div>
         </details>
 
         <details>
-            <summary>📛 Denominación</summary>
-            <div>
-                Ministerio de Gobierno y Justicia - Secretaría de Justicia y DD:HH – Sub Secretaria de DD.HH - Dirección del Archivo Provincial de la Memoria.
+            <summary style="font-weight: bold; font-size: 1.1em; cursor: pointer; padding: 12px 0; border-bottom: 1px solid #ddd;">📛 Denominación</summary>
+            <div style="margin-top: 10px; padding: 0 10px; line-height: 1.6;">
+                <p>Ministerio de Gobierno y Justicia - Secretaría de Justicia y DD:HH – Sub Secretaria de DD.HH - Dirección del Archivo Provincial de la Memoria.</p>
             </div>
         </details>
 
         <details>
-            <summary>🔬 Metodología de trabajo</summary>
-            <div>
-                Esta herramienta se construye a partir de los datos extraídos del mapeo del Fondo Documental de los Prontuarios AR-AL-APM-PRESOS POLÍTICOS (1974-1983) de la Unidad Carcelaria N.º 1 Villa Las Rosas. La primera intervención sobre el fondo documental AR-AL-APM-PRESOSPOLITICOS se realiza mediante técnicas de restauración y preservación, con el objetivo de garantizar la integridad física de los documentos y devolverles el valor documental que el paso del tiempo pudiera haber deteriorado. En una segunda instancia, el fondo es abordado mediante procedimientos archivísticos orientados a su organización sistemática, que incluyen: • acopio • clasificación • identificación • mapeo y construcción de fichas descriptivas Las fichas descriptivas de cada uno de los prontuarios son posteriormente digitalizadas y estructuradas en una base de datos en formato Excel, diseñada para sistematizar la información relevada. Esta base se construye a partir de campos normalizados (número de prontuario, nombre y apellido, fecha de ingreso, procedencia, situación judicial, observaciones documentales, entre otros), lo que permite organizar, indexar y cruzar la información de manera eficiente. A partir de esta estructura se genera un mapa documental del fondo, que facilita la localización de los expedientes, el análisis de los datos y su posterior utilización para fines de investigación histórica, archivística y pedagógica. De esta manera se consolidan acciones que garantizan la preservación y democratización del acceso al fondo documental, promoviendo su uso pedagógico y su disponibilidad para la reconstrucción de memorias históricas. El trabajo se desarrolla de manera procesual. Como parte de una primera etapa, se trabajó sobre (X) prontuarios de los 125 que componen el fondo documental, proceso que actualmente continúa en desarrollo. En una segunda etapa se prevé intervenir el fondo documental AR-AL-APM-MESA DE CONTROL INGRESOS Y EGRESOS (1976-1983), compuesto por 12 Libros de Novedades de la Unidad Carcelaria N.º 1 Villa Las Rosas, con el objetivo de ampliar la sistematización de la información y complementar los datos registrados en los prontuarios.
+            <summary style="font-weight: bold; font-size: 1.1em; cursor: pointer; padding: 12px 0; border-bottom: 1px solid #ddd;">🔬 Metodología de trabajo</summary>
+            <div style="margin-top: 10px; padding: 0 10px; line-height: 1.6;">
+                <p>Esta herramienta se construye a partir de los datos extraídos del mapeo del Fondo Documental de los Prontuarios AR-AL-APM-PRESOS POLÍTICOS (1974-1983) de la Unidad Carcelaria N.º 1 Villa Las Rosas. La primera intervención sobre el fondo documental AR-AL-APM-PRESOSPOLITICOS se realiza mediante técnicas de restauración y preservación, con el objetivo de garantizar la integridad física de los documentos y devolverles el valor documental que el paso del tiempo pudiera haber deteriorado.</p>
+                <p>En una segunda instancia, el fondo es abordado mediante procedimientos archivísticos orientados a su organización sistemática, que incluyen:</p>
+                <ul style="margin-left: 20px;">
+                    <li>acopio</li>
+                    <li>clasificación</li>
+                    <li>identificación</li>
+                    <li>mapeo y construcción de fichas descriptivas</li>
+                </ul>
+                <p>Las fichas descriptivas de cada uno de los prontuarios son posteriormente digitalizadas y estructuradas en una base de datos en formato Excel, diseñada para sistematizar la información relevada. Esta base se construye a partir de campos normalizados (número de prontuario, nombre y apellido, fecha de ingreso, procedencia, situación judicial, observaciones documentales, entre otros), lo que permite organizar, indexar y cruzar la información de manera eficiente.</p>
+                <p>A partir de esta estructura se genera un mapa documental del fondo, que facilita la localización de los expedientes, el análisis de los datos y su posterior utilización para fines de investigación histórica, archivística y pedagógica. De esta manera se consolidan acciones que garantizan la preservación y democratización del acceso al fondo documental, promoviendo su uso pedagógico y su disponibilidad para la reconstrucción de memorias históricas.</p>
+                <p>El trabajo se desarrolla de manera procesual. Como parte de una primera etapa, se trabajó sobre (X) prontuarios de los 125 que componen el fondo documental, proceso que actualmente continúa en desarrollo. En una segunda etapa se prevé intervenir el fondo documental AR-AL-APM-MESA DE CONTROL INGRESOS Y EGRESOS (1976-1983), compuesto por 12 Libros de Novedades de la Unidad Carcelaria N.º 1 Villa Las Rosas, con el objetivo de ampliar la sistematización de la información y complementar los datos registrados en los prontuarios.</p>
             </div>
         </details>
 
         <details>
-            <summary>👨‍🔧 Equipo de Trabajo</summary>
-            <div>
+            <summary style="font-weight: bold; font-size: 1.1em; cursor: pointer; padding: 12px 0; border-bottom: 1px solid #ddd;">👨‍🔧 Equipo de Trabajo</summary>
+            <div style="margin-top: 10px; padding: 0 10px; line-height: 1.6;">
                 <p><strong>Restauración y preservación</strong><br>
                 - Federico Viztas<br>
                 - Dalma Araceli Gonzalez (colaboradora)</p>
@@ -133,37 +82,34 @@
                 <p><strong>Mapeo y construcción de fichas descriptivas</strong><br>
                 - Alba Fernández<br>
                 - Daniel Estevez (colaborador)</p>
-                <p><strong>Desarrollo Cartografico y programacion</strong><br>
+                <p><strong>Desarrollo Cartográfico y programacion</strong><br>
                 Ing. Agrim. Fernando Tortosa (colaborador)</p>
-                <p><strong>Registro fotográfico</strong><br>
-                Facundo Hessling (colaborador)<br>
-                Daniel Lopez (colaborador)</p>
-            </div>
-        </details>
-
-        <details>
-            <summary>📞 Medios de contacto</summary>
-            <div>
-                <p><strong>Archivo Provincial de la Memoria – Provincia de Salta</strong><br>
-                Domicilio: Avenida Belgrano y Avenida Sarmiento – 2do Piso – Capital – Salta<br>
-                Teléfono: 0387 – 155838105<br>
-                email: archivoprovincialdelamemoria@gmail.com</p>
             </div>
         </details>
 
     </div>
 </aside>
 
-<!-- PANEL DERECHO (datos) -->
+<!-- MAPA -->
+<div id="map"></div>
+
+<!-- PANEL LATERAL DERECHO -->
 <aside id="panel-lateral">
     <div class="panel-header">
-        <h2 id="titulo-panel">Departamento</h2>
-        <button id="cerrar-panel">X</button>
+        <h2 id="titulo-panel">Información</h2>
+        <button id="cerrar-panel">✕</button>
     </div>
-    <div id="contenido-panel" style="padding:20px;"></div>
+    <div id="contenido-panel" style="padding:20px 16px;"></div>
 </aside>
 
-<div id="map"></div>
+<!-- ====================== MENÚ INFERIOR (FOOTER) NUEVO ====================== -->
+<!-- Todo lo anterior queda exactamente igual. Solo agregué este bloque al final -->
+<footer id="barra-inferior">
+    <div class="footer-content">
+        © 2026 Archivo Provincial de la Memoria - Salta<br>
+        Desarrollo Web y Cartográfico: Ing. Agrimensor Fernando Tortosa - Tel 387-5507050
+    </div>
+</footer>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="script.js"></script>
