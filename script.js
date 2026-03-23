@@ -17,12 +17,12 @@ function normalizar(texto) {
 }
 
 function getColor(d) {
-    return d > 15  ? '#7f0000' :
-           d > 10  ? '#a50026' :
-           d > 5   ? '#d73027' :
-           d > 2   ? '#f46d43' :
-           d > 0   ? '#fdae61' :
-                     '#ffffb2';
+    if (d === 0) return "#222222";
+    if (d === 1) return "#cd5c5c";
+    if (d <= 5) return "#a52a2a";
+    if (d <= 10) return "#7a0000";
+    if (d <= 15) return "#4a0000";
+    return "#300000";
 }
 
 function mostrarDepartamento(depto) {
@@ -89,10 +89,10 @@ async function cargarTodo() {
             decreto: c[2] || "Sin decreto",
             fechaIngreso: c[3] || "Sin Información",
             fechaTraslado: c[4] || "Sin traslado",
-            unidadDestino: c[5] || "Sin Información",          // ← CORREGIDO
-            liberado: c[6] || "Sin Información",               // ← CORREGIDO
+            unidadDestino: c[6] || "Sin Información",
+            liberado: (c[10] || c[5]) || "Sin Información",   // Estado o FechaLiberacion
             departamento: depto,
-            profesion: c[8] || "Sin Información",              // ← CORREGIDO
+            profesion: c[9] || "Sin Información",
             esFederal: esFederal
         });
 
