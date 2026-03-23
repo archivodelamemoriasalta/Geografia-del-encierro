@@ -1,7 +1,5 @@
 const map = L.map('map', { zoomControl: false }).setView([-24.8, -65.4], 7);
-L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-    attribution: 'Map tiles by Carto • Data by OpenStreetMap'
-}).addTo(map);
+L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png').addTo(map);
 L.control.zoom({ position: 'bottomright' }).addTo(map);
 
 let personas = [];
@@ -58,17 +56,15 @@ function mostrarDepartamento(depto) {
 function mostrarFicha(nombre) {
     const p = personas.find(per => per.nombre === nombre);
     if (!p) return;
-
     tituloPanel.textContent = p.nombre;
     contenidoPanel.innerHTML = `
         <h3>👤 ${p.nombre}</h3>
-        <p><strong>📜 Decreto de detención:</strong> ${p.decreto}</p>
-        <p><strong>📅 Fecha de Ingreso:</strong> ${p.fechaIngreso}</p>
-        <p><strong>📅 Fecha de Traslado:</strong> ${p.fechaTraslado}</p>
-        <p><strong>🏛️ Unidad de Destino:</strong> ${p.unidadDestino}</p>
-        <p><strong>🔓 Liberado / Estado:</strong> ${p.liberado}</p>
-        <p><strong>🗺️ Departamento:</strong> ${p.departamento}</p>
-        <p><strong>💼 Profesión:</strong> ${p.profesion}</p>
+        <p><strong>Fecha de Ingreso:</strong> ${p.fechaIngreso}</p>
+        <p><strong>Fecha de Liberación:</strong> ${p.fechaEgreso}</p>
+        <p><strong>Unidad de Destino:</strong> ${p.unidadDestino}</p>
+        <p><strong>Estado:</strong> ${p.liberado}</p>
+        <p><strong>Departamento:</strong> ${p.departamento}</p>
+        <p><strong>Profesión:</strong> ${p.profesion}</p>
         <button onclick="mostrarDepartamento('${p.departamento}')">← Volver al departamento</button>
     `;
 }
@@ -86,13 +82,12 @@ async function cargarTodo() {
 
         personas.push({
             nombre: c[1] || "Sin Información",
-            decreto: c[2] || "Sin decreto",
-            fechaIngreso: c[3] || "Sin Información",
-            fechaTraslado: c[4] || "Sin traslado",
-            unidadDestino: c[6] || "Sin Información",
-            liberado: (c[10] || c[5]) || "Sin Información",   // Estado o FechaLiberacion
+            fechaIngreso: (c[3] && c[3] !== "null") ? c[3] : "Sin Información",
+            fechaEgreso: (c[5] && c[5] !== "null") ? c[5] : "Sin Información",
+            unidadDestino: (c[6] && c[6] !== "null") ? c[6] : "Sin Información",
+            liberado: (c[10] && c[10] !== "null") ? c[10] : "Sin Información",
             departamento: depto,
-            profesion: c[9] || "Sin Información",
+            profesion: (c[9] && c[9] !== "null") ? c[9] : "Sin Información",
             esFederal: esFederal
         });
 
