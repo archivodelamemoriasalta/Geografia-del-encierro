@@ -1,7 +1,3 @@
-/* ==========================================================================
-   Geografías del Encierro - Estilo 2026 - Mobile First + Elegante
-   ========================================================================== */
-
 :root {
     --bg-body: #0d1117;
     --bg-panel: #161b22;
@@ -9,9 +5,9 @@
     --text-main: #e6edf3;
     --text-sec: #8b949e;
     --border: #30363d;
-    --accent-red: #d73027;       /* rojo principal sobrio */
+    --accent-red: #d73027;
     --accent-red-hover: #f85149;
-    --accent-memoria: #58a6ff;   /* azul para tema alternativo */
+    --accent-memoria: #58a6ff;
 }
 
 body {
@@ -24,13 +20,12 @@ body {
     line-height: 1.55;
 }
 
-/* Tema alternativo (memoria / más sobrio) */
 body.tema-memoria {
     --accent-red: #58a6ff;
     --accent-red-hover: #79c0ff;
 }
 
-/* Mapa base */
+/* Mapa */
 #map {
     position: fixed;
     inset: 0;
@@ -48,7 +43,6 @@ body.tema-memoria {
     z-index: 1000;
     background: rgba(13, 17, 23, 0.92);
     backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
     border-bottom: 1px solid var(--border);
     padding: 0.8rem 1rem;
     display: flex;
@@ -57,39 +51,20 @@ body.tema-memoria {
     gap: 1rem;
 }
 
-.header-izq {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    flex-wrap: wrap;
+#menu-info {
+    background: var(--bg-panel);
+    border: 1px solid var(--border);
+    color: var(--text-main);
+    padding: 0.6rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: 0.25s ease;
 }
 
-.logo-header {
-    height: 44px;
-    width: auto;
-    max-height: 52px;
-    object-fit: contain;
-}
-
-.titulo-header {
-    display: flex;
-    flex-direction: column;
-}
-
-.linea-superior,
-.linea-inferior {
-    font-size: 0.75rem;
-    color: var(--text-sec);
-    letter-spacing: 0.8px;
-    text-transform: uppercase;
-}
-
-.linea-principal {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: white;
-    line-height: 1.2;
+#menu-info:hover {
+    background: var(--accent-red);
+    border-color: var(--accent-red);
 }
 
 #toggle-tema {
@@ -109,28 +84,11 @@ body.tema-memoria {
     border-color: var(--accent-red);
 }
 
-/* Botón menú principal */
-#menu-info {
-    background: var(--bg-panel);
-    border: 1px solid var(--border);
-    color: var(--text-main);
-    padding: 0.6rem 1rem;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: 500;
-    transition: 0.25s ease;
-}
-
-#menu-info:hover {
-    background: var(--accent-red);
-    border-color: var(--accent-red);
-}
-
-/* Panels laterales - mobile first */
+/* PANELS LATERALES - CORREGIDO */
 aside {
     position: fixed;
-    top: 0;
-    bottom: 0;
+    top: 70px;                    /* ← clave: debajo de la barra */
+    height: calc(100vh - 70px);
     width: 100%;
     max-width: 380px;
     background: var(--bg-panel);
@@ -140,7 +98,6 @@ aside {
     opacity: 0;
     z-index: 900;
     overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
 }
 
 aside.activo {
@@ -148,8 +105,17 @@ aside.activo {
     opacity: 1;
 }
 
+/* Panel izquierdo sale desde izquierda */
 #panel-izquierdo { left: 0; }
-#panel-lateral    { right: 0; left: auto; border-right: none; border-left: 1px solid var(--border); }
+
+/* Panel derecho sale desde derecha */
+#panel-lateral {
+    right: 0;
+    left: auto;
+    border-right: none;
+    border-left: 1px solid var(--border);
+    transform: translateX(100%);   /* ← CORRECCIÓN PRINCIPAL */
+}
 
 .panel-header {
     display: flex;
@@ -181,7 +147,40 @@ aside.activo {
 
 .panel-header button:hover { color: white; }
 
-/* Contenido panels */
+/* Lista de personas */
+.lista-personas {
+    list-style: none;
+    padding: 0;
+    margin: 1.2rem 0;
+}
+
+.lista-personas li {
+    background: #21262d;
+    margin: 8px 0;
+    border-radius: 8px;
+    padding: 12px 16px;
+    transition: all 0.3s;
+    border: 1px solid var(--border);
+}
+
+.lista-personas li:hover {
+    background: #30363d;
+    transform: translateX(8px);
+}
+
+.lista-personas a {
+    color: var(--text-main);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.lista-personas a:hover {
+    color: var(--accent-red);
+}
+
+/* Detalles del menú */
 details {
     margin: 0.8rem 1rem;
 }
@@ -192,72 +191,16 @@ summary {
     border-radius: 6px;
     cursor: pointer;
     font-weight: 500;
-    transition: background 0.2s;
 }
 
 summary:hover { background: rgba(255,255,255,0.08); }
 
-details[open] summary { background: rgba(255,255,255,0.06); }
-
-details > div, details > ul, details > p {
-    padding: 0.9rem 1.4rem;
-    font-size: 0.94rem;
-    color: var(--text-sec);
-}
-
-.ficha-persona h3,
-.enlace-persona {
-    color: var(--accent-red);
-    transition: color 0.2s;
-}
-
-.enlace-persona:hover {
-    color: var(--accent-red-hover);
-}
-
-/* Fade-in para contenido al abrir panel */
-aside.activo #contenido-panel,
-aside.activo details {
-    animation: fadeIn 0.6s ease forwards;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to   { opacity: 1; transform: translateY(0); }
-}
-
-/* Barra inferior */
-#barra-inferior {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    z-index: 800;
-    background: var(--bg-bar);
-    border-top: 1px solid var(--border);
-    color: var(--text-sec);
-    font-size: 0.78rem;
-    text-align: center;
-    padding: 0.6rem;
-    line-height: 1.4;
-}
-
-/* Desktop - ajustes a partir de 768px */
+/* Desktop */
 @media (min-width: 768px) {
     #barra-superior { padding: 1rem 1.8rem; }
-
-    .linea-principal { font-size: 1.35rem; }
-
-    aside {
-        width: 380px;
-        max-width: none;
-    }
-
-    #panel-izquierdo.activo { transform: translateX(0); }
-    #panel-lateral.activo   { transform: translateX(0); }
+    aside { max-width: 380px; }
 }
 
-/* Very large screens */
 @media (min-width: 1200px) {
     aside { max-width: 420px; }
 }
