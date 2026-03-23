@@ -48,7 +48,7 @@ function mostrarFicha(nombre) {
     tituloPanel.textContent = p.nombre;
     contenidoPanel.innerHTML = `
         <h3>👤 ${p.nombre}</h3>
-        <p><strong>📜 Decreto:</strong> ${p.decreto}</p>
+        <p><strong>📜 Decreto N°:</strong> ${p.decreto}</p>
         <p><strong>📅 Ingreso:</strong> ${p.fechaIngreso}</p>
         <p><strong>📅 Traslado:</strong> ${p.fechaTraslado}</p>
         <p><strong>🏛️ Unidad:</strong> ${p.unidadDestino}</p>
