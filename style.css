@@ -127,7 +127,7 @@ body { margin:0; font-family:'Inter',sans-serif; background:var(--bg-body); colo
     top: 0;
     left: 0;
     right: 0;
-    height: 140px;                    /* aumentada para que entre el título 2.5x sin cortar */
+    height: 77px;                    /* aumentada para que entre el título 2.5x sin cortar */
     background: #1a1a1a;
     display: flex;
     align-items: center;
