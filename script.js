@@ -80,21 +80,19 @@ async function cargarTodo() {
 
     filas.slice(1).forEach(f => {
         const c = f.split(";");
-        
-        // ✅ CORRECCIÓN: índices exactos según tus encabezados
         const rawDepto = (c[7] || "").trim();
         const esFederal = rawDepto === "" || rawDepto.toUpperCase() === "NULL";
         let depto = (rawDepto && rawDepto.toUpperCase() !== "NULL") ? rawDepto : "CAPITAL";
 
         personas.push({
-            nombre: c[1] || "Sin Información",           // NombreCompleto
-            decreto: c[2] || "Sin decreto",              // Decreto
-            fechaIngreso: c[3] || "Sin Información",     // FechaIngreso
-            fechaTraslado: c[4] || "Sin traslado",       // FechaTraslado
-            unidadDestino: c[5] || "Sin Información",    // Unidad Destino ← corregido
-            liberado: c[6] || "Sin Información",         // Liberado ← corregido
+            nombre: c[1] || "Sin Información",
+            decreto: c[2] || "Sin decreto",
+            fechaIngreso: c[3] || "Sin Información",
+            fechaTraslado: c[4] || "Sin traslado",
+            unidadDestino: c[5] || "Sin Información",          // ← CORREGIDO
+            liberado: c[6] || "Sin Información",               // ← CORREGIDO
             departamento: depto,
-            profesion: c[8] || "Sin Información",        // Profesion ← corregido
+            profesion: c[8] || "Sin Información",              // ← CORREGIDO
             esFederal: esFederal
         });
 
