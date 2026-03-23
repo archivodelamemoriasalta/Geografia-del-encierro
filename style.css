@@ -1,46 +1,247 @@
+/* ==========================================================================
+   Geografías del Encierro - Estilo 2026 - Mobile First + Elegante
+   ========================================================================== */
+
 :root {
-    --bg-body: #0f0f0f;
-    --bg-panel: #1a1a1a;
-    --accent-red: #d32f2f;
-    --accent-red-hover: #ff5252;
+    --bg-body: #0d1117;
+    --bg-panel: #161b22;
+    --bg-bar: #0d1117;
+    --text-main: #e6edf3;
+    --text-sec: #8b949e;
+    --border: #30363d;
+    --accent-red: #d73027;
+    --accent-red-hover: #f85149;
+    --accent-memoria: #58a6ff;
 }
 
-body { margin:0; font-family:'Inter',sans-serif; background:var(--bg-body); color:#f0f0f0; overflow:hidden; line-height:1.6; }
-
-/* PANEL IZQUIERDO Y DERECHO */
-#panel-izquierdo {
-    position:absolute; top:0; left:-320px; width:320px; height:100%; background:var(--bg-panel);
-    box-shadow:4px 0 30px rgba(0,0,0,0.8); z-index:999; transition:left 0.4s ease; overflow-y:auto;
-}
-#panel-lateral {
-    position:absolute; top:0; right:-360px; width:360px; height:100%; background:var(--bg-panel);
-    box-shadow:-4px 0 30px rgba(0,0,0,0.8); z-index:999; transition:right 0.4s ease; overflow-y:auto;
+body {
+    margin: 0;
+    font-family: 'Inter', system-ui, sans-serif;
+    background: var(--bg-body);
+    color: var(--text-main);
+    min-height: 100vh;
+    overflow-x: hidden;
+    line-height: 1.55;
 }
 
-/* CLASES QUE HACEN QUE SE ABRA EL MENÚ Y EL PANEL (esto era lo que estaba roto) */
-#panel-izquierdo.menu-activo { left: 0 !important; }
-#panel-lateral.panel-abierto { right: 0 !important; }
+body.tema-memoria {
+    --accent-red: #58a6ff;
+    --accent-red-hover: #79c0ff;
+}
+
+#map {
+    position: fixed;
+    inset: 0;
+    height: 100vh;
+    width: 100%;
+    z-index: 1;
+}
+
+#barra-superior {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background: rgba(13, 17, 23, 0.92);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+    padding: 0.8rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.header-izq {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.logo-header {
+    height: 44px;
+    width: auto;
+    max-height: 52px;
+    object-fit: contain;
+}
+
+.titulo-header {
+    display: flex;
+    flex-direction: column;
+}
+
+.linea-superior,
+.linea-inferior {
+    font-size: 0.75rem;
+    color: var(--text-sec);
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+}
+
+.linea-principal {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: white;
+    line-height: 1.2;
+}
+
+#toggle-tema {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-sec);
+    font-size: 1.1rem;
+    padding: 0.5rem 0.8rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+#toggle-tema:hover {
+    background: var(--accent-red);
+    color: white;
+    border-color: var(--accent-red);
+}
+
+#menu-info {
+    background: var(--bg-panel);
+    border: 1px solid var(--border);
+    color: var(--text-main);
+    padding: 0.6rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: 0.25s ease;
+}
+
+#menu-info:hover {
+    background: var(--accent-red);
+    border-color: var(--accent-red);
+}
+
+/* ✅ CORRECCIÓN: panel derecho bajado 70px para que el botón cerrar quede VISIBLE debajo de la barra superior */
+aside {
+    position: fixed;
+    top: 70px;                    /* ← cambiado de 0 a 70px */
+    bottom: 0;
+    width: 100%;
+    max-width: 380px;
+    background: var(--bg-panel);
+    border-right: 1px solid var(--border);
+    transform: translateX(-100%);
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease;
+    opacity: 0;
+    z-index: 900;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+aside.activo {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+#panel-izquierdo { left: 0; }
+#panel-lateral    { right: 0; left: auto; border-right: none; border-left: 1px solid var(--border); }
 
 .panel-header {
-    background:#111; padding:16px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #333;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background: rgba(0,0,0,0.2);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 10;
 }
-.panel-header h2 { font-family:'Playfair Display',serif; font-size:18px; margin:0; color:#fff; }
 
-/* LISTA DE PRESOS (filas limpias como pediste) */
-.lista-personas {
-    list-style:none; padding:0; margin:12px 0;
+.panel-header h2 {
+    margin: 0;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.25rem;
+    color: white;
 }
-.lista-personas li {
-    background:#222; margin:8px 0; border-radius:8px; padding:12px 16px;
-    transition:all 0.3s;
-}
-.lista-personas li:hover {
-    background:#2a2a2a; transform:translateX(8px);
-}
-.lista-personas a {
-    color:#f0f0f0; text-decoration:none; display:flex; align-items:center; gap:8px;
-}
-.lista-personas a:hover { color:var(--accent-red); }
 
-/* Resto de estilos (barra superior, mapa, etc.) */
-#barra-superior, #map, #barra-inferior { /* tus estilos anteriores */ }
+.panel-header button {
+    background: transparent;
+    border: none;
+    color: var(--text-sec);
+    font-size: 1.4rem;
+    cursor: pointer;
+    padding: 0.4rem;
+}
+
+.panel-header button:hover { color: white; }
+
+details {
+    margin: 0.8rem 1rem;
+}
+
+summary {
+    background: rgba(255,255,255,0.04);
+    padding: 0.9rem 1.2rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background 0.2s;
+}
+
+summary:hover { background: rgba(255,255,255,0.08); }
+
+details[open] summary { background: rgba(255,255,255,0.06); }
+
+details > div, details > ul, details > p {
+    padding: 0.9rem 1.4rem;
+    font-size: 0.94rem;
+    color: var(--text-sec);
+}
+
+.ficha-persona h3,
+.enlace-persona {
+    color: var(--accent-red);
+    transition: color 0.2s;
+}
+
+.enlace-persona:hover {
+    color: var(--accent-red-hover);
+}
+
+aside.activo #contenido-panel,
+aside.activo details {
+    animation: fadeIn 0.6s ease forwards;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+#barra-inferior {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 800;
+    background: var(--bg-bar);
+    border-top: 1px solid var(--border);
+    color: var(--text-sec);
+    font-size: 0.78rem;
+    text-align: center;
+    padding: 0.6rem;
+    line-height: 1.4;
+}
+
+@media (min-width: 768px) {
+    #barra-superior { padding: 1rem 1.8rem; }
+    .linea-principal { font-size: 1.35rem; }
+    aside { width: 380px; max-width: none; }
+    #panel-izquierdo.activo { transform: translateX(0); }
+    #panel-lateral.activo   { transform: translateX(0); }
+}
+
+@media (min-width: 1200px) {
+    aside { max-width: 420px; }
+}
