@@ -38,25 +38,17 @@ function mostrarDepartamento(depto) {
 
         html += `
             <h4 style="color:#ffaa00; margin:20px 0 8px;">📍 De Capital (${normales.length})</h4>
-            <ul class="lista-personas">
-                ${normales.map(p => `<li><a href="#" class="enlace-persona" data-nombre="${p.nombre}">👤 ${p.nombre}</a></li>`).join("")}
-            </ul>
+            <ul class="lista-personas">${normales.map(p => `<li><a href="#" class="enlace-persona" data-nombre="${p.nombre}">👤 ${p.nombre}</a></li>`).join("")}</ul>
             
             <h4 style="color:#ffaa00; margin:20px 0 8px;">🚔 Provenientes de la Policía Federal (${federales.length})</h4>
-            <ul class="lista-personas">
-                ${federales.map(p => `<li><a href="#" class="enlace-persona" data-nombre="${p.nombre}">👤 ${p.nombre}</a></li>`).join("")}
-            </ul>
+            <ul class="lista-personas">${federales.map(p => `<li><a href="#" class="enlace-persona" data-nombre="${p.nombre}">👤 ${p.nombre}</a></li>`).join("")}</ul>
         `;
     } else {
-        html += `
-            <ul class="lista-personas">
-                ${filtradas.map(p => `<li><a href="#" class="enlace-persona" data-nombre="${p.nombre}">👤 ${p.nombre}</a></li>`).join("")}
-            </ul>
-        `;
+        html += `<ul class="lista-personas">${filtradas.map(p => `<li><a href="#" class="enlace-persona" data-nombre="${p.nombre}">👤 ${p.nombre}</a></li>`).join("")}</ul>`;
     }
 
     contenidoPanel.innerHTML = html;
-    panelDato.classList.add("activo");
+    panelDato.classList.add("panel-abierto");
 
     contenidoPanel.querySelectorAll(".enlace-persona").forEach(a => {
         a.onclick = (e) => { e.preventDefault(); mostrarFicha(a.dataset.nombre); };
@@ -89,19 +81,20 @@ async function cargarTodo() {
     filas.slice(1).forEach(f => {
         const c = f.split(";");
         
+        // ✅ CORRECCIÓN: índices exactos según tus encabezados
         const rawDepto = (c[7] || "").trim();
         const esFederal = rawDepto === "" || rawDepto.toUpperCase() === "NULL";
         let depto = (rawDepto && rawDepto.toUpperCase() !== "NULL") ? rawDepto : "CAPITAL";
 
         personas.push({
-            nombre: c[1] || "Sin Información",
-            decreto: c[2] || "Sin decreto",
-            fechaIngreso: c[3] || "Sin Información",
-            fechaTraslado: c[4] || "Sin traslado",
-            unidadDestino: c[5] || "Sin Información",
-            liberado: c[6] || "Sin Información",
+            nombre: c[1] || "Sin Información",           // NombreCompleto
+            decreto: c[2] || "Sin decreto",              // Decreto
+            fechaIngreso: c[3] || "Sin Información",     // FechaIngreso
+            fechaTraslado: c[4] || "Sin traslado",       // FechaTraslado
+            unidadDestino: c[5] || "Sin Información",    // Unidad Destino ← corregido
+            liberado: c[6] || "Sin Información",         // Liberado ← corregido
             departamento: depto,
-            profesion: c[8] || "Sin Información",
+            profesion: c[8] || "Sin Información",        // Profesion ← corregido
             esFederal: esFederal
         });
 
@@ -110,12 +103,7 @@ async function cargarTodo() {
 
     const geo = await fetch("salta_departamentos.geojson").then(r => r.json());
     L.geoJSON(geo, {
-        style: f => ({ 
-            fillColor: getColor(conteoPorDepto[normalizar(f.properties.Departamen)] || 0), 
-            color: "#444", 
-            weight: 1, 
-            fillOpacity: 0.8 
-        }),
+        style: f => ({ fillColor: getColor(conteoPorDepto[normalizar(f.properties.Departamen)] || 0), color: "#444", weight: 1, fillOpacity: 0.8 }),
         onEachFeature: (f, layer) => {
             layer.on("click", () => {
                 map.fitBounds(layer.getBounds());
@@ -125,9 +113,9 @@ async function cargarTodo() {
     }).addTo(map);
 }
 
-// Botones (clases actualizadas al estilo 2026)
-document.getElementById("menu-info").onclick = () => menuIzq.classList.add("activo");
-document.getElementById("cerrar-menu-izq").onclick = () => menuIzq.classList.remove("activo");
-document.getElementById("cerrar-panel").onclick = () => panelDato.classList.remove("activo");
+// Botones
+document.getElementById("menu-info").onclick = () => menuIzq.classList.add("menu-activo");
+document.getElementById("cerrar-menu-izq").onclick = () => menuIzq.classList.remove("menu-activo");
+document.getElementById("cerrar-panel").onclick = () => panelDato.classList.remove("panel-abierto");
 
 cargarTodo();
