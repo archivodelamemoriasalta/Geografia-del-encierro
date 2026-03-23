@@ -1,5 +1,7 @@
 const map = L.map('map', { zoomControl: false }).setView([-24.8, -65.4], 7);
-L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png').addTo(map);
+L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+    attribution: 'Map tiles by Carto • Data by OpenStreetMap'
+}).addTo(map);
 L.control.zoom({ position: 'bottomright' }).addTo(map);
 
 let personas = [];
@@ -15,12 +17,12 @@ function normalizar(texto) {
 }
 
 function getColor(d) {
-    if (d === 0) return "#222222";
-    if (d === 1) return "#cd5c5c";
-    if (d <= 5) return "#a52a2a";
-    if (d <= 10) return "#7a0000";
-    if (d <= 15) return "#4a0000";
-    return "#300000";
+    return d > 15  ? '#7f0000' :
+           d > 10  ? '#a50026' :
+           d > 5   ? '#d73027' :
+           d > 2   ? '#f46d43' :
+           d > 0   ? '#fdae61' :
+                     '#ffffb2';
 }
 
 function mostrarDepartamento(depto) {
@@ -36,13 +38,13 @@ function mostrarDepartamento(depto) {
 
         html += `
             <h4 style="color:#ffaa00; margin:20px 0 8px;">📍 De Capital (${normales.length})</h4>
-            <ul class="lista-personas">${normales.map(p => `<li><a href="#" class="enlace-persona" data-nombre="${p.nombre}">👤 ${p.nombre}</a></li>`).join("")}</ul>
+            <ul class="lista-personas">\( {normales.map(p => `<li><a href="#" class="enlace-persona" data-nombre=" \){p.nombre}">👤 ${p.nombre}</a></li>`).join("")}</ul>
             
             <h4 style="color:#ffaa00; margin:20px 0 8px;">🚔 Provenientes de la Policía Federal (${federales.length})</h4>
-            <ul class="lista-personas">${federales.map(p => `<li><a href="#" class="enlace-persona" data-nombre="${p.nombre}">👤 ${p.nombre}</a></li>`).join("")}</ul>
+            <ul class="lista-personas">\( {federales.map(p => `<li><a href="#" class="enlace-persona" data-nombre=" \){p.nombre}">👤 ${p.nombre}</a></li>`).join("")}</ul>
         `;
     } else {
-        html += `<ul class="lista-personas">${filtradas.map(p => `<li><a href="#" class="enlace-persona" data-nombre="${p.nombre}">👤 ${p.nombre}</a></li>`).join("")}</ul>`;
+        html += `<ul class="lista-personas">\( {filtradas.map(p => `<li><a href="#" class="enlace-persona" data-nombre=" \){p.nombre}">👤 ${p.nombre}</a></li>`).join("")}</ul>`;
     }
 
     contenidoPanel.innerHTML = html;
@@ -56,15 +58,17 @@ function mostrarDepartamento(depto) {
 function mostrarFicha(nombre) {
     const p = personas.find(per => per.nombre === nombre);
     if (!p) return;
+
     tituloPanel.textContent = p.nombre;
     contenidoPanel.innerHTML = `
         <h3>👤 ${p.nombre}</h3>
-        <p><strong>Fecha de Ingreso:</strong> ${p.fechaIngreso}</p>
-        <p><strong>Fecha de Liberación:</strong> ${p.fechaEgreso}</p>
-        <p><strong>Unidad de Destino:</strong> ${p.unidadDestino}</p>
-        <p><strong>Estado:</strong> ${p.liberado}</p>
-        <p><strong>Departamento:</strong> ${p.departamento}</p>
-        <p><strong>Profesión:</strong> ${p.profesion}</p>
+        <p><strong>📜 Decreto de detención:</strong> ${p.decreto}</p>
+        <p><strong>📅 Fecha de Ingreso:</strong> ${p.fechaIngreso}</p>
+        <p><strong>📅 Fecha de Traslado:</strong> ${p.fechaTraslado}</p>
+        <p><strong>🏛️ Unidad de Destino:</strong> ${p.unidadDestino}</p>
+        <p><strong>🔓 Liberado / Estado:</strong> ${p.liberado}</p>
+        <p><strong>🗺️ Departamento:</strong> ${p.departamento}</p>
+        <p><strong>💼 Profesión:</strong> ${p.profesion}</p>
         <button onclick="mostrarDepartamento('${p.departamento}')">← Volver al departamento</button>
     `;
 }
@@ -76,18 +80,21 @@ async function cargarTodo() {
 
     filas.slice(1).forEach(f => {
         const c = f.split(";");
+        
+        // ✅ CORRECCIÓN: índices exactos según tus encabezados
         const rawDepto = (c[7] || "").trim();
         const esFederal = rawDepto === "" || rawDepto.toUpperCase() === "NULL";
         let depto = (rawDepto && rawDepto.toUpperCase() !== "NULL") ? rawDepto : "CAPITAL";
 
         personas.push({
-            nombre: c[1] || "Sin Información",
-            fechaIngreso: (c[3] && c[3] !== "null") ? c[3] : "Sin Información",
-            fechaEgreso: (c[5] && c[5] !== "null") ? c[5] : "Sin Información",
-            unidadDestino: (c[6] && c[6] !== "null") ? c[6] : "Sin Información",
-            liberado: (c[10] && c[10] !== "null") ? c[10] : "Sin Información",
+            nombre: c[1] || "Sin Información",           // NombreCompleto
+            decreto: c[2] || "Sin decreto",              // Decreto
+            fechaIngreso: c[3] || "Sin Información",     // FechaIngreso
+            fechaTraslado: c[4] || "Sin traslado",       // FechaTraslado
+            unidadDestino: c[5] || "Sin Información",    // Unidad Destino ← corregido
+            liberado: c[6] || "Sin Información",         // Liberado ← corregido
             departamento: depto,
-            profesion: (c[9] && c[9] !== "null") ? c[9] : "Sin Información",
+            profesion: c[8] || "Sin Información",        // Profesion ← corregido
             esFederal: esFederal
         });
 
