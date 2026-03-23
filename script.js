@@ -17,11 +17,12 @@ function normalizar(texto) {
 }
 
 function getColor(d) {
-    return d > 15 ? '#7f0000' :
-           d > 10 ? '#a50026' :
-           d > 5  ? '#d73027' :
-           d > 2  ? '#f46d43' :
-           d > 0  ? '#fdae61' : '#ffffb2';
+    if (d === 0) return "#222222";
+    if (d === 1) return "#cd5c5c";
+    if (d <= 5) return "#a52a2a";
+    if (d <= 10) return "#7a0000";
+    if (d <= 15) return "#4a0000";
+    return "#300000";
 }
 
 function mostrarDepartamento(depto) {
@@ -34,9 +35,11 @@ function mostrarDepartamento(depto) {
     if (depto === "CAPITAL") {
         const normales = filtradas.filter(p => !p.esFederal);
         const federales = filtradas.filter(p => p.esFederal);
+
         html += `
             <h4 style="color:#ffaa00; margin:20px 0 8px;">📍 De Capital (${normales.length})</h4>
             <ul class="lista-personas">${normales.map(p => `<li><a href="#" class="enlace-persona" data-nombre="${p.nombre}">👤 ${p.nombre}</a></li>`).join("")}</ul>
+            
             <h4 style="color:#ffaa00; margin:20px 0 8px;">🚔 Provenientes de la Policía Federal (${federales.length})</h4>
             <ul class="lista-personas">${federales.map(p => `<li><a href="#" class="enlace-persona" data-nombre="${p.nombre}">👤 ${p.nombre}</a></li>`).join("")}</ul>
         `;
@@ -45,7 +48,7 @@ function mostrarDepartamento(depto) {
     }
 
     contenidoPanel.innerHTML = html;
-    panelDato.classList.add("activo");   // ← CORREGIDO
+    panelDato.classList.add("panel-abierto");
 
     contenidoPanel.querySelectorAll(".enlace-persona").forEach(a => {
         a.onclick = (e) => { e.preventDefault(); mostrarFicha(a.dataset.nombre); };
@@ -71,55 +74,46 @@ function mostrarFicha(nombre) {
 }
 
 async function cargarTodo() {
-    try {
-        const resCsv = await fetch("presos_politicos_salta.csv");
-        const text = await resCsv.text();
-        const filas = text.split("\n").filter(f => f.trim());
+    const resCsv = await fetch("presos_politicos_salta.csv");
+    const text = await resCsv.text();
+    const filas = text.split("\n").filter(f => f.trim());
 
-        filas.slice(1).forEach(f => {
-            const c = f.split(";");
-            const rawDepto = (c[7] || "").trim();
-            const esFederal = rawDepto === "" || rawDepto.toUpperCase() === "NULL";
-            let depto = (rawDepto && rawDepto.toUpperCase() !== "NULL") ? rawDepto : "CAPITAL";
+    filas.slice(1).forEach(f => {
+        const c = f.split(";");
+        const rawDepto = (c[7] || "").trim();
+        const esFederal = rawDepto === "" || rawDepto.toUpperCase() === "NULL";
+        let depto = (rawDepto && rawDepto.toUpperCase() !== "NULL") ? rawDepto : "CAPITAL";
 
-            personas.push({
-                nombre: c[1] || "Sin Información",
-                decreto: c[2] || "Sin decreto",
-                fechaIngreso: c[3] || "Sin Información",
-                fechaTraslado: c[4] || "Sin traslado",
-                unidadDestino: c[6] || "Sin Información",
-                liberado: (c[10] || c[5]) || "Sin Información",
-                departamento: depto,
-                profesion: c[9] || "Sin Información",
-                esFederal: esFederal
-            });
-
-            conteoPorDepto[normalizar(depto)] = (conteoPorDepto[normalizar(depto)] || 0) + 1;
+        personas.push({
+            nombre: c[1] || "Sin Información",
+            decreto: c[2] || "Sin decreto",
+            fechaIngreso: c[3] || "Sin Información",
+            fechaTraslado: c[4] || "Sin traslado",
+            unidadDestino: c[6] || "Sin Información",
+            liberado: (c[10] || c[5]) || "Sin Información",   // Estado o FechaLiberacion
+            departamento: depto,
+            profesion: c[9] || "Sin Información",
+            esFederal: esFederal
         });
 
-        const geo = await fetch("salta_departamentos.geojson").then(r => r.json());
-        L.geoJSON(geo, {
-            style: f => ({ 
-                fillColor: getColor(conteoPorDepto[normalizar(f.properties.Departamen)] || 0), 
-                color: "#444", 
-                weight: 1, 
-                fillOpacity: 0.8 
-            }),
-            onEachFeature: (f, layer) => {
-                layer.on("click", () => {
-                    map.fitBounds(layer.getBounds());
-                    mostrarDepartamento(f.properties.Departamen);
-                });
-            }
-        }).addTo(map);
-    } catch (e) {
-        console.error("Error cargando datos:", e);
-    }
+        conteoPorDepto[normalizar(depto)] = (conteoPorDepto[normalizar(depto)] || 0) + 1;
+    });
+
+    const geo = await fetch("salta_departamentos.geojson").then(r => r.json());
+    L.geoJSON(geo, {
+        style: f => ({ fillColor: getColor(conteoPorDepto[normalizar(f.properties.Departamen)] || 0), color: "#444", weight: 1, fillOpacity: 0.8 }),
+        onEachFeature: (f, layer) => {
+            layer.on("click", () => {
+                map.fitBounds(layer.getBounds());
+                mostrarDepartamento(f.properties.Departamen);
+            });
+        }
+    }).addTo(map);
 }
 
-// Botones - CORREGIDOS (usamos clase "activo")
-document.getElementById("menu-info").onclick = () => menuIzq.classList.add("activo");
-document.getElementById("cerrar-menu-izq").onclick = () => menuIzq.classList.remove("activo");
-document.getElementById("cerrar-panel").onclick = () => panelDato.classList.remove("activo");
+// Botones
+document.getElementById("menu-info").onclick = () => menuIzq.classList.add("menu-activo");
+document.getElementById("cerrar-menu-izq").onclick = () => menuIzq.classList.remove("menu-activo");
+document.getElementById("cerrar-panel").onclick = () => panelDato.classList.remove("panel-abierto");
 
 cargarTodo();
