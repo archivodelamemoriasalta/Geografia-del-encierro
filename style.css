@@ -115,13 +115,30 @@ body { margin:0; font-family:'Inter',sans-serif; background:var(--bg-body); colo
     border-top: 1px solid #333;
     z-index: 900;
     box-shadow: 0 -2px 10px rgba(0,0,0,0.5);
-}
+}    
 
 .footer-fixed a {
     color: #4da6ff;
     text-decoration: none;
 }
-/* ====================== LOGOS SUPERIOR (sin deformación) ====================== */
+/* ====================== BARRA SUPERIOR (geometría conservada + logos pegados) ====================== */
+#barra-superior {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 140px;                    /* aumentada para que entre el título 2.5x sin cortar */
+    background: #1a1a1a;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    z-index: 1002;
+    gap: 8px;                         /* pegado inmediatamente (solo 8px de separación natural) */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.6);
+    flex-wrap: nowrap;
+}
+
+/* LOGOS SIN DEFORMACIÓN */
 .logo-gobierno {
     height: 52px;
     width: auto;
@@ -130,10 +147,55 @@ body { margin:0; font-family:'Inter',sans-serif; background:var(--bg-body); colo
 }
 
 .logo-titulo {
-    height: 42px;
+    height: 130px;                    /* ≈2.5× el logo-gobierno (52 × 2.5) */
     width: auto;
     flex-shrink: 0;
     object-fit: contain;
-    max-width: 380px; /* evita que desborde en pantallas chicas */
+    max-width: 520px;                 /* evita que desborde en pantallas anchas */
+}
+
+/* ====================== MENÚ INFERIOR Y RESPONSIVE MÓVIL (corregido) ====================== */
+#map {
+    height: calc(100vh - 140px - 48px) !important;   /* ajustado a la nueva altura del header */
+}
+
+#panel-izquierdo,
+#panel-lateral {
+    top: 140px !important;
+    height: calc(100vh - 140px - 48px) !important;
+}
+
+/* ====================== MÓVIL (todo corregido - ya no falla) ====================== */
+@media (max-width: 768px) {
+    #barra-superior {
+        height: 92px;                 /* más compacto pero proporcional */
+        padding: 8px 12px;
+        gap: 6px;
+    }
+    
+    .logo-gobierno { height: 42px; }
+    .logo-titulo   { 
+        height: 78px;                 /* mantiene ≈2× en móvil para que no se vea gigante */
+        max-width: 280px;
+    }
+    
+    #map {
+        height: calc(100vh - 92px - 44px) !important;
+    }
+    
+    #panel-izquierdo,
+    #panel-lateral {
+        top: 92px !important;
+        height: calc(100vh - 92px - 44px) !important;
+        width: 100% !important;
+        border-radius: 0;
+    }
+    
+    .footer-fixed {
+        height: 44px;
+        padding: 8px 10px;
+        font-size: 0.78rem;
+        z-index: 1003;
+    }
 }
 
