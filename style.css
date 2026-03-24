@@ -1,6 +1,6 @@
 :root {
     --top-height: 90px;
-    --bottom-height: 48px;
+    --bottom-height: 52px;     /* ← aumentado un poco para que quepan los 2 textos */
 }
 
 * { box-sizing: border-box; }
@@ -70,7 +70,7 @@ html, body {
     line-height: 1.2;
 }
 
-/* ====================== BARRA INFERIOR FIJA ====================== */
+/* ====================== BARRA INFERIOR FIJA (AJUSTADA) ====================== */
 .footer-fixed {
     position: fixed;
     bottom: 0;
@@ -80,16 +80,22 @@ html, body {
     background: #1a1a1a;
     color: #aaa;
     text-align: center;
-    font-size: 0.85rem;
     border-top: 1px solid #333;
     z-index: 1001;
     box-shadow: 0 -2px 10px rgba(0,0,0,0.5);
-    padding: 12px 10px;
+    padding: 8px 12px;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    line-height: 1.3;
+    line-height: 1.25;
+    font-size: 0.82rem;           /* más legible */
+}
+
+.footer-fixed .dev-data {
+    font-size: 0.68rem;
+    margin-top: 2px;
+    opacity: 0.85;
 }
 
 /* ====================== MAPA ====================== */
@@ -139,32 +145,32 @@ html, body {
     color: #fff;
 }
 
-/* ====================== MÓVIL – ULTRA COMPACTO (SIN SCROLL HORIZONTAL) ====================== */
+/* ====================== MÓVIL – ULTRA COMPACTO ====================== */
 @media (max-width: 768px) {
     :root {
-        --top-height: 55px;        /* más baja y compacta */
-        --bottom-height: 44px;
+        --top-height: 55px;
+        --bottom-height: 52px;     /* ← altura exacta para que quepan los 2 textos */
     }
 
     #barra-superior {
         height: 55px;
         padding: 4px 8px;
-        flex-direction: row;       /* ahora en fila para que todo quepa */
+        flex-direction: row;
         gap: 6px;
         justify-content: space-between;
         align-items: center;
-        flex-wrap: nowrap;         /* evita desborde */
+        flex-wrap: nowrap;
     }
 
     #menu-info {
         padding: 6px 12px;
         font-size: 0.9rem;
-        flex-shrink: 0;            /* botón MENU siempre a la izquierda */
+        flex-shrink: 0;
     }
 
     .logo-header {
-        height: 32px;              /* logo mucho más pequeño */
-        max-width: 110px;          /* nunca desborda */
+        height: 32px;
+        max-width: 110px;
         flex-shrink: 0;
     }
 
@@ -175,25 +181,22 @@ html, body {
         padding: 0 4px;
     }
 
-    #barra-superior > div > div:first-child {
-        font-size: 8px;
-        line-height: 1;
-    }
-    #barra-superior > div > div:last-child {
-        font-size: 12px !important;   /* título más chico */
+    #barra-superior > div > div:first-child { font-size: 8px; line-height: 1; }
+    #barra-superior > div > div:last-child { 
+        font-size: 12px !important; 
         line-height: 1.05;
-        white-space: normal;          /* permite salto de línea si es necesario */
+        white-space: normal;
     }
 
     #map {
         top: 55px;
-        height: calc(100vh - 55px - 44px) !important;
+        height: calc(100vh - 55px - 52px) !important;
     }
 
     #panel-izquierdo,
     #panel-lateral {
         top: 55px !important;
-        height: calc(100vh - 55px - 44px) !important;
+        height: calc(100vh - 55px - 52px) !important;
         width: 100% !important;
     }
 
@@ -204,9 +207,10 @@ html, body {
     #panel-lateral.panel-abierto { right: 0 !important; }
 
     .footer-fixed {
-        height: 44px;
-        font-size: 0.78rem;
-        padding: 8px 10px;
+        height: 52px;
+        padding: 6px 12px;
+        font-size: 0.82rem;
+        line-height: 1.25;
     }
 }
 
