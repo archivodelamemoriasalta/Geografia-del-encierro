@@ -139,38 +139,57 @@ html, body {
     color: #fff;
 }
 
-/* ====================== MÓVIL – TODO EN UNA SOLA PANTALLA ====================== */
+/* ====================== MÓVIL – ULTRA COMPACTO (SIN SCROLL HORIZONTAL) ====================== */
 @media (max-width: 768px) {
     :root {
-        --top-height: 68px;
+        --top-height: 62px;        /* más baja y compacta */
         --bottom-height: 44px;
     }
 
     #barra-superior {
-        height: var(--top-height);
-        padding: 8px 12px;
+        height: 62px;
+        padding: 6px 10px;
         flex-direction: column;
-        gap: 6px;
+        gap: 4px;
         justify-content: center;
     }
 
-    .logo-header { height: 38px; }
-    #barra-superior > div > div:last-child { font-size: 15px; }
-    #barra-superior > div > div:first-child { font-size: 10px; }
+    .logo-header {
+        height: 32px;              /* logo mucho más chico */
+        max-width: 88% !important; /* nunca desborda */
+    }
+
+    #barra-superior > div {
+        min-width: 0 !important;   /* ← CLAVE: elimina el ancho mínimo */
+        flex: 1;
+    }
+
+    #barra-superior > div > div:first-child {
+        font-size: 9px;
+    }
+    #barra-superior > div > div:last-child {
+        font-size: 13px !important;   /* título más pequeño y compacto */
+        line-height: 1.1;
+        white-space: normal;          /* permite que se divida en dos líneas si hace falta */
+    }
+
+    #menu-info {
+        padding: 8px 14px;
+        font-size: 0.95rem;
+    }
 
     #map {
-        top: var(--top-height);
-        height: calc(100vh - var(--top-height) - var(--bottom-height)) !important;
+        top: 62px;
+        height: calc(100vh - 62px - 44px) !important;
     }
 
     #panel-izquierdo,
     #panel-lateral {
-        top: var(--top-height) !important;
-        height: calc(100vh - var(--top-height) - var(--bottom-height)) !important;
+        top: 62px !important;
+        height: calc(100vh - 62px - 44px) !important;
         width: 100% !important;
     }
 
-    /* CORRECCIÓN CLAVE para móvil */
     #panel-izquierdo { left: -100% !important; }
     #panel-lateral   { right: -100% !important; left: auto !important; }
 
@@ -178,13 +197,13 @@ html, body {
     #panel-lateral.panel-abierto { right: 0 !important; }
 
     .footer-fixed {
-        height: var(--bottom-height);
+        height: 44px;
         font-size: 0.78rem;
         padding: 8px 10px;
     }
 }
 
-/* ESTILOS DE LISTA Y ACORDEÓN */
+/* ESTILOS DE LISTA Y ACORDEÓN (sin cambios) */
 .lista-personas { list-style: none; padding: 0; margin: 12px 0; }
 .lista-personas li {
     background: #222;
