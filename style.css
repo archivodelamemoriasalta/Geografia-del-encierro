@@ -142,51 +142,58 @@ html, body {
 /* ====================== MÓVIL – ULTRA COMPACTO (SIN SCROLL HORIZONTAL) ====================== */
 @media (max-width: 768px) {
     :root {
-        --top-height: 62px;        /* más baja y compacta */
+        --top-height: 55px;        /* más baja y compacta */
         --bottom-height: 44px;
     }
 
     #barra-superior {
-        height: 62px;
-        padding: 6px 10px;
-        flex-direction: column;
-        gap: 4px;
-        justify-content: center;
-    }
-
-    .logo-header {
-        height: 32px;              /* logo mucho más chico */
-        max-width: 88% !important; /* nunca desborda */
-    }
-
-    #barra-superior > div {
-        min-width: 0 !important;   /* ← CLAVE: elimina el ancho mínimo */
-        flex: 1;
-    }
-
-    #barra-superior > div > div:first-child {
-        font-size: 9px;
-    }
-    #barra-superior > div > div:last-child {
-        font-size: 13px !important;   /* título más pequeño y compacto */
-        line-height: 1.1;
-        white-space: normal;          /* permite que se divida en dos líneas si hace falta */
+        height: 55px;
+        padding: 4px 8px;
+        flex-direction: row;       /* ahora en fila para que todo quepa */
+        gap: 6px;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: nowrap;         /* evita desborde */
     }
 
     #menu-info {
-        padding: 8px 14px;
-        font-size: 0.95rem;
+        padding: 6px 12px;
+        font-size: 0.9rem;
+        flex-shrink: 0;            /* botón MENU siempre a la izquierda */
+    }
+
+    .logo-header {
+        height: 32px;              /* logo mucho más pequeño */
+        max-width: 110px;          /* nunca desborda */
+        flex-shrink: 0;
+    }
+
+    #barra-superior > div {
+        flex: 1;
+        min-width: 0;
+        text-align: center;
+        padding: 0 4px;
+    }
+
+    #barra-superior > div > div:first-child {
+        font-size: 8px;
+        line-height: 1;
+    }
+    #barra-superior > div > div:last-child {
+        font-size: 12px !important;   /* título más chico */
+        line-height: 1.05;
+        white-space: normal;          /* permite salto de línea si es necesario */
     }
 
     #map {
-        top: 62px;
-        height: calc(100vh - 62px - 44px) !important;
+        top: 55px;
+        height: calc(100vh - 55px - 44px) !important;
     }
 
     #panel-izquierdo,
     #panel-lateral {
-        top: 62px !important;
-        height: calc(100vh - 62px - 44px) !important;
+        top: 55px !important;
+        height: calc(100vh - 55px - 44px) !important;
         width: 100% !important;
     }
 
@@ -203,7 +210,7 @@ html, body {
     }
 }
 
-/* ESTILOS DE LISTA Y ACORDEÓN (sin cambios) */
+/* ESTILOS DE LISTA Y ACORDEÓN */
 .lista-personas { list-style: none; padding: 0; margin: 12px 0; }
 .lista-personas li {
     background: #222;
