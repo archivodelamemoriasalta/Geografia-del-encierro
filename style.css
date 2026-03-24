@@ -5,18 +5,43 @@
     --accent-red-hover: #ff5252;
 }
 
-body { margin:0; font-family:'Inter',sans-serif; background:var(--bg-body); color:#f0f0f0; overflow:hidden; line-height:1.6; }
+body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background: var(--bg-body);
+    color: #f0f0f0;
+    overflow: hidden;
+    line-height: 1.6;
+}
 
-/* PANEL IZQUIERDO Y DERECHO */
+/* ====================== PANEL IZQUIERDO Y DERECHO ====================== */
 #panel-izquierdo {
-    position:absolute; top:0; left:-320px; width:320px; height:100%; background:var(--bg-panel);
-    box-shadow:4px 0 30px rgba(0,0,0,0.8); z-index:999; transition:left 0.4s ease; overflow-y:auto;
+    position: absolute;
+    top: 0;
+    left: -320px;
+    width: 320px;
+    height: 100%;
+    background: var(--bg-panel);
+    box-shadow: 4px 0 30px rgba(0,0,0,0.8);
+    z-index: 999;
+    transition: left 0.4s ease;
+    overflow-y: auto;
 }
+
 #panel-lateral {
-    position:absolute; top:0; right:-360px; width:360px; height:100%; background:var(--bg-panel);
-    box-shadow:-4px 0 30px rgba(0,0,0,0.8); z-index:999; transition:right 0.4s ease; overflow-y:auto;
+    position: absolute;
+    top: 0;
+    right: -360px;
+    width: 360px;
+    height: 100%;
+    background: var(--bg-panel);
+    box-shadow: -4px 0 30px rgba(0,0,0,0.8);
+    z-index: 999;
+    transition: right 0.4s ease;
+    overflow-y: auto;
 }
-/* ====================== MENÚ INFERIOR SIEMPRE VISIBLE ====================== */
+
+/* ====================== FOOTER FIJO ====================== */
 .footer-fixed {
     position: fixed;
     bottom: 0;
@@ -28,106 +53,19 @@ body { margin:0; font-family:'Inter',sans-serif; background:var(--bg-body); colo
     padding: 12px 10px;
     font-size: 0.85rem;
     border-top: 1px solid #333;
-    z-index: 1001;           /* POR ENCIMA de paneles y mapa */
+    z-index: 1001;
     box-shadow: 0 -2px 10px rgba(0,0,0,0.5);
-    display: block !important;
     height: 48px;
     line-height: 24px;
 }
 
-/* Ajuste TOTAL para móvil y escritorio (nunca más se esconde) */
-#map {
-    height: calc(100vh - 70px - 48px) !important;   /* top 70px + footer 48px */
-}
-
-#panel-izquierdo,
-#panel-lateral {
-    top: 70px !important;
-    height: calc(100vh - 70px - 48px) !important;
-}
-
-/* ====================== RESPONSIVE MÓVIL ====================== */
-@media (max-width: 768px) {
-    #barra-superior {
-        height: 64px;
-        padding: 10px 12px;
-    }
-    
-    .logo-gobierno { height: 44px; }
-    .logo-titulo   { height: 36px; }
-    
-    #map {
-        height: calc(100vh - 64px - 48px) !important;
-    }
-    
-    #panel-izquierdo,
-    #panel-lateral {
-        top: 64px !important;
-        height: calc(100vh - 64px - 48px) !important;
-        width: 100% !important;   /* ocupa todo el ancho en móvil */
-    }
-    
-    .footer-fixed {
-        font-size: 0.78rem;
-        padding: 8px 10px;
-        height: 44px;
-    }
-}
-/* CLASES QUE HACEN QUE SE ABRA EL MENÚ Y EL PANEL (esto era lo que estaba roto) */
-#panel-izquierdo.menu-activo { left: 0 !important; }
-#panel-lateral.panel-abierto { right: 0 !important; }
-
-.panel-header {
-    background:#111; padding:16px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #333;
-}
-.panel-header h2 { font-family:'Playfair Display',serif; font-size:18px; margin:0; color:#fff; }
-
-/* LISTA DE PRESOS (filas limpias como pediste) */
-.lista-personas {
-    list-style:none; padding:0; margin:12px 0;
-}
-.lista-personas li {
-    background:#222; margin:8px 0; border-radius:8px; padding:12px 16px;
-    transition:all 0.3s;
-}
-.lista-personas li:hover {
-    background:#2a2a2a; transform:translateX(8px);
-}
-.lista-personas a {
-    color:#f0f0f0; text-decoration:none; display:flex; align-items:center; gap:8px;
-}
-.lista-personas a:hover { color:var(--accent-red); }
-
-/* Resto de estilos (barra superior, mapa, etc.) */
-#barra-superior, #map, #barra-inferior { /* tus estilos anteriores */ }
-
-
-.footer-fixed {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: #1a1a1a;
-    color: #aaa;
-    text-align: center;
-    padding: 12px 10px;
-    font-size: 0.85rem;
-    border-top: 1px solid #333;
-    z-index: 900;
-    box-shadow: 0 -2px 10px rgba(0,0,0,0.5);
-}    
-
-.footer-fixed a {
-    color: #4da6ff;
-    text-decoration: none;
-}
-/* ====================== BARRA SUPERIOR (nueva versión limpia) ====================== */
+/* ====================== BARRA SUPERIOR (versión limpia y responsive) ====================== */
 #barra-superior {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
-    height: 140px;                    /* altura para escritorio (logo-titulo 2.5x) */
+    height: 140px;
     background: rgba(17,17,17,0.95);
     display: flex;
     align-items: center;
@@ -136,17 +74,18 @@ body { margin:0; font-family:'Inter',sans-serif; background:var(--bg-body); colo
     gap: 16px;
     border-bottom: 1px solid #333;
     box-shadow: 0 4px 15px rgba(0,0,0,0.6);
+    flex-wrap: wrap;                  /* ← NUEVO: evita desborde */
+    box-sizing: border-box;
 }
 
-/* Contenedor de logos */
 .logos-container {
     display: flex;
     gap: 12px;
     align-items: center;
     flex-shrink: 0;
+    max-width: 100%;
 }
 
-/* Logos sin deformación */
 .logo-gobierno {
     height: 52px;
     width: auto;
@@ -154,53 +93,173 @@ body { margin:0; font-family:'Inter',sans-serif; background:var(--bg-body); colo
 }
 
 .logo-titulo {
-    height: 130px;                    /* exactamente 2.5× como pediste */
+    height: 130px;
     width: auto;
     object-fit: contain;
     max-width: 520px;
 }
 
-/* ====================== MAPA Y PANELS (altura exacta según barra) ====================== */
+/* ====================== MAPA Y ALTURAS ====================== */
 #map {
     height: calc(100vh - 140px - 48px) !important;
 }
+
 #panel-izquierdo,
 #panel-lateral {
     top: 140px !important;
     height: calc(100vh - 140px - 48px) !important;
 }
 
-/* ====================== MÓVIL: BARRA MÁS ANGOSTA + LOGOS APILADOS ====================== */
+/* ====================== CLASES DE ACTIVACIÓN ====================== */
+#panel-izquierdo.menu-activo { left: 0 !important; }
+#panel-lateral.panel-abierto { right: 0 !important; }
+
+/* ====================== RESPONSIVE MÓVIL (768px y menor) ====================== */
 @media (max-width: 768px) {
     #barra-superior {
-        height: 118px;                /* más angosta (menos alta) */
-        padding: 8px 12px;
-        flex-direction: column;       /* botón arriba, logos abajo */
+        height: auto;                    /* más flexible */
+        min-height: 118px;
+        padding: 10px 12px;
+        flex-direction: column;
+        gap: 8px;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .logos-container {
+        flex-direction: column;
         gap: 6px;
         align-items: center;
+        width: 100%;
+        max-width: 100%;
     }
-    
-    .logos-container {
-        flex-direction: column;       /* logos uno arriba del otro */
-        gap: 4px;
-        align-items: center;
+
+    .logo-gobierno {
+        height: 42px;
     }
-    
-    .logo-gobierno { height: 38px; }
-    .logo-titulo   { height: 72px; }   /* mantiene proporción pero cabe perfecto */
-    
+
+    .logo-titulo {
+        height: 72px;
+        max-width: 240px !important;     /* ← FIX PRINCIPAL: evita desborde en Android */
+    }
+
     #map {
-        height: calc(100vh - 118px - 44px) !important;
+        height: calc(100vh - 130px - 44px) !important;   /* ajustado a la barra real */
     }
+
     #panel-izquierdo,
     #panel-lateral {
-        top: 118px !important;
-        height: calc(100vh - 118px - 44px) !important;
+        top: 130px !important;
+        height: calc(100vh - 130px - 44px) !important;
         width: 100% !important;
     }
-    
+
     .footer-fixed {
         height: 44px;
         padding: 8px 10px;
+        font-size: 0.78rem;
     }
+}
+
+/* ====================== MÓVIL ULTRA-ESTRECHO (< 480px) ====================== */
+@media (max-width: 480px) {
+    .logo-titulo {
+        height: 58px;
+        max-width: 210px !important;
+    }
+
+    .logo-gobierno {
+        height: 34px;
+    }
+
+    #barra-superior {
+        padding: 8px 10px;
+        gap: 6px;
+    }
+
+    #map {
+        height: calc(100vh - 115px - 44px) !important;
+    }
+
+    #panel-izquierdo,
+    #panel-lateral {
+        top: 115px !important;
+        height: calc(100vh - 115px - 44px) !important;
+    }
+}
+
+/* Estilos adicionales que ya tenías (panel-header, lista, acordeón) */
+.panel-header {
+    background: #111;
+    padding: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #333;
+}
+
+.panel-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    margin: 0;
+    color: #fff;
+}
+
+.lista-personas {
+    list-style: none;
+    padding: 0;
+    margin: 12px 0;
+}
+
+.lista-personas li {
+    background: #222;
+    margin: 8px 0;
+    border-radius: 8px;
+    padding: 12px 16px;
+    transition: all 0.3s;
+}
+
+.lista-personas li:hover {
+    background: #2a2a2a;
+    transform: translateX(8px);
+}
+
+.lista-personas a {
+    color: #f0f0f0;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.lista-personas a:hover {
+    color: var(--accent-red);
+}
+
+/* Acordeón */
+details summary {
+    font-weight: bold;
+    font-size: 1.1em;
+    cursor: pointer;
+    padding: 14px 0;
+    border-bottom: 1px solid #444;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+details summary::-webkit-details-marker { display: none; }
+details summary::after {
+    content: "▼";
+    margin-left: auto;
+    font-size: 0.9em;
+    transition: transform 0.3s;
+}
+details[open] summary::after { transform: rotate(180deg); }
+details > div {
+    padding: 12px 10px 20px 10px;
+    line-height: 1.65;
+    font-size: 0.95em;
+    color: #ddd;
 }
