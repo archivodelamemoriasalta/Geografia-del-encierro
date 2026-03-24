@@ -44,3 +44,36 @@ body { margin:0; font-family:'Inter',sans-serif; background:var(--bg-body); colo
 
 /* Resto de estilos (barra superior, mapa, etc.) */
 #barra-superior, #map, #barra-inferior { /* tus estilos anteriores */ }
+
+.footer-credits {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(17, 17, 17, 0.85); /* Fondo oscuro con transparencia */
+    color: #ffffff;
+    backdrop-filter: blur(8px); /* Efecto de desenfoque moderno */
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    z-index: 1000; /* Por encima del mapa */
+    padding: 8px 0;
+    font-size: 0.75rem;
+    text-align: center;
+    font-family: sans-serif;
+}
+
+.footer-content p {
+    margin: 2px 0;
+    opacity: 0.9;
+}
+
+.dev-data {
+    font-weight: bold;
+    color: #00bcff; /* Un tono sutil para destacar tu autoría */
+}
+
+/* Ajuste para que el mapa no quede oculto bajo la barra en móviles */
+@media (max-width: 600px) {
+    #map {
+        bottom: 50px; /* Ajusta según el alto de tu barra inferior */
+    }
+}
