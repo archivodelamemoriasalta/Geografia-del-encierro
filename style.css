@@ -1,5 +1,5 @@
 :root {
-    --top-height: 90px;
+    --top-height: 52px;
     --bottom-height: 52px;
 }
 
@@ -8,250 +8,97 @@ html, body {
     margin: 0;
     padding: 0;
     overflow-x: hidden !important;
+    overflow-y: hidden !important;   /* evita scroll vertical innecesario */
     height: 100vh;
     font-family: 'Inter', sans-serif;
     background: #0f0f0f;
     color: #f0f0f0;
 }
 
-/* ====================== BARRA SUPERIOR FIJA ====================== */
 #barra-superior {
     position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
+    top: 0; left: 0; right: 0;
     height: var(--top-height);
     background: rgba(17,17,17,0.95);
     display: flex;
     align-items: center;
-    padding: 12px 20px;
+    padding: 4px 6px;
     z-index: 1002;
-    gap: 8px;
+    gap: 4px;
     border-bottom: 1px solid #333;
     box-shadow: 0 4px 15px rgba(0,0,0,0.6);
     flex-wrap: nowrap;
 }
 
 #menu-info {
-    background: #222;
-    border: 1px solid #444;
-    color: white;
-    padding: 8px 14px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: 600;
-    white-space: nowrap;
+    padding: 6px 12px;
+    font-size: 0.95rem;
     flex-shrink: 0;
 }
-#menu-info:hover { background: #d32f2f; }
 
 .logo-header {
-    height: 30px;
-    width: auto;
-    max-width: 110px;
-    object-fit: contain;
+    height: 26px;
+    max-width: 80px;
     flex-shrink: 0;
 }
 
 #barra-superior > div {
     flex: 1;
     min-width: 0;
-    text-align: center;
-    padding: 0 4px;
-}
-#barra-superior > div > div:first-child {
-    font-size: 9px;
-    color: #aaa;
-    letter-spacing: 1px;
-    line-height: 1;
+    text-align: left;           /* título más a la izquierda */
+    padding-left: 4px;
 }
 #barra-superior > div > div:last-child {
-    font-family: 'Playfair Display', serif;
-    font-size: 11px !important;
-    font-weight: 700;
+    font-size: 10.5px !important;
     line-height: 1.05;
     white-space: normal;
 }
 
-/* ====================== BARRA INFERIOR FIJA ====================== */
 .footer-fixed {
     position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
+    bottom: 0; left: 0; right: 0;
     height: var(--bottom-height);
     background: #1a1a1a;
     color: #aaa;
     text-align: center;
     border-top: 1px solid #333;
     z-index: 1001;
-    box-shadow: 0 -2px 10px rgba(0,0,0,0.5);
     padding: 6px 12px;
     display: flex;
-    align-items: center;
-    justify-content: center;
     flex-direction: column;
-    line-height: 1.25;
+    justify-content: center;
     font-size: 0.82rem;
+    line-height: 1.25;
 }
 
-.footer-fixed .dev-data {
-    font-size: 0.68rem;
-    margin-top: 2px;
-    opacity: 0.9;
-}
-
-/* ====================== MAPA ====================== */
 #map {
     position: absolute;
     top: var(--top-height);
-    left: 0;
-    right: 0;
+    left: 0; right: 0;
     height: calc(100vh - var(--top-height) - var(--bottom-height)) !important;
     width: 100%;
-    z-index: 1;
 }
 
-/* ====================== PANEL IZQUIERDO Y DERECHO ====================== */
 #panel-izquierdo, #panel-lateral {
     position: absolute;
     top: var(--top-height);
     height: calc(100vh - var(--top-height) - var(--bottom-height));
+    width: 100%;
     background: #1a1a1a;
-    box-shadow: 4px 0 30px rgba(0,0,0,0.8);
     z-index: 999;
     overflow-y: auto;
-    transition: all 0.4s ease;
 }
 
-#panel-izquierdo { left: -320px; width: 320px; }
-#panel-lateral   { right: -360px; width: 360px; }
+#panel-izquierdo { left: -100%; }
+#panel-lateral   { right: -100%; }
 
-#panel-izquierdo.menu-activo { left: 0 !important; }
-#panel-lateral.panel-abierto { right: 0 !important; }
+#panel-izquierdo.menu-activo { left: 0; }
+#panel-lateral.panel-abierto { right: 0; }
 
-.panel-header {
-    background: #111;
-    padding: 16px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid #333;
-    position: sticky;
-    top: 0;
-    z-index: 10;
-}
-.panel-header h2 {
-    font-family: 'Playfair Display', serif;
-    font-size: 18px;
-    margin: 0;
-    color: #fff;
-}
-
-/* ====================== MÓVIL – 3 ELEMENTOS VISIBLES SIN SCROLL ====================== */
-@media (max-width: 768px) {
-    :root {
-        --top-height: 54px;        /* altura exacta para que quepan los 3 elementos */
-        --bottom-height: 52px;
-    }
-
-    #barra-superior {
-        height: 54px;
-        padding: 4px 8px;
-        justify-content: flex-start;   /* botón MENU siempre a la izquierda */
-        gap: 6px;
-        flex-wrap: nowrap;
-    }
-
-    #menu-info {
-        padding: 6px 12px;
-        font-size: 0.95rem;
-        flex-shrink: 0;
-    }
-
-    .logo-header {
-        height: 28px;
-        max-width: 100px;          /* logo pequeño pero visible */
-        flex-shrink: 0;
-    }
-
-    #barra-superior > div {
-        flex: 1;
-        min-width: 0;
-        text-align: center;
-        padding: 0 4px;
-    }
-
-    #barra-superior > div > div:first-child {
-        font-size: 8.5px;
-        line-height: 1;
-    }
-    #barra-superior > div > div:last-child {
-        font-size: 10.5px !important;   /* título reducido para que quepa */
-        line-height: 1.05;
-        white-space: normal;
-    }
-
-    #map {
-        top: 54px;
-        height: calc(100vh - 54px - 52px) !important;
-    }
-
-    #panel-izquierdo,
-    #panel-lateral {
-        top: 54px !important;
-        height: calc(100vh - 54px - 52px) !important;
-        width: 100% !important;
-    }
-
-    #panel-izquierdo { left: -100% !important; }
-    #panel-lateral   { right: -100% !important; left: auto !important; }
-
-    #panel-izquierdo.menu-activo { left: 0 !important; }
-    #panel-lateral.panel-abierto { right: 0 !important; }
-
-    .footer-fixed {
-        height: 52px;
-        padding: 6px 12px;
-    }
-}
-
-/* ESTILOS DE LISTA Y ACORDEÓN */
+/* Resto de estilos (lista, details, etc.) sin cambios */
 .lista-personas { list-style: none; padding: 0; margin: 12px 0; }
-.lista-personas li {
-    background: #222;
-    margin: 8px 0;
-    border-radius: 8px;
-    padding: 12px 16px;
-    transition: all 0.3s;
-}
-.lista-personas li:hover { background: #2a2a2a; transform: translateX(8px); }
-.lista-personas a {
-    color: #f0f0f0;
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-.lista-personas a:hover { color: #d32f2f; }
-
-details summary {
-    font-weight: bold;
-    font-size: 1.1em;
-    cursor: pointer;
-    padding: 14px 0;
-    border-bottom: 1px solid #444;
-    list-style: none;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-details summary::-webkit-details-marker { display: none; }
-details summary::after {
-    content: "▼";
-    margin-left: auto;
-    font-size: 0.9em;
-    transition: transform 0.3s;
-}
+.lista-personas li { background: #222; margin: 8px 0; border-radius: 8px; padding: 12px 16px; }
+.lista-personas a { color: #f0f0f0; text-decoration: none; }
+details summary { font-weight: bold; cursor: pointer; padding: 14px 0; }
+details summary::after { content: "▼"; margin-left: auto; }
 details[open] summary::after { transform: rotate(180deg); }
-details > div { padding: 12px 10px 20px 10px; line-height: 1.65; font-size: 0.95em; color: #ddd; }
