@@ -9,7 +9,7 @@ html, body {
     padding: 0;
     overflow-x: hidden !important;
     overflow-y: hidden !important;   /* evita scroll vertical innecesario */
-    height: 100dvh;
+    height: var(--real-vh);
     font-family: 'Inter', sans-serif;
     background: #0f0f0f;
     color: #f0f0f0;
@@ -77,14 +77,14 @@ html, body {
     position: absolute;
     top: var(--top-height);
     left: 0; right: 0;
-    height: calc(100dvh - var(--top-height) - var(--bottom-height)) !important;
+    height: calc(var(--real-vh) - var(--top-height) - var(--bottom-height)) !important;   /* ← cambiado */
     width: 100%;
 }
 
 #panel-izquierdo, #panel-lateral {
     position: absolute;
     top: var(--top-height);
-    height: calc(100dvh - var(--top-height) - var(--bottom-height));
+    height: calc(var(--real-vh) - var(--top-height) - var(--bottom-height));   /* ← cambiado */
     width: 100%;
     background: #1a1a1a;
     z-index: 999;
