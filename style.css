@@ -9,7 +9,7 @@ html, body {
     padding: 0;
     overflow-x: hidden !important;
     overflow-y: hidden !important;   /* evita scroll vertical innecesario */
-    height: 100vh;
+    height: 100dvh;
     font-family: 'Inter', sans-serif;
     background: #0f0f0f;
     color: #f0f0f0;
@@ -69,20 +69,22 @@ html, body {
     justify-content: center;
     font-size: 0.82rem;
     line-height: 1.25;
+    padding-bottom: env(safe-area-inset-bottom);
+    box-sizing: border-box;
 }
 
 #map {
     position: absolute;
     top: var(--top-height);
     left: 0; right: 0;
-    height: calc(100vh - var(--top-height) - var(--bottom-height)) !important;
+    height: calc(100dvh - var(--top-height) - var(--bottom-height)) !important;
     width: 100%;
 }
 
 #panel-izquierdo, #panel-lateral {
     position: absolute;
     top: var(--top-height);
-    height: calc(100vh - var(--top-height) - var(--bottom-height));
+    height: calc(100dvh - var(--top-height) - var(--bottom-height));
     width: 100%;
     background: #1a1a1a;
     z-index: 999;
