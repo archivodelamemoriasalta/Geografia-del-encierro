@@ -8,8 +8,6 @@ L.control.zoom({ position: 'bottomright' }).addTo(map);
 function setRealVH() {
     document.documentElement.style.setProperty('--real-vh', `${window.innerHeight}px`);
 }
-
-// Ejecutar al cargar y cada vez que cambie el tamaño
 window.addEventListener('load', setRealVH);
 window.addEventListener('resize', setRealVH);
 window.addEventListener('orientationchange', setRealVH);
@@ -18,6 +16,7 @@ setRealVH();
 
 let personas = [];
 let conteoPorDepto = {};
+let deptoBounds = {};                    // ← NUEVO: guarda los límites de cada departamento
 
 const menuIzq = document.getElementById("panel-izquierdo");
 const panelDato = document.getElementById("panel-lateral");
@@ -37,21 +36,22 @@ function getColor(d) {
     return "#300000";
 }
 
+// ==================== FUNCIÓN MEJORADA: abre panel + ZOOM AUTOMÁTICO ====================
 function mostrarDepartamento(depto) {
     const deptoNorm = normalizar(depto);
     const filtradas = personas.filter(p => normalizar(p.departamento) === deptoNorm);
 
     tituloPanel.textContent = depto;
+
     let html = `<h3>📍 ${filtradas.length} personas en ${depto}</h3>`;
 
     if (depto === "CAPITAL") {
         const normales = filtradas.filter(p => !p.esFederal);
         const federales = filtradas.filter(p => p.esFederal);
-
         html += `
             <h4 style="color:#ffaa00; margin:20px 0 8px;">📍 De Capital (${normales.length})</h4>
             <ul class="lista-personas">${normales.map(p => `<li><a href="#" class="enlace-persona" data-nombre="${p.nombre}">👤 ${p.nombre}</a></li>`).join("")}</ul>
-            
+           
             <h4 style="color:#ffaa00; margin:20px 0 8px;">🚔 Provenientes de la Policía Federal (${federales.length})</h4>
             <ul class="lista-personas">${federales.map(p => `<li><a href="#" class="enlace-persona" data-nombre="${p.nombre}">👤 ${p.nombre}</a></li>`).join("")}</ul>
         `;
@@ -60,11 +60,24 @@ function mostrarDepartamento(depto) {
     }
 
     contenidoPanel.innerHTML = html;
-    panelDato.classList.add("panel-abierto");
 
+    // Event listeners para las fichas
     contenidoPanel.querySelectorAll(".enlace-persona").forEach(a => {
-        a.onclick = (e) => { e.preventDefault(); mostrarFicha(a.dataset.nombre); };
+        a.onclick = (e) => { 
+            e.preventDefault(); 
+            mostrarFicha(a.dataset.nombre); 
+        };
     });
+
+    // ==================== ZOOM AUTOMÁTICO AL GEOJSON ====================
+    if (deptoBounds[deptoNorm]) {
+        map.fitBounds(deptoBounds[deptoNorm], {
+            padding: [20, 20],      // margen bonito
+            maxZoom: 11             // evita zoom excesivo
+        });
+    }
+
+    panelDato.classList.add("panel-abierto");
 }
 
 function mostrarFicha(nombre) {
@@ -102,7 +115,7 @@ async function cargarTodo() {
             fechaIngreso: c[3] || "Sin Información",
             fechaTraslado: c[4] || "Sin traslado",
             unidadDestino: c[6] || "Sin Información",
-            liberado: (c[10] || c[5]) || "Sin Información",   // Estado o FechaLiberacion
+            liberado: (c[10] || c[5]) || "Sin Información",
             departamento: depto,
             profesion: c[9] || "Sin Información",
             esFederal: esFederal
@@ -111,19 +124,28 @@ async function cargarTodo() {
         conteoPorDepto[normalizar(depto)] = (conteoPorDepto[normalizar(depto)] || 0) + 1;
     });
 
+    // ==================== GEOJSON CON BOUNDS GUARDADOS ====================
     const geo = await fetch("salta_departamentos.geojson").then(r => r.json());
+
     L.geoJSON(geo, {
-        style: f => ({ fillColor: getColor(conteoPorDepto[normalizar(f.properties.Departamen)] || 0), color: "#444", weight: 1, fillOpacity: 0.8 }),
+        style: f => ({
+            fillColor: getColor(conteoPorDepto[normalizar(f.properties.Departamen)] || 0),
+            color: "#444",
+            weight: 1,
+            fillOpacity: 0.8
+        }),
         onEachFeature: (f, layer) => {
+            const deptoNorm = normalizar(f.properties.Departamen);
+            deptoBounds[deptoNorm] = layer.getBounds();   // ← guardamos bounds
+
             layer.on("click", () => {
-                map.fitBounds(layer.getBounds());
-                mostrarDepartamento(f.properties.Departamen);
+                mostrarDepartamento(f.properties.Departamen);   // ← ya no hace fitBounds aquí
             });
         }
     }).addTo(map);
 }
 
-// Botones
+// ==================== BOTONES ====================
 document.getElementById("menu-info").onclick = () => menuIzq.classList.add("menu-activo");
 document.getElementById("cerrar-menu-izq").onclick = () => menuIzq.classList.remove("menu-activo");
 document.getElementById("cerrar-panel").onclick = () => panelDato.classList.remove("panel-abierto");
