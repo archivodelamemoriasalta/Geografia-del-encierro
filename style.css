@@ -1,6 +1,7 @@
 :root {
     --top-height: 52px;
     --bottom-height: 52px;
+    --real-vh: 100vh;
 }
 
 * { box-sizing: border-box; }
