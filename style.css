@@ -1,6 +1,6 @@
 :root {
     --top-height: 90px;
-    --bottom-height: 52px;     /* altura justa para que se vean los 2 textos completos */
+    --bottom-height: 52px;
 }
 
 * { box-sizing: border-box; }
@@ -29,7 +29,7 @@ html, body {
     gap: 8px;
     border-bottom: 1px solid #333;
     box-shadow: 0 4px 15px rgba(0,0,0,0.6);
-    flex-wrap: nowrap;           /* evita desborde */
+    flex-wrap: nowrap;
 }
 
 #menu-info {
@@ -41,7 +41,7 @@ html, body {
     cursor: pointer;
     font-weight: 600;
     white-space: nowrap;
-    flex-shrink: 0;              /* botón MENU siempre a la izquierda */
+    flex-shrink: 0;
 }
 #menu-info:hover { background: #d32f2f; }
 
@@ -148,18 +148,18 @@ html, body {
     color: #fff;
 }
 
-/* ====================== MÓVIL – CORRECCIÓN EXACTA PARA TU CAPTURA ====================== */
+/* ====================== MÓVIL – 3 ELEMENTOS VISIBLES SIN SCROLL ====================== */
 @media (max-width: 768px) {
     :root {
-        --top-height: 52px;
+        --top-height: 54px;        /* altura exacta para que quepan los 3 elementos */
         --bottom-height: 52px;
     }
 
     #barra-superior {
-        height: 52px;
+        height: 54px;
         padding: 4px 8px;
-        justify-content: flex-start;
-        gap: 8px;
+        justify-content: flex-start;   /* botón MENU siempre a la izquierda */
+        gap: 6px;
         flex-wrap: nowrap;
     }
 
@@ -171,7 +171,7 @@ html, body {
 
     .logo-header {
         height: 28px;
-        max-width: 100px;
+        max-width: 100px;          /* logo pequeño pero visible */
         flex-shrink: 0;
     }
 
@@ -179,24 +179,28 @@ html, body {
         flex: 1;
         min-width: 0;
         text-align: center;
+        padding: 0 4px;
     }
 
-    #barra-superior > div > div:first-child { font-size: 9px; }
-    #barra-superior > div > div:last-child { 
-        font-size: 11px !important; 
+    #barra-superior > div > div:first-child {
+        font-size: 8.5px;
+        line-height: 1;
+    }
+    #barra-superior > div > div:last-child {
+        font-size: 10.5px !important;   /* título reducido para que quepa */
         line-height: 1.05;
         white-space: normal;
     }
 
     #map {
-        top: 52px;
-        height: calc(100vh - 52px - 52px) !important;
+        top: 54px;
+        height: calc(100vh - 54px - 52px) !important;
     }
 
     #panel-izquierdo,
     #panel-lateral {
-        top: 52px !important;
-        height: calc(100vh - 52px - 52px) !important;
+        top: 54px !important;
+        height: calc(100vh - 54px - 52px) !important;
         width: 100% !important;
     }
 
@@ -209,8 +213,6 @@ html, body {
     .footer-fixed {
         height: 52px;
         padding: 6px 12px;
-        font-size: 0.82rem;
-        line-height: 1.25;
     }
 }
 
