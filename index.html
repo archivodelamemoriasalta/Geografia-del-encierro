@@ -125,6 +125,21 @@
     © 2026 Archivo Provincial de la Memoria - Salta - Geografías del Encierro<br>
     <span class="dev-data" style="font-size:0.75rem;">Desarrollo Web Y Cartografico : Ing. Agrim. Tortosa, Nestor Fernando - 3875507050</span>
 </div>
+<!-- SCRIPT PARA ALTURA PERFECTA EN ANDROID -->
+<script>
+    function fixMobileHeight() {
+        const vh = window.innerHeight;
+        document.documentElement.style.setProperty('--real-vh', `${vh}px`);
+    }
+
+    // Ejecutar al cargar y cada vez que cambie el tamaño (rotación, barra de navegación, etc.)
+    window.addEventListener('resize', fixMobileHeight);
+    window.addEventListener('orientationchange', fixMobileHeight);
+    window.addEventListener('load', fixMobileHeight);
+
+    // Primera ejecución inmediata
+    fixMobileHeight();
+</script>
 
 </body>
 </html>
