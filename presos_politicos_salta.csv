@@ -1,31 +1,31 @@
 ID;NombreCompleto;Decreto;FechaIngreso;FechaTraslado;Unidad Destino;Liberado;Departamen;Profesion
-;Acardi Juan Domingo;n/p;4/12/1974;null;null;;CAPITAL;null
-;Ache El√≠as / Alfredo De las Heras / Gregorio Ponce;2978/75;n/p;null;null;Liberado decreto    N∞2978/75;;null
-;Ahuerma Marcelo Cristian;null;12/11/1974;29/11/1974;Instituto Penitenciario de la Capital;OSP;CAPITAL;Empleado
-;√Ålvarez Segundo Arturo;1429/74;14/11/1974;null;null;;CAPITAL;null
-;Aramayo Carlos Oscar;1429;12/11/1974;16/10/1975;Capital Federal;opcion para salir del paÌs ;;null
-;Aramayo Jose  Paulino;1586/74;29/11/1974;2/8/1975;Capital Federal;opciÛn para salir del paÌs;ROSARIO DE LERMA;Ex Legislador C·mara de Diputados por el partido justicialista
-;Aramayo Ramon;PEN;7/11/1976;null;null;23 de Mayo 1977;null;null
-;Arias Antonio Normando;PEN N 1.116;21/6/1975;1/4/1976;null;;CAPITAL;Geologo
-;Chauqui Fidel Victoriano;null;12/11/1974;20/1/1975;Capital Federal;;ROSARIO DE LERMA;Fotografo
-;Chevel Matar Antonio;85 PEN;11/1/1975;null;null;;null;null
-;Garc√≠a Julia Beatriz;1876;24/6/1975;29/7/1977;Unidad Penal N 2;;CAPITAL;Empleada instruccion comercial
-;Lopez Alfredo;null;12/4/1976;2/5/1978;UC N9 La Plata;;CAPITAL;gremialista CGT
-;Mera Figueroa Julio Ignacio;3462 PEN;null;12/11/1977;UC N9 La Plata;;Capital;null
+;Acardi Juan Domingo;No posee;4/12/1974;Fecha de Traslado no documentada;Sin registro documental del destino;;CAPITAL;-
+;Ache Elias / Alfredo De las Heras / Gregorio Ponce;2978/75;Fecha de Ingreso no documentada;Fecha de Traslado no documentada;Sin registro documental del destino;Liberado decreto    N∞2978/75;;-
+;Ahuerma Marcelo Cristian;No posee;12/11/1974;29/11/1974;Instituto Penitenciario de la Capital;Opcion para salir del Pais;CAPITAL;Empleado
+;AÅlvarez Segundo Arturo;1429/74;14/11/1974;Fecha de Traslado no documentada;Sin registro documental del destino;;CAPITAL;-
+;Aramayo Carlos Oscar;1429/74;12/11/1974;16/10/1975;Capital Federal;Opcion para salir del Pais;;-
+;Aramayo Jose  Paulino;1586/74;29/11/1974;2/8/1975;Capital Federal;Opcion para salir del Pais;ROSARIO DE LERMA;Ex Legislador C·mara de Diputados por el partido justicialista
+;Aramayo Ramon;PEN N 1.116;7/11/1976;Fecha de Traslado no documentada;Sin registro documental del destino;23 de Mayo 1977;null;-
+;Arias Antonio Normando;PEN N 1.116;21/6/1975;1/4/1976;Sin registro documental del destino;;CAPITAL;Geologo
+;Chauqui Fidel Victoriano;No posee;12/11/1974;20/1/1975;Capital Federal;;ROSARIO DE LERMA;Fotografo
+;Chevel Matar Antonio;85 PEN;11/1/1975;Fecha de Traslado no documentada;Sin registro documental del destino;;null;-
+;Garcia Julia Beatriz;1876;24/6/1975;29/7/1977;Unidad Penal N 2;;CAPITAL;Empleada instruccion comercial
+;Lopez Alfredo;No posee;12/4/1976;2/5/1978;UC N9 La Plata;;CAPITAL;Gremialista CGT
+;Mera Figueroa Julio Ignacio;3462 PEN;Fecha de Ingreso no documentada;12/11/1977;UC N9 La Plata;;Capital;-
 ;Millan Manuel Adolfo;1876 PEN;23/6/1975;12/11/1977;UC N9 La Plata;;CAPITAL;Chofer
-;Miranda Brigido;PEN 2731;29/7/1977;null;null;;CAPITAL;null
-;Molina Policarpio;282 PEN;13/1/1975;12/11/1977;UC N9 La Plata;;CAPITAL;null
-;PEREZ HANSEN Ra√∫l Eduardo del Valle;684;6/3/1975;19/12/1975;Capital Federal;opciÛn para salir del paÌs;CAPITAL;null
-;Porcel Eduardo Jose (h) Pirincho;163 PEN;19/1/1975;31/3/1975;Tucum√°n;;CAPITAL;Estudiante Universitario
-;Puca Mario Alberto;null;10/2/1976;null;null;Liberado 27/2/1976;CHICOANA;Estudiante / Pintor de Obra
-;Rocha Delf√≠n Rodolfo;1761;18/11/1974;12/11/1977;UC N9 La Plata;;null;null
-;Salazar Mario Eduardo;null;26/6/1975;null;null;27/2/1976;GENERAL GUEMES;null
-;Salvatierra Antonio;null;8/5/1976;;;liberado 03/08/76;ORAN;null
-;Burgos Felipe;;26/10/1972;;;30/12/1972;Rosario de Lerma ;Gremialista
-;Jaitt de Szachiniuk Ana;322/77;29/5/1977;;;;;
-;Moreira Luz Socorro ;;11/12/1974;13/11/1975;Capital Federal;opcion para salir del paÌs ;capital;estudiante
-;Olazo Maria Yolanda ;;5/12/1975;;;5/12/1975;Metan;estudiante
-;Serapio Solano ;396;19/2/1975;;La Plata;;Salta;
-;Spuches  Vicente Enrique Claudio ;1876;10/7/1975;;;;;
-;Torres Mirtha Josefa;192;4/2/1975;4/4/1977;Bs As Devoto;;;
-;Torres Carmen Berta ;1110/75;26/11/1974;;;;;
+;Miranda Brigido;PEN 2731;29/7/1977;Fecha de Traslado no documentada;Sin registro documental del destino;;CAPITAL;-
+;Molina Policarpio;282 PEN;13/1/1975;12/11/1977;UC N9 La Plata;;CAPITAL;-
+;PEREZ HANSEN Raul Eduardo del Valle;684;6/3/1975;19/12/1975;Capital Federal;opciÛn para salir del paÌs;CAPITAL;-
+;Porcel Eduardo Jose (H) Alias Pirincho;163 PEN;19/1/1975;31/3/1975;Tucuman;;CAPITAL;Estudiante Universitario
+;Puca Mario Alberto;No posee;10/2/1976;Fecha de Traslado no documentada;Sin registro documental del destino;Liberado 27/2/1976;CHICOANA;Estudiante / Pintor de Obra
+;Rocha Delfin Rodolfo;1761;18/11/1974;12/11/1977;UC N9 La Plata;;null;-
+;Salazar Mario Eduardo;No posee;26/6/1975;Fecha de Traslado no documentada;Sin registro documental del destino;27/2/1976;GENERAL GUEMES;-
+;Salvatierra Antonio;No posee;8/5/1976;Fecha de Traslado no documentada;Sin registro documental del destino;liberado 03/08/76;ORAN;-
+;Burgos Felipe;No posee;26/10/1972;Fecha de Traslado no documentada;Sin registro documental del destino;30/12/1972;Rosario de Lerma ;Gremialista
+;Jaitt de Szachiniuk Ana;322/77;29/5/1977;Fecha de Traslado no documentada;Sin registro documental del destino;;;-
+;Moreira Luz Socorro ;No posee;11/12/1974;13/11/1975;Capital Federal;opcion para salir del paÌs ;capital;Estudiante
+;Olazo Maria Yolanda ;No posee;5/12/1975;Fecha de Traslado no documentada;Sin registro documental del destino;5/12/1975;Metan;Estudiante
+;Serapio Solano ;396;19/2/1975;Fecha de Traslado no documentada;La Plata;;Salta;-
+;Spuches  Vicente Enrique Claudio ;1876;10/7/1975;Fecha de Traslado no documentada;Sin registro documental del destino;;;-
+;Torres Mirtha Josefa;192;4/2/1975;4/4/1977;Bs As Devoto;;;-
+;Torres Carmen Berta ;1110/75;26/11/1974;Fecha de Traslado no documentada;Sin registro documental del destino;;;-
