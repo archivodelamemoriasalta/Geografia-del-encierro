@@ -4,6 +4,19 @@ L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
 }).addTo(map);
 L.control.zoom({ position: 'bottomright' }).addTo(map);
 
+// ====================== FIX ALTURA REAL EN MÓVILES ======================
+function actualizarAlturaReal() {
+    // Usamos innerHeight real del viewport (evita problemas con barras del navegador)
+    const vhReal = window.innerHeight;
+    document.documentElement.style.setProperty('--real-vh', `${vhReal}px`);
+}
+
+// Ejecutar al cargar y cada vez que cambie el tamaño (rotación, teclado, etc.)
+window.addEventListener('resize', actualizarAlturaReal);
+window.addEventListener('orientationchange', actualizarAlturaReal);
+actualizarAlturaReal();   // ← importante: primera ejecución
+// =====================================================================
+
 let personas = [];
 let conteoPorDepto = {};
 
