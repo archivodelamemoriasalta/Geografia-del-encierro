@@ -105,3 +105,27 @@ html, body {
 details summary { font-weight: bold; cursor: pointer; padding: 14px 0; }
 details summary::after { content: "▼"; margin-left: auto; }
 details[open] summary::after { transform: rotate(180deg); }
+
+/* ============================================= */
+/* TAMAÑO DE TÍTULO EN BARRA SUPERIOR - RESPONSIVE */
+/* ============================================= */
+#barra-superior > div > div:first-child {
+    font-size: 10px !important;           /* subtítulo */
+}
+
+#barra-superior > div > div:last-child {
+    font-size: clamp(11px, 1.8vw, 18px) !important;  /* título principal */
+    line-height: 1.1;
+}
+
+/* En móviles seguimos manteniendo el tamaño que ya te gustaba */
+@media (max-width: 767px) {
+    #barra-superior > div > div:first-child {
+        font-size: 9px !important;
+    }
+    #barra-superior > div > div:last-child {
+        font-size: 13px !important;     /* el que ya te gustaba en celular */
+    }
+}
+
+
