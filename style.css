@@ -9,13 +9,16 @@ html, body {
     margin: 0;
     padding: 0;
     overflow-x: hidden !important;
-    overflow-y: hidden !important;   /* evita scroll vertical innecesario */
+    overflow-y: hidden !important; /* evita scroll vertical innecesario */
     height: var(--real-vh);
     font-family: 'Inter', sans-serif;
     background: #0f0f0f;
     color: #f0f0f0;
 }
 
+/* ============================================= */
+/* BARRA SUPERIOR (sin cambios) */
+/* ============================================= */
 #barra-superior {
     position: fixed;
     top: 0; left: 0; right: 0;
@@ -31,12 +34,6 @@ html, body {
     flex-wrap: nowrap;
 }
 
-#menu-info {
-    padding: 6px 12px;
-    font-size: 0.95rem;
-    flex-shrink: 0;
-}
-
 .logo-header {
     height: 26px;
     max-width: 80px;
@@ -46,15 +43,137 @@ html, body {
 #barra-superior > div {
     flex: 1;
     min-width: 0;
-    text-align: left;           /* título más a la izquierda */
+    text-align: left;
     padding-left: 4px;
 }
-#barra-superior > div > div:last-child {
-    font-size: 10.5px !important;
-    line-height: 1.05;
-    white-space: normal;
+
+/* ============================================= */
+/* BOTÓN MENÚ - MUCHO MÁS BONITO (pill redondeado) */
+/* ============================================= */
+#menu-info {
+    background: #2a2a2a;
+    color: #fff;
+    border: none;
+    padding: 9px 20px;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    letter-spacing: 0.8px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    flex-shrink: 0;
 }
 
+#menu-info:hover {
+    background: #3a3a3a;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+}
+
+/* ============================================= */
+/* PANEL IZQUIERDO Y LATERAL - MEJORADOS + DESKTOP */
+/* ============================================= */
+#panel-izquierdo,
+#panel-lateral {
+    position: absolute;
+    top: var(--top-height);
+    height: calc(var(--real-vh) - var(--top-height) - var(--bottom-height) - env(safe-area-inset-bottom));
+    background: #1a1a1a;
+    z-index: 999;
+    overflow-y: auto;
+    transition: left 0.35s cubic-bezier(0.32, 0.72, 0, 1),
+                right 0.35s cubic-bezier(0.32, 0.72, 0, 1);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+}
+
+/* Panel izquierdo */
+#panel-izquierdo {
+    left: -100%;
+    width: 100%;
+}
+#panel-izquierdo.menu-activo { left: 0; }
+
+/* Panel lateral */
+#panel-lateral {
+    right: -100%;
+    width: 100%;
+}
+#panel-lateral.panel-abierto { right: 0; }
+
+/* ============================================= */
+/* ESTILO BONITO DE CABECERA DE LOS PANELes */
+/* ============================================= */
+.panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 24px;
+    background: #222;
+    border-bottom: 1px solid #333;
+}
+
+.panel-header h2 {
+    margin: 0;
+    color: #fff;
+    font-size: 1.45rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.panel-header button {
+    background: transparent;
+    border: none;
+    color: #ccc;
+    font-size: 28px;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.panel-header button:hover {
+    background: rgba(255,255,255,0.15);
+    color: #fff;
+    transform: rotate(90deg);
+}
+
+/* ============================================= */
+/* VERSIÓN ESCRITORIO (paneles más chicos y elegantes) */
+/* ============================================= */
+@media (min-width: 768px) {
+    #panel-izquierdo {
+        width: 340px;
+        left: -340px;
+        border-radius: 0 16px 16px 0;
+    }
+    #panel-izquierdo.menu-activo {
+        left: 0;
+    }
+
+    #panel-lateral {
+        width: 440px;
+        right: -440px;
+        border-radius: 16px 0 0 16px;
+    }
+    #panel-lateral.panel-abierto {
+        right: 0;
+    }
+
+    /* Sombra más suave en escritorio */
+    #panel-izquierdo,
+    #panel-lateral {
+        box-shadow: 15px 0 40px -10px rgba(0,0,0,0.6);
+    }
+}
+
+/* ============================================= */
+/* FOOTER Y MAPA (sin cambios) */
+/* ============================================= */
 .footer-fixed {
     position: fixed;
     bottom: 0; left: 0; right: 0;
@@ -78,27 +197,13 @@ html, body {
     position: absolute;
     top: var(--top-height);
     left: 0; right: 0;
-    height: calc(var(--real-vh) - var(--top-height) - var(--bottom-height)) !important;   /* ← cambiado */
+    height: calc(var(--real-vh) - var(--top-height) - var(--bottom-height) - env(safe-area-inset-bottom)) !important;
     width: 100%;
 }
 
-#panel-izquierdo, #panel-lateral {
-    position: absolute;
-    top: var(--top-height);
-    height: calc(var(--real-vh) - var(--top-height) - var(--bottom-height));   /* ← cambiado */
-    width: 100%;
-    background: #1a1a1a;
-    z-index: 999;
-    overflow-y: auto;
-}
-
-#panel-izquierdo { left: -100%; }
-#panel-lateral   { right: -100%; }
-
-#panel-izquierdo.menu-activo { left: 0; }
-#panel-lateral.panel-abierto { right: 0; }
-
-/* Resto de estilos (lista, details, etc.) sin cambios */
+/* ============================================= */
+/* LISTAS Y DETAILS (sin cambios) */
+/* ============================================= */
 .lista-personas { list-style: none; padding: 0; margin: 12px 0; }
 .lista-personas li { background: #222; margin: 8px 0; border-radius: 8px; padding: 12px 16px; }
 .lista-personas a { color: #f0f0f0; text-decoration: none; }
@@ -110,22 +215,18 @@ details[open] summary::after { transform: rotate(180deg); }
 /* TAMAÑO DE TÍTULO EN BARRA SUPERIOR - RESPONSIVE */
 /* ============================================= */
 #barra-superior > div > div:first-child {
-    font-size: 10px !important;           /* subtítulo */
+    font-size: 10px !important; /* subtítulo */
 }
-
 #barra-superior > div > div:last-child {
-    font-size: clamp(11px, 1.8vw, 18px) !important;  /* título principal */
+    font-size: clamp(11px, 1.8vw, 18px) !important; /* título principal */
     line-height: 1.1;
 }
-
 /* En móviles seguimos manteniendo el tamaño que ya te gustaba */
 @media (max-width: 767px) {
     #barra-superior > div > div:first-child {
         font-size: 9px !important;
     }
     #barra-superior > div > div:last-child {
-        font-size: 13px !important;     /* el que ya te gustaba en celular */
+        font-size: 13px !important; /* el que ya te gustaba en celular */
     }
 }
-
-
