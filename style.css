@@ -230,3 +230,35 @@ details[open] summary::after { transform: rotate(180deg); }
         font-size: 13px !important; /* el que ya te gustaba en celular */
     }
 }
+
+
+/* ============================================= */
+/* BARRA DE DESPLAZAMIENTO BONITA (para ambos paneles) */
+/* ============================================= */
+#panel-izquierdo::-webkit-scrollbar,
+#panel-lateral::-webkit-scrollbar {
+    width: 8px;
+}
+
+#panel-izquierdo::-webkit-scrollbar-thumb,
+#panel-lateral::-webkit-scrollbar-thumb {
+    background: #555;
+    border-radius: 20px;
+}
+
+#panel-izquierdo::-webkit-scrollbar-thumb:hover,
+#panel-lateral::-webkit-scrollbar-thumb:hover {
+    background: #777;
+}
+
+/* Aseguramos que ambos paneles tengan EXACTAMENTE la misma altura */
+#panel-izquierdo,
+#panel-lateral {
+    height: calc(var(--real-vh) - var(--top-height) - var(--bottom-height) - env(safe-area-inset-bottom)) !important;
+}
+
+/* Un poquito de padding extra abajo para que la barra no tape el último elemento */
+#contenido-panel,
+#panel-izquierdo > div {
+    padding-bottom: 30px;
+}
