@@ -6,231 +6,7 @@
     <title>Geografías del Encierro</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <link rel="stylesheet" href="style.css"> <!-- podés dejarlo, pero el <style> de abajo lo sobrescribe todo -->
-    <style>
-        :root {
-            --top-height: 90px;
-            --bottom-height: 48px;
-        }
-
-        * { box-sizing: border-box; }
-        html, body {
-            margin: 0;
-            padding: 0;
-            overflow-x: hidden !important;   /* ← EVITA SCROLL LATERAL */
-            height: 100vh;
-            font-family: 'Inter', sans-serif;
-            background: #0f0f0f;
-            color: #f0f0f0;
-        }
-
-        /* ====================== BARRA SUPERIOR FIJA ====================== */
-        #barra-superior {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: var(--top-height);
-            background: rgba(17,17,17,0.95);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 12px 20px;
-            z-index: 1002;
-            gap: 16px;
-            border-bottom: 1px solid #333;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.6);
-            flex-wrap: wrap;
-        }
-
-        #menu-info {
-            background: #222;
-            border: 1px solid #444;
-            color: white;
-            padding: 10px 16px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 600;
-            white-space: nowrap;
-        }
-        #menu-info:hover { background: #d32f2f; }
-
-        .logo-header {
-            height: 52px;
-            width: auto;
-            max-width: 100%;
-            object-fit: contain;
-            flex-shrink: 0;
-        }
-
-        #barra-superior > div {
-            text-align: center;
-            flex: 1;
-            min-width: 200px;
-        }
-        #barra-superior > div > div:first-child {
-            font-size: 11px;
-            color: #aaa;
-            letter-spacing: 1px;
-        }
-        #barra-superior > div > div:last-child {
-            font-family: 'Playfair Display', serif;
-            font-size: 18px;
-            font-weight: 700;
-            line-height: 1.2;
-        }
-
-        /* ====================== BARRA INFERIOR FIJA ====================== */
-        .footer-fixed {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: var(--bottom-height);
-            background: #1a1a1a;
-            color: #aaa;
-            text-align: center;
-            font-size: 0.85rem;
-            border-top: 1px solid #333;
-            z-index: 1001;
-            box-shadow: 0 -2px 10px rgba(0,0,0,0.5);
-            padding: 12px 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            line-height: 1.3;
-        }
-
-        /* ====================== MAPA (exactamente entre las dos barras) ====================== */
-        #map {
-            position: absolute;
-            top: var(--top-height);
-            left: 0;
-            right: 0;
-            height: calc(100vh - var(--top-height) - var(--bottom-height)) !important;
-            width: 100%;
-            z-index: 1;
-        }
-
-        /* ====================== PANEL IZQUIERDO Y DERECHO ====================== */
-        #panel-izquierdo, #panel-lateral {
-            position: absolute;
-            top: var(--top-height);
-            height: calc(100vh - var(--top-height) - var(--bottom-height));
-            background: #1a1a1a;
-            box-shadow: 4px 0 30px rgba(0,0,0,0.8);
-            z-index: 999;
-            overflow-y: auto;
-            transition: all 0.4s ease;
-        }
-
-        #panel-izquierdo { left: -320px; width: 320px; }
-        #panel-lateral   { right: -360px; width: 360px; }
-
-        #panel-izquierdo.menu-activo { left: 0 !important; }
-        #panel-lateral.panel-abierto { right: 0 !important; }
-
-        .panel-header {
-            background: #111;
-            padding: 16px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid #333;
-            position: sticky;
-            top: 0;
-            z-index: 10;
-        }
-        .panel-header h2 {
-            font-family: 'Playfair Display', serif;
-            font-size: 18px;
-            margin: 0;
-            color: #fff;
-        }
-
-        /* ====================== MÓVIL – TODO EN UNA SOLA PANTALLA ====================== */
-        @media (max-width: 768px) {
-            :root {
-                --top-height: 68px;
-                --bottom-height: 44px;
-            }
-
-            #barra-superior {
-                height: var(--top-height);
-                padding: 8px 12px;
-                flex-direction: column;
-                gap: 6px;
-                justify-content: center;
-            }
-
-            .logo-header { height: 38px; }
-            #barra-superior > div > div:last-child { font-size: 15px; }
-            #barra-superior > div > div:first-child { font-size: 10px; }
-
-            #map {
-                top: var(--top-height);
-                height: calc(100vh - var(--top-height) - var(--bottom-height)) !important;
-            }
-
-            #panel-izquierdo,
-            #panel-lateral {
-                top: var(--top-height) !important;
-                height: calc(100vh - var(--top-height) - var(--bottom-height)) !important;
-                width: 100% !important;   /* ocupa toda la pantalla */
-                left: 0;
-            }
-
-            #panel-lateral.panel-abierto { right: 0 !important; }
-            #panel-izquierdo.menu-activo { left: 0 !important; }
-
-            .footer-fixed {
-                height: var(--bottom-height);
-                font-size: 0.78rem;
-                padding: 8px 10px;
-            }
-        }
-
-        /* ESTILOS DE LISTA Y ACORDEÓN (los que ya tenías) */
-        .lista-personas { list-style: none; padding: 0; margin: 12px 0; }
-        .lista-personas li {
-            background: #222;
-            margin: 8px 0;
-            border-radius: 8px;
-            padding: 12px 16px;
-            transition: all 0.3s;
-        }
-        .lista-personas li:hover { background: #2a2a2a; transform: translateX(8px); }
-        .lista-personas a {
-            color: #f0f0f0;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .lista-personas a:hover { color: #d32f2f; }
-
-        details summary {
-            font-weight: bold;
-            font-size: 1.1em;
-            cursor: pointer;
-            padding: 14px 0;
-            border-bottom: 1px solid #444;
-            list-style: none;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        details summary::-webkit-details-marker { display: none; }
-        details summary::after {
-            content: "▼";
-            margin-left: auto;
-            font-size: 0.9em;
-            transition: transform 0.3s;
-        }
-        details[open] summary::after { transform: rotate(180deg); }
-        details > div { padding: 12px 10px 20px 10px; line-height: 1.65; font-size: 0.95em; color: #ddd; }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -250,8 +26,7 @@
         <button id="cerrar-menu-izq">✕</button>
     </div>
     <div style="padding:20px 16px;">
-
-        <!-- Objetivo (se mantiene porque es el más importante) -->
+        <!-- Objetivo -->
         <details><summary>🎯 Objetivo</summary>
             <p>El presente mapa interactivo tiene como finalidad visibilizar y georreferenciar los espacios vinculados a las prácticas de encierro durante el período 1974–1983, contribuyendo a la reconstrucción territorial de la represión.<br>
             Asimismo, busca fortalecer el uso pedagógico de los fondos documentales y garantizar el acceso al acervo, mediante su difusión en formatos digitales.<br>
@@ -294,22 +69,22 @@
         <details><summary>👥 Equipo de trabajo</summary>
             <p><strong>Coordinación</strong><br>
             • Alba Eugenia Fernandez</p>
-            
+           
             <p><strong>Restauración y preservación</strong><br>
             • Federico Viztas<br>
             • Dalma Araceli Gonzalez (colaboradora)</p>
-            
+           
             <p><strong>Procedimientos de acopio, clasificación e identificación</strong><br>
             • Federico Viztaz<br>
             • Daniel Estevez (colaborador)</p>
-            
+           
             <p><strong>Mapeo y construcción de fichas descriptivas</strong><br>
             • Alba Eugenia Fernández<br>
             • Daniel Estevez (colaborador)</p>
-            
+           
             <p><strong>Desarrollo Cartográfico y programación</strong><br>
             • Ing. Agrim. Fernando Tortosa (colaborador)</p>
-            
+           
             <p><strong>Registro fotográfico</strong><br>
             • Facundo Hessling (colaborador)<br>
             • Daniel Lopez (colaborador)</p>
@@ -322,7 +97,6 @@
             Teléfono: 0387 – 155838105<br>
             Email: archivoprovincialdelamemoria@gmail.com</p>
         </details>
-
     </div>
 </aside>
 
