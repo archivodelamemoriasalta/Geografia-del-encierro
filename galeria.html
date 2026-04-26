@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galería - Geografías del Encierro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    
+    <style>
+        body { 
+            overflow-y: auto !important; 
+            background: #0f0f0f; 
+        }
+        
+        .galeria-container {
+            padding: 80px 20px 120px;
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+        
+        .galeria-titulo {
+            text-align: center;
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            margin-bottom: 60px;
+            color: #fff;
+        }
+        
+        .evento-titulo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.65rem;
+            margin: 60px 0 25px;
+            color: #ddd;
+            border-bottom: 1px solid #444;
+            padding-bottom: 12px;
+        }
+        
+        .grid-fotos {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 16px;
+        }
+        
+        .grid-fotos img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .grid-fotos img:hover {
+            transform: scale(1.06);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.7);
+        }
+
+        /* Botón Volver al Mapa */
+        .btn-volver {
+            display: block;
+            margin: 50px auto 0;
+            background: #2a2a2a;
+            color: #fff;
+            border: none;
+            padding: 12px 28px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1rem;
+            letter-spacing: 0.8px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+        
+        .btn-volver:hover {
+            background: #3a3a3a;
+            transform: translateY(-2px);
+        }
+
+        /* Lightbox */
+        .lightbox {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.95);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            padding: 20px;
+        }
+        
+        .lightbox img {
+            max-width: 95%;
+            max-height: 92vh;
+            border-radius: 12px;
+            box-shadow: 0 0 40px rgba(0,0,0,0.9);
+        }
+        
+        .lightbox-close {
+            position: absolute;
+            top: 25px;
+            right: 35px;
+            font-size: 42px;
+            color: #fff;
+            cursor: pointer;
+            z-index: 2001;
+        }
+    </style>
+</head>
+<body>
+
+<div id="barra-superior">
+    <button id="menu-info">MENÚ</button>
+    <button id="btn-galeria">GALERÍA</button>
+    <img src="logo.PNG" class="logo-header" alt="Logo">
+    <div>
+        <div style="font-size:9px; color:#aaa; letter-spacing:1px;">ARCHIVO PROVINCIAL DE LA MEMORIA</div>
+        <div style="font-family:'Playfair Display',serif; font-size:11px; font-weight:700;">GEOGRAFÍAS DEL ENCIERRO (1974-1983)</div>
+    </div>
+</div>
+
+<div class="galeria-container">
+    <h1 class="galeria-titulo">Galería de Actividades</h1>
+
+    <!-- Evento 1: Batalla de Salta -->
+    <h2 class="evento-titulo">Jornada "El Archivo en el Aula" - Colegio N° 5035 "Batalla de Salta" - 25 de Marzo 2026</h2>
+    <div class="grid-fotos" id="grid-batalla"></div>
+
+    <!-- Evento 2: En el Archivo -->
+    <h2 class="evento-titulo">Visita Guiada y Taller en el Archivo Provincial de la Memoria</h2>
+    <div class="grid-fotos" id="grid-archivo"></div>
+
+    <!-- Botón Volver al Mapa -->
+    <button class="btn-volver" onclick="window.location.href='index.html'">
+        ← Volver al Mapa
+    </button>
+</div>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox">
+    <span class="lightbox-close" onclick="document.getElementById('lightbox').style.display='none'">×</span>
+    <img id="img-lightbox" src="" alt="">
+</div>
+
+<script>
+// Fotos del evento Batalla de Salta
+const fotosBatalla = [
+    "BatallaDeSalta/fotosBatalla (1).jpeg",
+    "BatallaDeSalta/fotosBatalla (2).jpeg",
+    "BatallaDeSalta/fotosBatalla (3).jpeg",
+    "BatallaDeSalta/fotosBatalla (4).jpeg",
+    "BatallaDeSalta/fotosBatalla (5).jpeg"
+];
+
+// Fotos del evento En el Archivo
+const fotosArchivo = [
+    "En-el-archivo/fotosArchivo (1).jpeg",
+    "En-el-archivo/fotosArchivo (2).jpeg",
+    "En-el-archivo/fotosArchivo (3).jpeg",
+    "En-el-archivo/fotosArchivo (4).jpeg",
+    "En-el-archivo/fotosArchivo (5).jpeg",
+    "En-el-archivo/fotosArchivo (6).jpeg",
+    "En-el-archivo/fotosArchivo (7).jpeg",
+    "En-el-archivo/fotosArchivo (8).jpeg"
+];
+
+function cargarFotos(gridId, listaFotos) {
+    const grid = document.getElementById(gridId);
+    listaFotos.forEach(ruta => {
+        const img = document.createElement('img');
+        img.src = ruta;
+        img.alt = "Foto del evento";
+        img.loading = "lazy";
+        
+        img.onclick = () => {
+            document.getElementById('img-lightbox').src = ruta;
+            document.getElementById('lightbox').style.display = 'flex';
+        };
+        
+        grid.appendChild(img);
+    });
+}
+
+// Cargar las dos galerías
+cargarFotos('grid-batalla', fotosBatalla);
+cargarFotos('grid-archivo', fotosArchivo);
+</script>
+
+</body>
+</html>
