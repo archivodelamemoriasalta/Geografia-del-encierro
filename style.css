@@ -262,3 +262,29 @@ details[open] summary::after { transform: rotate(180deg); }
 #panel-izquierdo > div {
     padding-bottom: 30px;
 }
+
+
+/* ============================================= */
+/* BOTÓN GALERÍA - IGUAL QUE MENÚ */
+/* ============================================= */
+#btn-galeria {
+    background: #2a2a2a;
+    color: #fff;
+    border: none;
+    padding: 9px 20px;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    letter-spacing: 0.8px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    flex-shrink: 0;
+    text-transform: uppercase;
+}
+
+#btn-galeria:hover {
+    background: #3a3a3a;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+}
