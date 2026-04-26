@@ -150,4 +150,9 @@ document.getElementById("menu-info").onclick = () => menuIzq.classList.add("menu
 document.getElementById("cerrar-menu-izq").onclick = () => menuIzq.classList.remove("menu-activo");
 document.getElementById("cerrar-panel").onclick = () => panelDato.classList.remove("panel-abierto");
 
+// ==================== NUEVO: BOTÓN GALERÍA ====================
+document.getElementById("btn-galeria").addEventListener("click", () => {
+    window.location.href = "galeria.html";
+});
+
 cargarTodo();
