@@ -1,5 +1,5 @@
 // ================= MAPA BASE =================
-const map = L.map('map', { zoomControl: false }).setView([-24.8, -65.4], 7);
+const map = L.map('map', { zoomControl: false, dragging: !L.Browser.mobile, tap: false }).setView([-24.8, -65.4], 7);
 // Mapa base oscuro de Esri (no requiere clave). CARTO ahora exige API key.
 const ESRI = "https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/";
 const base = L.tileLayer(ESRI + "World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}", {
@@ -22,7 +22,6 @@ const capas = {};        // departamento normalizado -> capa Leaflet
 const nombres = {};      // departamento normalizado -> nombre para mostrar
 let capaSeleccionada = null;
 
-const menuIzq = document.getElementById("panel-izquierdo");
 const panelDato = document.getElementById("panel-lateral");
 const contenidoPanel = document.getElementById("contenido-panel");
 const tituloPanel = document.getElementById("titulo-panel");
@@ -43,12 +42,12 @@ function mostrarError(msg) {
 
 // Rampa de color: más personas = más intenso
 function getColor(n) {
-    if (n === 0) return "#2f353d";
-    if (n === 1) return "#8a4b43";
-    if (n <= 5) return "#b5503f";
-    if (n <= 10) return "#d4623f";
-    if (n <= 15) return "#e8803f";
-    return "#f2b45a";
+    if (n === 0) return "#242424";
+    if (n === 1) return "#555555";
+    if (n <= 5) return "#7d7d7d";
+    if (n <= 10) return "#a6a6a6";
+    if (n <= 15) return "#d0d0d0";
+    return "#ffffff";
 }
 
 // Lee el CSV aunque venga de Excel (UTF-8 o Windows-1252, con BOM, comillas y ; o ,)
@@ -108,14 +107,13 @@ function listaPersonas(lista) {
 
 function abrirPanel() {
     panelDato.classList.add("panel-abierto");
-    menuIzq.classList.remove("menu-activo");
 }
 
 function seleccionarCapa(norm) {
     if (capaSeleccionada) capaSeleccionada.setStyle(estiloBase(capaSeleccionada.feature));
     capaSeleccionada = capas[norm] || null;
     if (capaSeleccionada) {
-        capaSeleccionada.setStyle({ color: "#d8b36a", weight: 3 });
+        capaSeleccionada.setStyle({ color: "#ffffff", weight: 3 });
         capaSeleccionada.bringToFront();
     }
 }
@@ -150,7 +148,7 @@ function mostrarDepartamento(depto) {
         const movil = window.matchMedia("(max-width: 767px)").matches;
         map.fitBounds(capas[norm].getBounds(), {
             paddingTopLeft: [16, 16],
-            paddingBottomRight: movil ? [16, Math.round(window.innerHeight * 0.5) + 8] : [460, 16],
+            paddingBottomRight: movil ? [16, Math.round(map.getSize().y * 0.55) + 8] : [400, 16],
             maxZoom: 11
         });
     }
@@ -177,7 +175,7 @@ function mostrarFicha(nombre) {
 // ================= CARGA DE DATOS =================
 function estiloBase(f) {
     const n = conteoPorDepto[normalizar(f.properties[claveDepto])] || 0;
-    return { fillColor: getColor(n), fillOpacity: 0.75, color: "#6b7480", weight: 1 };
+    return { fillColor: getColor(n), fillOpacity: 0.85, color: "#0a0a0a", weight: 1 };
 }
 let claveDepto = "Departamen";
 
@@ -237,7 +235,7 @@ async function cargarGeoJSON() {
             layer.bindTooltip(`${esc(nombre)}: ${n} ${n === 1 ? "persona" : "personas"}`, { sticky: true });
             layer.on({
                 click: () => mostrarDepartamento(nombre),
-                mouseover: () => { if (layer !== capaSeleccionada) layer.setStyle({ weight: 2, color: "#e8e4dc" }); },
+                mouseover: () => { if (layer !== capaSeleccionada) layer.setStyle({ weight: 2, color: "#ffffff" }); },
                 mouseout: () => { if (layer !== capaSeleccionada) layer.setStyle(estiloBase(f)); }
             });
         }
@@ -268,12 +266,9 @@ async function iniciar() {
 }
 
 // ================= BOTONES =================
-document.getElementById("menu-info").onclick = () => { menuIzq.classList.add("menu-activo"); panelDato.classList.remove("panel-abierto"); };
-document.getElementById("cerrar-menu-izq").onclick = () => menuIzq.classList.remove("menu-activo");
 document.getElementById("cerrar-panel").onclick = () => { panelDato.classList.remove("panel-abierto"); seleccionarCapa(null); };
-document.getElementById("btn-galeria").onclick = () => { window.location.href = "galeria.html"; };
 document.addEventListener("keydown", e => {
-    if (e.key === "Escape") { menuIzq.classList.remove("menu-activo"); panelDato.classList.remove("panel-abierto"); }
+    if (e.key === "Escape") { panelDato.classList.remove("panel-abierto"); seleccionarCapa(null); }
 });
 
 iniciar();

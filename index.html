@@ -3,93 +3,126 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" content="#1b1f24">
+<meta name="theme-color" content="#0a0a0a">
 <title>Geografías del Encierro (1974-1983) · Archivo Provincial de la Memoria</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="inicio.css">
 </head>
 <body>
 
-<header id="barra-superior">
-  <button id="menu-info" aria-controls="panel-izquierdo">Menú</button>
-  <button id="btn-galeria">Galería</button>
-  <img src="logo.PNG" class="logo-header" alt="Logo del Archivo Provincial de la Memoria">
-  <div class="titulos">
-    <div class="sup">Archivo Provincial de la Memoria</div>
-    <div class="tit">Geografías del Encierro (1974-1983)</div>
+<header class="nav">
+  <div class="wrap nav-in">
+    <a class="marca" href="#inicio"><img src="logo.PNG" alt="" height="24"><span>Geografías del Encierro</span></a>
+    <nav>
+      <a href="#mapa">Mapa</a>
+      <a href="#proyecto">Proyecto</a>
+      <a href="galeria.html">Galería</a>
+    </nav>
   </div>
 </header>
 
-<aside id="panel-izquierdo" aria-label="Información del proyecto">
-  <div class="panel-header">
-    <h2>Menú</h2>
-    <button id="cerrar-menu-izq" aria-label="Cerrar menú">✕</button>
+<main id="inicio">
+  <section class="wrap hero">
+    <h1>Geografías del encierro<br><span class="mut">Salta, 1974–1983</span></h1>
+    <p class="bajada">Mapa interactivo que georreferencia los espacios de encierro a partir de los prontuarios de la Unidad Carcelaria N.º 1 Villa Las Rosas.</p>
+    <div class="acciones">
+      <a class="btn" href="#mapa">Explorar el mapa</a>
+      <a class="btn btn-linea" href="galeria.html">Ver galería</a>
+    </div>
+    <div class="cifras">
+      <div><b>30</b><span>prontuarios incorporados de 125</span></div>
+      <div><b>1974–1983</b><span>período documentado</span></div>
+      <div><b>Villa Las Rosas</b><span>Unidad Carcelaria N.º 1</span></div>
+    </div>
+  </section>
+
+  <section class="wrap" id="mapa">
+    <div class="marco">
+      <div id="map"></div>
+      <div id="aviso" role="alert" hidden></div>
+      <p class="hint-movil">Usá dos dedos para mover el mapa</p>
+      <aside id="panel-lateral" aria-label="Detalle del departamento">
+        <div class="panel-header">
+          <h2 id="titulo-panel">Departamento</h2>
+          <button id="cerrar-panel" aria-label="Cerrar panel">✕</button>
+        </div>
+        <div id="contenido-panel" class="panel-cuerpo"></div>
+      </aside>
+    </div>
+    <p class="pie-mapa">Tocá un departamento para ver las personas registradas. Los tonos más claros indican más registros.</p>
+  </section>
+
+  <div id="proyecto">
+    <section class="wrap sec">
+      <div class="etq">01 Objetivo</div>
+      <div>
+        <h2>Visibilizar y georreferenciar los espacios de encierro<br><span class="mut">para la reconstrucción territorial de la represión</span></h2>
+        <p>El presente mapa interactivo tiene como finalidad visibilizar y georreferenciar los espacios vinculados a las prácticas de encierro durante el período 1974–1983, contribuyendo a la reconstrucción territorial de la represión.</p>
+        <p>Asimismo, busca fortalecer el uso pedagógico de los fondos documentales y garantizar el acceso al acervo, mediante su difusión en formatos digitales.</p>
+        <p>En este marco, se propone promover acciones orientadas a la no repetición de los crímenes de lesa humanidad y al fortalecimiento de la memoria colectiva y la vida democrática.</p>
+        <p>El presente trabajo se encuentra en desarrollo, habiéndose incorporado hasta el momento 30 prontuarios de un total de 125 que conforman el fondo documental.</p>
+      </div>
+    </section>
+
+    <section class="wrap sec">
+      <div class="etq">02 Quiénes somos</div>
+      <div>
+        <h2>Archivo Provincial de la Memoria<br><span class="mut">creado por el decreto 1741, el 28 de abril de 2008</span></h2>
+        <p>Su objetivo transversal es generar acciones que garanticen espacios de reflexión y respeto a los Derechos Humanos y la Democracia, para la no repetición de los crímenes de lesa humanidad. Lo hace a través de la Gestión Integral de los Fondos Documentales, la Puesta en Acceso y el Uso Pedagógico de las fuentes documentales.</p>
+        <p class="chico">Ministerio de Gobierno y Justicia · Secretaría de Justicia y DD.HH. · Subsecretaría de DD.HH. · Dirección del Archivo Provincial de la Memoria</p>
+      </div>
+    </section>
+
+    <section class="wrap sec">
+      <div class="etq">03 Metodología</div>
+      <div>
+        <h2>De la restauración del prontuario al mapa<br><span class="mut">un trabajo procesual y todavía en desarrollo</span></h2>
+        <p>Esta herramienta se construye a partir de los datos extraídos del mapeo del Fondo Documental de los Prontuarios AR-AL-APM-PRESOS POLÍTICOS (1974-1983) de la Unidad Carcelaria N.º 1 Villa Las Rosas.</p>
+        <details><summary>Leer la metodología completa</summary>
+          <p>La primera intervención sobre el fondo documental AR-AL-APM-PRESOSPOLITICOS se realiza mediante técnicas de restauración y preservación, con el objetivo de garantizar la integridad física de los documentos y devolverles el valor documental que el paso del tiempo pudiera haber deteriorado.</p>
+          <p>En una segunda instancia, el fondo es abordado mediante procedimientos archivísticos orientados a su organización sistemática, que incluyen: acopio, clasificación, identificación, y mapeo y construcción de fichas descriptivas.</p>
+          <p>Las fichas descriptivas de cada uno de los prontuarios son posteriormente digitalizadas y estructuradas en una base de datos en formato Excel, diseñada para sistematizar la información relevada. Esta base se construye a partir de campos normalizados (número de prontuario, nombre y apellido, fecha de ingreso, procedencia, situación judicial, observaciones documentales, entre otros), lo que permite organizar, indexar y cruzar la información de manera eficiente.</p>
+          <p>A partir de esta estructura se genera un mapa documental del fondo, que facilita la localización de los expedientes, el análisis de los datos y su posterior utilización para fines de investigación histórica, archivística y pedagógica.</p>
+          <p>De esta manera se consolidan acciones que garantizan la preservación y democratización del acceso al fondo documental, promoviendo su uso pedagógico y su disponibilidad para la reconstrucción de memorias históricas.</p>
+          <p>El trabajo se desarrolla de manera procesual. Como parte de una primera etapa, se trabajó sobre 30 prontuarios de los 125 que componen el fondo documental, proceso que actualmente continúa en desarrollo.</p>
+          <p>En una segunda etapa se prevé intervenir el fondo documental AR-AL-APM-MESA DE CONTROL INGRESOS Y EGRESOS (1976-1983), compuesto por 12 Libros de Novedades de la Unidad Carcelaria N.º 1 Villa Las Rosas, con el objetivo de ampliar la sistematización de la información y complementar los datos registrados en los prontuarios.</p>
+        </details>
+      </div>
+    </section>
+
+    <section class="wrap sec">
+      <div class="etq">04 Equipo</div>
+      <div>
+        <h2>Equipo de trabajo</h2>
+        <dl class="equipo">
+          <div><dt>Coordinación</dt><dd>Alba Eugenia Fernández</dd></div>
+          <div><dt>Restauración y preservación</dt><dd>Federico Viztaz<br>Dalma Araceli Gonzalez (colaboradora)</dd></div>
+          <div><dt>Acopio, clasificación e identificación</dt><dd>Federico Viztaz<br>Daniel Estevez (colaborador)</dd></div>
+          <div><dt>Mapeo y fichas descriptivas</dt><dd>Alba Eugenia Fernández<br>Daniel Estevez (colaborador)</dd></div>
+          <div><dt>Desarrollo cartográfico y programación</dt><dd>Ing. Agrim. Fernando Tortosa (colaborador)</dd></div>
+          <div><dt>Registro fotográfico</dt><dd>Facundo Hessling (colaborador)<br>Daniel Lopez (colaborador)</dd></div>
+        </dl>
+      </div>
+    </section>
+
+    <section class="wrap sec">
+      <div class="etq">05 Contacto</div>
+      <div>
+        <h2>Archivo Provincial de la Memoria<br><span class="mut">Provincia de Salta</span></h2>
+        <p>Av. Belgrano y Av. Sarmiento, 2.º piso, Capital, Salta<br>
+        Teléfono: <a href="tel:+543875838105">0387 155838105</a><br>
+        <a href="mailto:archivoprovincialdelamemoria@gmail.com">archivoprovincialdelamemoria@gmail.com</a></p>
+      </div>
+    </section>
   </div>
-  <div class="panel-cuerpo">
-    <details open><summary>Objetivo</summary>
-      <p>El presente mapa interactivo tiene como finalidad visibilizar y georreferenciar los espacios vinculados a las prácticas de encierro durante el período 1974–1983, contribuyendo a la reconstrucción territorial de la represión.</p>
-      <p>Asimismo, busca fortalecer el uso pedagógico de los fondos documentales y garantizar el acceso al acervo, mediante su difusión en formatos digitales.</p>
-      <p>En este marco, se propone promover acciones orientadas a la no repetición de los crímenes de lesa humanidad y al fortalecimiento de la memoria colectiva y la vida democrática.</p>
-      <p>El presente trabajo se encuentra en desarrollo, habiéndose incorporado hasta el momento 30 prontuarios de un total de 125 que conforman el fondo documental.</p>
-    </details>
+</main>
 
-    <details><summary>Quiénes somos</summary>
-      <p>El Archivo Provincial de la Memoria fue creado por el decreto 1741, el 28 de abril de 2008.</p>
-      <p>Su objetivo transversal es generar acciones que garanticen espacios de reflexión y respeto a los Derechos Humanos y la Democracia, para la no repetición de los crímenes de lesa humanidad.</p>
-      <p>Lo hace a través de la Gestión Integral de los Fondos Documentales, la Puesta en Acceso y el Uso Pedagógico de las fuentes documentales.</p>
-    </details>
-
-    <details><summary>Denominación</summary>
-      <p>Ministerio de Gobierno y Justicia<br>Secretaría de Justicia y DD.HH.<br>Subsecretaría de DD.HH.<br>Dirección del Archivo Provincial de la Memoria</p>
-    </details>
-
-    <details><summary>Metodología de trabajo</summary>
-      <p>Esta herramienta se construye a partir de los datos extraídos del mapeo del Fondo Documental de los Prontuarios AR-AL-APM-PRESOS POLÍTICOS (1974-1983) de la Unidad Carcelaria N.º 1 Villa Las Rosas.</p>
-      <p>La primera intervención sobre el fondo documental AR-AL-APM-PRESOSPOLITICOS se realiza mediante técnicas de restauración y preservación, con el objetivo de garantizar la integridad física de los documentos y devolverles el valor documental que el paso del tiempo pudiera haber deteriorado.</p>
-      <p>En una segunda instancia, el fondo es abordado mediante procedimientos archivísticos orientados a su organización sistemática, que incluyen:</p>
-      <ul><li>acopio</li><li>clasificación</li><li>identificación</li><li>mapeo y construcción de fichas descriptivas</li></ul>
-      <p>Las fichas descriptivas de cada uno de los prontuarios son posteriormente digitalizadas y estructuradas en una base de datos en formato Excel, diseñada para sistematizar la información relevada. Esta base se construye a partir de campos normalizados (número de prontuario, nombre y apellido, fecha de ingreso, procedencia, situación judicial, observaciones documentales, entre otros), lo que permite organizar, indexar y cruzar la información de manera eficiente.</p>
-      <p>A partir de esta estructura se genera un mapa documental del fondo, que facilita la localización de los expedientes, el análisis de los datos y su posterior utilización para fines de investigación histórica, archivística y pedagógica.</p>
-      <p>De esta manera se consolidan acciones que garantizan la preservación y democratización del acceso al fondo documental, promoviendo su uso pedagógico y su disponibilidad para la reconstrucción de memorias históricas.</p>
-      <p>El trabajo se desarrolla de manera procesual. Como parte de una primera etapa, se trabajó sobre 30 prontuarios de los 125 que componen el fondo documental, proceso que actualmente continúa en desarrollo.</p>
-      <p>En una segunda etapa se prevé intervenir el fondo documental AR-AL-APM-MESA DE CONTROL INGRESOS Y EGRESOS (1976-1983), compuesto por 12 Libros de Novedades de la Unidad Carcelaria N.º 1 Villa Las Rosas, con el objetivo de ampliar la sistematización de la información y complementar los datos registrados en los prontuarios.</p>
-    </details>
-
-    <details><summary>Equipo de trabajo</summary>
-      <p><strong>Coordinación</strong><br>Alba Eugenia Fernández</p>
-      <p><strong>Restauración y preservación</strong><br>Federico Viztaz<br>Dalma Araceli Gonzalez (colaboradora)</p>
-      <p><strong>Acopio, clasificación e identificación</strong><br>Federico Viztaz<br>Daniel Estevez (colaborador)</p>
-      <p><strong>Mapeo y construcción de fichas descriptivas</strong><br>Alba Eugenia Fernández<br>Daniel Estevez (colaborador)</p>
-      <p><strong>Desarrollo cartográfico y programación</strong><br>Ing. Agrim. Fernando Tortosa (colaborador)<br><a href="mailto:ing.tortosanf@gmail.com">ing.tortosanf@gmail.com</a></p>
-      <p><strong>Registro fotográfico</strong><br>Facundo Hessling (colaborador)<br>Daniel Lopez (colaborador)</p>
-    </details>
-
-    <details><summary>Contacto</summary>
-      <p><strong>Archivo Provincial de la Memoria – Provincia de Salta</strong></p>
-      <p>Av. Belgrano y Av. Sarmiento, 2.º piso, Capital, Salta<br>
-      Teléfono: <a href="tel:+543875838105">0387 155838105</a><br>
-      <a href="mailto:archivoprovincialdelamemoria@gmail.com">archivoprovincialdelamemoria@gmail.com</a></p>
-    </details>
-  </div>
-</aside>
-
-<aside id="panel-lateral" aria-label="Detalle del departamento">
-  <div class="panel-header">
-    <h2 id="titulo-panel">Departamento</h2>
-    <button id="cerrar-panel" aria-label="Cerrar panel">✕</button>
-  </div>
-  <div id="contenido-panel" class="panel-cuerpo"></div>
-</aside>
-
-<div id="aviso" role="alert" hidden></div>
-<div id="map"></div>
-
-<footer class="footer-fixed">
-  <span>© 2026 Archivo Provincial de la Memoria · Salta · Geografías del Encierro</span>
-  <span class="dev-data">Desarrollo web y cartográfico: Ing. Agrim. Néstor Fernando Tortosa</span>
+<footer class="wrap pie">
+  <span>© 2026 Archivo Provincial de la Memoria · Salta</span>
+  <span>Desarrollo web y cartográfico: Ing. Agrim. Néstor Fernando Tortosa · <a href="mailto:ing.tortosanf@gmail.com">ing.tortosanf@gmail.com</a></span>
 </footer>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
