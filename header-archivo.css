@@ -1,21 +1,49 @@
 /* Encabezado: escudo + Secretaría + ARCHIVO PROVINCIAL DE LA MEMORIA.
-   Va DESPUÉS de inicio.css. Los selectores .marca / .sep / .inst vienen de inicio.css (no lo tenía a la vista). */
-.marca { display: flex; align-items: center; gap: .75rem; min-width: 0; }
-.marca img { flex-shrink: 0; }
-.marca .inst { flex-shrink: 1; }
+   Se enlaza DESPUÉS de inicio.css. Usa sus variables (--inst, --acc) y sus clases (.marca, .sep, .inst). */
 
-.marca .sep-archivo { display: block; width: 2px; align-self: stretch; min-height: 2.4rem; background: #d8b36a; opacity: .9; }
+/* El encabezado necesita más ancho que el resto (.wrap = 1180px) para quedar en una sola fila en pantallas grandes */
+.nav-in.wrap { max-width: 1440px; }
 
-.marca .archivo { display: flex; flex-direction: column; justify-content: center; line-height: 1.05; text-transform: uppercase; color: #fff; white-space: nowrap; }
-.marca .archivo-1 { font-size: clamp(.62rem, 1.6vw, .8rem); letter-spacing: .12em; font-weight: 500; opacity: .92; }
-.marca .archivo-2 { font-size: clamp(.95rem, 2.8vw, 1.45rem); letter-spacing: .06em; font-weight: 800; }
+/* Separador entre la Secretaría y el Archivo */
+.marca .sep-archivo { background: var(--acc); }
 
-/* Pantallas medianas: se compacta la Secretaría */
-@media (max-width: 900px) {
-  .marca { gap: .55rem; }
-  .marca .inst { font-size: .68rem; }
+/* Bloque destacado: Archivo Provincial / DE LA MEMORIA */
+.marca .archivo { display: flex; flex-direction: column; justify-content: center; gap: 3px;
+  font-family: var(--inst); text-transform: uppercase; line-height: 1; white-space: nowrap; }
+.marca .archivo-1 { font-weight: 600; font-size: .95rem; letter-spacing: .17em; color: var(--acc); }
+.marca .archivo-2 { font-weight: 700; font-size: 1.75rem; letter-spacing: .03em; color: var(--txt); }
+
+/* Pantallas medianas (laptops): se compacta para que el encabezado siga en una sola fila */
+@media (min-width: 768px) and (max-width: 1439px) {
+  .marca .inst { font-size: 1.05rem; }
+  .marca .archivo-1 { font-size: .8rem; letter-spacing: .12em; }
+  .marca .archivo-2 { font-size: 1.5rem; }
+  .pill a { padding: 0 9px; font-size: .82rem; }
 }
-/* Celulares: se prioriza el Archivo; la Secretaría ya está en el escudo y en el aria-label */
+
+/* Safe areas (iPhone en horizontal, con viewport-fit=cover) */
+.wrap { padding-left: max(24px, env(safe-area-inset-left)); padding-right: max(24px, env(safe-area-inset-right)); }
+
+@media (max-width: 767px) {
+  .wrap { padding-left: max(16px, env(safe-area-inset-left)); padding-right: max(16px, env(safe-area-inset-right)); }
+  .marca { gap: 10px; }
+  .marca .archivo-1 { font-size: .72rem; letter-spacing: .14em; }
+  .marca .archivo-2 { font-size: 1.3rem; }
+}
+/* Celulares: la Secretaría ya figura en el aria-label; se prioriza el Archivo */
 @media (max-width: 560px) {
   .marca .inst, .marca .sep:not(.sep-archivo) { display: none; }
 }
+@media (max-width: 359px) {
+  .marca img { height: 28px; }
+  .marca .archivo-2 { font-size: 1.15rem; }
+}
+
+/* Corrige un desborde horizontal a 320 px: el correo largo de Contacto no cortaba línea */
+.sec > div { min-width: 0; }
+.sec a, .sec p { overflow-wrap: anywhere; }
+
+/* Encabezado en dos filas: al bajar se esconde la fila del logo y queda fijo solo el menú.
+   --nav-off y --nav-pad los calcula el pequeño script del final de index.html. */
+.nav { top: calc(-1 * var(--nav-off, 0px)); }
+html { scroll-padding-top: var(--nav-pad, 120px); }

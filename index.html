@@ -143,5 +143,21 @@
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" defer></script>
 <script src="script.js" defer></script>
+<script>
+/* Si el encabezado queda en dos filas, solo el menú permanece fijo al bajar */
+(function () {
+  var nav = document.querySelector('.nav'), marca = nav.querySelector('.marca'), pill = nav.querySelector('.pill'), root = document.documentElement;
+  function ajustar() {
+    var envuelto = pill.getBoundingClientRect().top > marca.getBoundingClientRect().bottom - 4;
+    var off = envuelto ? Math.max(0, Math.round(pill.offsetTop - 8)) : 0;
+    root.style.setProperty('--nav-off', off + 'px');
+    root.style.setProperty('--nav-pad', (nav.offsetHeight - off + 16) + 'px');
+  }
+  ajustar();
+  addEventListener('resize', ajustar);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(ajustar);
+  addEventListener('load', ajustar);
+})();
+</script>
 </body>
 </html>
