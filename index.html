@@ -34,13 +34,15 @@
 </header>
 
 <main id="inicio">
-  <section class="wrap hero">
-    <h1>Geografías del encierro<br><span class="mut">Salta, 1974–1983</span></h1>
-    <p class="bajada">Mapa interactivo que georreferencia los espacios de encierro a partir de los prontuarios de la Unidad Carcelaria N.º 1 Villa Las Rosas.</p>
-    <div class="acciones">
-      <a class="btn" href="#mapa">Explorar el mapa</a>
-      <a class="btn btn-linea" href="galeria.html">Ver galería</a>
-    </div>
+  <section class="wrap hero" aria-labelledby="titulo">
+    <figure class="portada">
+      <img src="portada-fondo.jpg" width="1195" height="896" fetchpriority="high"
+           alt="Collage con un mapa antiguo de Salta, puntos rojos unidos por hilos, el edificio de la Unidad Carcelaria N.º 1 Villa Las Rosas, alambre de púas, esposas y carpetas de prontuarios.">
+      <div class="portada-txt">
+        <h1 id="titulo">Geografías<br>del encierro <span class="fecha">Salta, 1974–1983</span></h1>
+        <p>Mapa interactivo que reconstruye y georreferencia la red de encierro a partir de los prontuarios de la Unidad Carcelaria N.º 1 Villa Las Rosas.</p>
+      </div>
+    </figure>
   </section>
 
   <section class="wrap" id="mapa">
@@ -61,7 +63,7 @@
       <span>Período <b>1974–1983</b></span>
       <span>Unidad Carcelaria N.º 1 <b>Villa Las Rosas</b></span>
     </div>
-    <p class="pie-mapa">Tocá un departamento para ver las personas registradas. Cuanto más oscuro el tono, más registros. <span class="solo-movil">Usá dos dedos para mover el mapa.</span></p>
+    <p class="pie-mapa">Cuanto más oscuro el tono, más registros. Los departamentos en gris todavía no tienen prontuarios incorporados. <span class="solo-movil">Usá dos dedos para mover el mapa.</span></p>
   </section>
 
   <div id="proyecto">
@@ -135,6 +137,7 @@
 </footer>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@turf/turf@6.5.0/turf.min.js"></script>
 <script src="script.js"></script>
 </body>
 </html>

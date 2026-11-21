@@ -26,7 +26,7 @@ a:hover { text-decoration-color: var(--txt); }
 .mut { color: var(--mut); }
 
 /* ---------- Barra superior ---------- */
-.nav { position: sticky; top: 0; z-index: 2000; padding: 14px 0; pointer-events: none; }
+.nav { position: sticky; top: 0; z-index: 2000; padding: 12px 0; background: #000; border-bottom: 1px solid var(--linea); }
 .nav-in { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 20px; }
 .nav-in > * { pointer-events: auto; }
 .marca { display: flex; align-items: center; gap: 14px; text-decoration: none; color: var(--txt); }
@@ -39,7 +39,15 @@ a:hover { text-decoration-color: var(--txt); }
 .pill a:hover { background: rgba(255,255,255,.16); }
 
 /* ---------- Portada ---------- */
-.hero { padding-top: 64px; padding-bottom: 36px; }
+.hero { padding-top: 24px; padding-bottom: 28px; }
+.sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+/* Portada: la imagen lleva solo el collage; el texto es HTML real sobre el panel oscuro de la derecha */
+.portada { position: relative; container-type: inline-size; margin: 0; aspect-ratio: 16 / 9; border: 1px solid var(--linea); border-radius: var(--r-marco); overflow: hidden; background: #040404; }
+.portada img { position: absolute; inset: 0; display: block; width: 100%; height: 100%; object-fit: cover; object-position: 50% 25%; }
+.portada-txt { position: absolute; left: 59%; right: 3.2%; top: 31%; bottom: 4%; }
+.portada h1 { margin: 0; font-family: var(--inst); font-weight: 700; font-size: 6.4cqw; line-height: .95; letter-spacing: .005em; text-transform: uppercase; }
+.portada h1 .fecha { display: block; margin-top: .42em; font-family: var(--mono); font-weight: 400; font-size: 3.1cqw; line-height: 1.1; letter-spacing: 0; text-transform: none; color: var(--mut); }
+.portada p { max-width: 36ch; margin: 3.2cqw 0 0; font-family: var(--mono); font-size: max(12px, 1.7cqw); line-height: 1.5; color: var(--txt); }
 h1 { margin: 0; font-weight: 500; font-size: clamp(2.4rem, 6.5vw, 4.8rem); line-height: 1.02; letter-spacing: -.035em; }
 h1 .mut { font-weight: 500; }
 .bajada { max-width: 54ch; margin: 24px 0 0; font-size: 1.15rem; line-height: 1.5; color: var(--mut); }
@@ -81,11 +89,15 @@ h1 .mut { font-weight: 500; }
 .leyenda b { display: block; margin-bottom: 4px; font-weight: 500; }
 .leyenda i { display: inline-block; width: 14px; height: 14px; margin-right: 8px; vertical-align: -2px; border-radius: 4px; border: 1px solid var(--linea-2); }
 
-/* ---------- Panel del departamento: lateral en escritorio, hoja inferior en móvil ---------- */
-#panel-lateral { position: absolute; z-index: 1000; background: var(--card); overflow-y: auto; overscroll-behavior: contain; visibility: hidden;
-  left: 0; right: 0; bottom: 0; height: 55%; border-top: 1px solid var(--linea); border-radius: var(--r-panel) var(--r-panel) 0 0; transform: translateY(100%);
-  transition: transform .3s cubic-bezier(.32,.72,0,1), visibility 0s .3s; }
-#panel-lateral.panel-abierto { visibility: visible; transform: none; transition-delay: 0s; }
+/* ---------- Panel del departamento: siempre visible; invita a elegir y luego muestra el detalle ----------
+   Deja libre una franja inferior para que la atribución de los mapas base siga a la vista. */
+#panel-lateral { position: absolute; z-index: 1000; left: 12px; right: 12px; bottom: 34px; max-height: 42%; overflow-y: auto; overscroll-behavior: contain;
+  background: var(--card); border: 1px solid var(--linea); border-radius: var(--r-panel); }
+#panel-lateral.panel-abierto { height: 55%; max-height: 55%; }
+#panel-lateral:not(.panel-abierto) #cerrar-panel { display: none; }
+.hint-sel h3 { margin: 0 0 6px; font-size: 1.15rem; font-weight: 500; letter-spacing: -.01em; }
+.hint-sel p { margin: 0; color: var(--mut); }
+.hint-datos { margin-top: 14px !important; padding-top: 12px; border-top: 1px solid var(--linea); font-family: var(--mono); font-size: .72rem; line-height: 1.6; }
 .panel-header { position: sticky; top: 0; z-index: 2; display: flex; align-items: center; justify-content: space-between; padding: 8px 8px 8px 20px; background: var(--vino); border-bottom: 1px solid rgba(255,255,255,.18); }
 .panel-header h2 { margin: 0; font-size: 1.1rem; font-weight: 500; letter-spacing: -.01em; }
 .panel-header button { width: 44px; height: 44px; border: 0; border-radius: 50%; background: transparent; color: var(--txt); font-size: 1.1rem; cursor: pointer; }
@@ -122,7 +134,8 @@ details[open] summary::after { content: "–"; }
 
 /* ---------- Escritorio: panel lateral flotante dentro del marco ---------- */
 @media (min-width: 768px) {
-  #panel-lateral { left: auto; top: 12px; right: 12px; bottom: 12px; width: 380px; height: auto; border: 1px solid var(--linea); border-radius: var(--r-panel); transform: translateX(calc(100% + 24px)); }
+  #panel-lateral, #panel-lateral.panel-abierto { left: auto; top: 12px; right: 12px; bottom: 34px; width: 380px; height: auto; max-height: none; }
+  .hint-sel h3 { font-size: 1.3rem; }
 }
 /* ---------- Móvil ---------- */
 @media (max-width: 767px) {
@@ -132,9 +145,18 @@ details[open] summary::after { content: "–"; }
   .marca img { height: 34px; }
   .marca .inst { font-size: 1.05rem; }
   .pill { margin-left: 0; width: 100%; }
-  .hero { padding-top: 40px; }
+  .hero { padding-top: 16px; padding-bottom: 20px; }
+  .portada { aspect-ratio: auto; }
+  .portada img { position: static; height: auto; aspect-ratio: 4 / 5; object-position: 0 50%; }
+  .portada-txt { position: static; padding: 18px 20px 24px; }
+  .portada h1 { font-size: 2.9rem; }
+  .portada h1 .fecha { font-size: 1.05rem; }
+  .portada p { margin-top: 16px; font-size: .88rem; max-width: none; }
   .sec { grid-template-columns: 1fr; gap: 12px; margin-top: 56px; }
   .marco { height: 70vh; height: 70dvh; min-height: 460px; }
   .solo-movil { display: inline; }
+  /* En móvil el panel arranca compacto (solo la consigna) para no tapar el mapa */
+  #panel-lateral:not(.panel-abierto) .panel-header { display: none; }
+  .leaflet-bottom.leaflet-left { margin-bottom: 118px; }
 }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; scroll-behavior: auto !important; } }
