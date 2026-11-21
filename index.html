@@ -10,15 +10,20 @@
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=DM+Mono:wght@400;500&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <link rel="stylesheet" href="inicio.css">
+<link rel="stylesheet" href="header-archivo.css">
+<link rel="preload" href="salta_departamentos.geojson" as="fetch" crossorigin>
+<link rel="preload" href="presos_politicos_salta.csv" as="fetch" crossorigin>
 </head>
 <body>
 
 <header class="nav">
   <div class="wrap nav-in">
-    <a class="marca" href="#inicio" aria-label="Gobierno de Salta, Secretaría de Justicia y Derechos Humanos">
+    <a class="marca" href="#inicio" aria-label="Gobierno de Salta, Secretaría de Justicia y Derechos Humanos. Archivo Provincial de la Memoria">
       <img src="logo-gobierno-blanco.png" alt="Salta Gobierno">
       <span class="sep" aria-hidden="true"></span>
       <span class="inst">Secretaría de Justicia<br>y Derechos Humanos</span>
+      <span class="sep sep-archivo" aria-hidden="true"></span>
+      <span class="archivo"><span class="archivo-1">Archivo Provincial</span><strong class="archivo-2">de la Memoria</strong></span>
     </a>
     <nav class="pill" aria-label="Principal">
       <a href="#mapa">Mapa</a>
@@ -124,7 +129,7 @@
       <div>
         <h2>Archivo Provincial de la Memoria<br><span class="mut">Provincia de Salta</span></h2>
         <p>Av. Belgrano y Av. Sarmiento, 2.º piso, Capital, Salta<br>
-        Teléfono: <a href="tel:+543875838105">0387 155838105</a><br>
+        Teléfono: <a href="tel:+5493875838105">0387 155838105</a><br>
         <a href="mailto:archivoprovincialdelamemoria@gmail.com">archivoprovincialdelamemoria@gmail.com</a></p>
       </div>
     </section>
@@ -136,8 +141,7 @@
   <span>Desarrollo web y cartográfico: Ing. Agrim. Néstor Fernando Tortosa · <a href="mailto:ing.tortosanf@gmail.com">ing.tortosanf@gmail.com</a></span>
 </footer>
 
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@turf/turf@6.5.0/turf.min.js"></script>
-<script src="script.js"></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" defer></script>
+<script src="script.js" defer></script>
 </body>
 </html>

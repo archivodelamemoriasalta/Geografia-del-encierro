@@ -30,9 +30,16 @@ map.on("baselayerchange", e => {
     if (e.layer === satelite) etiquetas.addTo(map); else map.removeLayer(etiquetas);
 });
 
-const errorBase = () => mostrarError("No se pudo cargar el mapa base. Revisá tu conexión o si algún bloqueador la está cortando.");
-satelite.once("tileerror", errorBase);
-topografico.once("tileerror", errorBase);
+// Un mosaico suelto que falla (p. ej. un 404 fuera de cobertura) no es un error del mapa:
+// el aviso aparece solo si fallan varios seguidos.
+let erroresTile = 0;
+const errorBase = () => {
+    if (++erroresTile === 6) mostrarError("No se pudo cargar el mapa base. Revisá tu conexión o si algún bloqueador la está cortando.");
+};
+satelite.on("tileerror", errorBase);
+topografico.on("tileerror", errorBase);
+satelite.on("tileload", () => { erroresTile = 0; });
+topografico.on("tileload", () => { erroresTile = 0; });
 L.control.zoom({ position: 'topleft' }).addTo(map);
 
 let personas = [];
@@ -116,7 +123,7 @@ function parsearCSV(texto) {
 
 // ================= PANEL DE DETALLE =================
 function itemPersona(p) {
-    return `<li><a href="#" class="enlace-persona" data-nombre="${esc(p.nombre)}">${esc(p.nombre)}</a></li>`;
+    return `<li><a href="#" class="enlace-persona" data-id="${p.id}">${esc(p.nombre)}</a></li>`;
 }
 
 function listaPersonas(lista) {
@@ -181,7 +188,7 @@ function mostrarDepartamento(depto) {
     panelDato.scrollTop = 0;
 
     contenidoPanel.querySelectorAll(".enlace-persona").forEach(a => {
-        a.addEventListener("click", e => { e.preventDefault(); mostrarFicha(a.dataset.nombre); });
+        a.addEventListener("click", e => { e.preventDefault(); mostrarFicha(Number(a.dataset.id)); });
     });
 
     seleccionarCapa(norm);
@@ -198,8 +205,8 @@ function mostrarDepartamento(depto) {
     }
 }
 
-function mostrarFicha(nombre) {
-    const p = personas.find(x => x.nombre === nombre);
+function mostrarFicha(id) {
+    const p = personas.find(x => x.id === id);
     if (!p) return;
     tituloPanel.textContent = p.nombre;
     const dato = (t, v) => `<p class="dato"><span>${t}</span>${esc(v)}</p>`;
@@ -249,6 +256,7 @@ async function cargarCSV() {
         const esFederal = raw === "" || raw.toUpperCase() === "NULL";
         const depto = esFederal ? "CAPITAL" : (ALIAS_DEPTO[normalizar(raw)] || raw);
         personas.push({
+            id: personas.length,
             nombre,
             decreto: get(c, "decreto", "Sin decreto"),
             fechaIngreso: get(c, "ingreso", "Sin información"),
@@ -265,33 +273,28 @@ async function cargarCSV() {
     if (!personas.length) throw new Error("El CSV se leyó pero no se encontraron filas con datos. Revisá el separador (;) y que la columna 2 tenga los nombres.");
 }
 
-// Contorno exterior de la capa: se disuelven los departamentos en un solo polígono y se dibuja
-// solo su borde externo, con un halo oscuro para que se distinga tanto sobre el satélite como sobre el topográfico.
+// Contorno exterior de la provincia: viene precalculado (salta_contorno.geojson), con un halo oscuro
+// para que se distinga tanto sobre el satélite como sobre el topográfico.
 map.createPane("contorno").style.zIndex = 450;
 map.getPane("contorno").style.pointerEvents = "none";
 
-function dibujarContorno(geo) {
-    if (!window.turf) { console.warn("No cargó turf: se omite el contorno exterior."); return; }
-    let unido = null, fallidos = 0;
-    for (const f of geo.features) {
-        if (!f.geometry) continue;
-        const g = { type: "Feature", properties: {}, geometry: f.geometry };
-        try { unido = unido ? turf.union(unido, g) : g; } catch (e) { fallidos++; }
-    }
-    if (!unido) return;
-    if (fallidos) console.warn(`Contorno exterior incompleto: ${fallidos} departamento(s) con geometría inválida.`);
-    // Solo el anillo exterior de cada polígono: ignora huecos y rendijas entre departamentos
-    const polis = unido.geometry.type === "Polygon" ? [unido.geometry.coordinates] : unido.geometry.coordinates;
-    const contorno = { type: "Feature", properties: {}, geometry: { type: "MultiLineString", coordinates: polis.map(p => p[0]) } };
+function dibujarContorno(contorno) {
+    if (!contorno) return;
     const base = { pane: "contorno", interactive: false };
     L.geoJSON(contorno, { ...base, style: { color: "#000000", weight: 8, opacity: 0.6, lineJoin: "round" } }).addTo(map);
     L.geoJSON(contorno, { ...base, style: { color: "#ffffff", weight: 3.5, opacity: 1, lineJoin: "round" } }).addTo(map);
 }
 
-async function cargarGeoJSON() {
-    const res = await fetch("salta_departamentos.geojson");
-    if (!res.ok) throw new Error(`No se pudo leer salta_departamentos.geojson (HTTP ${res.status}).`);
-    const geo = await res.json();
+async function leerGeoJSON(url, obligatorio) {
+    const res = await fetch(url);
+    if (!res.ok) {
+        if (obligatorio) throw new Error(`No se pudo leer ${url} (HTTP ${res.status}).`);
+        return null;
+    }
+    return res.json();
+}
+
+function dibujarDepartamentos(geo, contorno) {
 
     const props = geo.features?.[0]?.properties || {};
     claveDepto = Object.keys(props).find(k => /^depart/i.test(k)) || claveDepto;
@@ -319,7 +322,7 @@ async function cargarGeoJSON() {
         throw new Error("El GeoJSON no está en WGS84 (EPSG:4326), por eso el mapa no dibuja los departamentos. Reproyectalo en QGIS: Exportar → Guardar entidades como → CRS EPSG:4326.");
     }
     limitesProvincia = b;
-    dibujarContorno(geo);
+    dibujarContorno(contorno);
     verProvincia();
 }
 
@@ -337,9 +340,19 @@ function agregarLeyenda() {
 
 async function iniciar() {
     mostrarConsigna();
-    try { await cargarCSV(); } catch (e) { mostrarError(e.message); }
-    try { await cargarGeoJSON(); agregarLeyenda(); } catch (e) { mostrarError(e.message); }
-    mostrarConsigna();
+    // CSV y GeoJSON se descargan al mismo tiempo; recién se dibuja cuando están los datos
+    const [csv, geo, contorno] = await Promise.allSettled([
+        cargarCSV(),
+        leerGeoJSON("salta_departamentos.geojson", true),
+        leerGeoJSON("salta_contorno.geojson", false)
+    ]);
+    if (csv.status === "rejected") mostrarError(csv.reason.message);
+    if (geo.status === "rejected") { mostrarError(geo.reason.message); return; }
+    try {
+        dibujarDepartamentos(geo.value, contorno.status === "fulfilled" ? contorno.value : null);
+        agregarLeyenda();
+    } catch (e) { mostrarError(e.message); }
+    if (!panelDato.classList.contains("panel-abierto")) mostrarConsigna();
 }
 
 // ================= BOTONES =================

@@ -1,0 +1,21 @@
+/* Encabezado: escudo + Secretaría + ARCHIVO PROVINCIAL DE LA MEMORIA.
+   Va DESPUÉS de inicio.css. Los selectores .marca / .sep / .inst vienen de inicio.css (no lo tenía a la vista). */
+.marca { display: flex; align-items: center; gap: .75rem; min-width: 0; }
+.marca img { flex-shrink: 0; }
+.marca .inst { flex-shrink: 1; }
+
+.marca .sep-archivo { display: block; width: 2px; align-self: stretch; min-height: 2.4rem; background: #d8b36a; opacity: .9; }
+
+.marca .archivo { display: flex; flex-direction: column; justify-content: center; line-height: 1.05; text-transform: uppercase; color: #fff; white-space: nowrap; }
+.marca .archivo-1 { font-size: clamp(.62rem, 1.6vw, .8rem); letter-spacing: .12em; font-weight: 500; opacity: .92; }
+.marca .archivo-2 { font-size: clamp(.95rem, 2.8vw, 1.45rem); letter-spacing: .06em; font-weight: 800; }
+
+/* Pantallas medianas: se compacta la Secretaría */
+@media (max-width: 900px) {
+  .marca { gap: .55rem; }
+  .marca .inst { font-size: .68rem; }
+}
+/* Celulares: se prioriza el Archivo; la Secretaría ya está en el escudo y en el aria-label */
+@media (max-width: 560px) {
+  .marca .inst, .marca .sep:not(.sep-archivo) { display: none; }
+}
