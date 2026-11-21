@@ -33,7 +33,7 @@ map.on("baselayerchange", e => {
 const errorBase = () => mostrarError("No se pudo cargar el mapa base. Revisá tu conexión o si algún bloqueador la está cortando.");
 satelite.once("tileerror", errorBase);
 topografico.once("tileerror", errorBase);
-L.control.zoom({ position: 'bottomright' }).addTo(map);
+L.control.zoom({ position: 'topleft' }).addTo(map);
 
 let personas = [];
 let conteoPorDepto = {};
@@ -126,6 +126,31 @@ function listaPersonas(lista) {
 
 function abrirPanel() {
     panelDato.classList.add("panel-abierto");
+}
+
+// Estado inicial (y al cerrar): el panel invita a elegir un departamento
+function mostrarConsigna() {
+    panelDato.classList.remove("panel-abierto");
+    seleccionarCapa(null);
+    tituloPanel.textContent = "Departamentos";
+    const total = personas.length;
+    const deptos = Object.values(conteoPorDepto).filter(n => n > 0).length;
+    const datos = total
+        ? `<p class="hint-datos">${total} ${total === 1 ? "persona registrada" : "personas registradas"} en ${deptos} ${deptos === 1 ? "departamento" : "departamentos"}. Los departamentos en gris todavía no tienen prontuarios incorporados.</p>`
+        : "";
+    contenidoPanel.innerHTML = `<div class="hint-sel"><h3>Seleccioná un departamento</h3><p>Hacé clic o tocá un departamento del mapa para ver las personas registradas en él.</p>${datos}</div>`;
+    panelDato.scrollTop = 0;
+}
+
+// Margen del encuadre según lo que ocupa el panel (lateral en escritorio, tarjeta inferior en móvil)
+function rellenoMapa() {
+    const movil = window.matchMedia("(max-width: 767px)").matches;
+    return movil ? { paddingTopLeft: [16, 16], paddingBottomRight: [16, 150] }
+                 : { paddingTopLeft: [16, 16], paddingBottomRight: [400, 16] };
+}
+let limitesProvincia = null;
+function verProvincia() {
+    if (limitesProvincia) map.fitBounds(limitesProvincia, rellenoMapa());
 }
 
 function seleccionarCapa(norm) {
@@ -240,6 +265,29 @@ async function cargarCSV() {
     if (!personas.length) throw new Error("El CSV se leyó pero no se encontraron filas con datos. Revisá el separador (;) y que la columna 2 tenga los nombres.");
 }
 
+// Contorno exterior de la capa: se disuelven los departamentos en un solo polígono y se dibuja
+// solo su borde externo, con un halo oscuro para que se distinga tanto sobre el satélite como sobre el topográfico.
+map.createPane("contorno").style.zIndex = 450;
+map.getPane("contorno").style.pointerEvents = "none";
+
+function dibujarContorno(geo) {
+    if (!window.turf) { console.warn("No cargó turf: se omite el contorno exterior."); return; }
+    let unido = null, fallidos = 0;
+    for (const f of geo.features) {
+        if (!f.geometry) continue;
+        const g = { type: "Feature", properties: {}, geometry: f.geometry };
+        try { unido = unido ? turf.union(unido, g) : g; } catch (e) { fallidos++; }
+    }
+    if (!unido) return;
+    if (fallidos) console.warn(`Contorno exterior incompleto: ${fallidos} departamento(s) con geometría inválida.`);
+    // Solo el anillo exterior de cada polígono: ignora huecos y rendijas entre departamentos
+    const polis = unido.geometry.type === "Polygon" ? [unido.geometry.coordinates] : unido.geometry.coordinates;
+    const contorno = { type: "Feature", properties: {}, geometry: { type: "MultiLineString", coordinates: polis.map(p => p[0]) } };
+    const base = { pane: "contorno", interactive: false };
+    L.geoJSON(contorno, { ...base, style: { color: "#000000", weight: 8, opacity: 0.6, lineJoin: "round" } }).addTo(map);
+    L.geoJSON(contorno, { ...base, style: { color: "#ffffff", weight: 3.5, opacity: 1, lineJoin: "round" } }).addTo(map);
+}
+
 async function cargarGeoJSON() {
     const res = await fetch("salta_departamentos.geojson");
     if (!res.ok) throw new Error(`No se pudo leer salta_departamentos.geojson (HTTP ${res.status}).`);
@@ -270,7 +318,9 @@ async function cargarGeoJSON() {
     if (!b.isValid() || Math.abs(b.getNorth()) > 90 || Math.abs(b.getEast()) > 180) {
         throw new Error("El GeoJSON no está en WGS84 (EPSG:4326), por eso el mapa no dibuja los departamentos. Reproyectalo en QGIS: Exportar → Guardar entidades como → CRS EPSG:4326.");
     }
-    map.fitBounds(b, { padding: [10, 10] });
+    limitesProvincia = b;
+    dibujarContorno(geo);
+    verProvincia();
 }
 
 function agregarLeyenda() {
@@ -286,14 +336,17 @@ function agregarLeyenda() {
 }
 
 async function iniciar() {
+    mostrarConsigna();
     try { await cargarCSV(); } catch (e) { mostrarError(e.message); }
     try { await cargarGeoJSON(); agregarLeyenda(); } catch (e) { mostrarError(e.message); }
+    mostrarConsigna();
 }
 
 // ================= BOTONES =================
-document.getElementById("cerrar-panel").onclick = () => { panelDato.classList.remove("panel-abierto"); seleccionarCapa(null); };
+function cerrarDetalle() { mostrarConsigna(); verProvincia(); }
+document.getElementById("cerrar-panel").onclick = cerrarDetalle;
 document.addEventListener("keydown", e => {
-    if (e.key === "Escape") { panelDato.classList.remove("panel-abierto"); seleccionarCapa(null); }
+    if (e.key === "Escape" && panelDato.classList.contains("panel-abierto")) cerrarDetalle();
 });
 
 iniciar();
