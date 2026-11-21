@@ -1,19 +1,38 @@
 // ================= MAPA BASE =================
 const map = L.map('map', { zoomControl: false, dragging: !L.Browser.mobile, tap: false }).setView([-24.8, -65.4], 7);
-// Mapa base oscuro de Esri (no requiere clave). CARTO ahora exige API key.
-const ESRI = "https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/";
-const base = L.tileLayer(ESRI + "World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}", {
-    attribution: "Tiles © Esri — Esri, HERE, Garmin, © OpenStreetMap contributors",
-    maxNativeZoom: 16,
+
+const ESRI = "https://server.arcgisonline.com/ArcGIS/rest/services/";
+
+// Dos mapas base, ambos sin clave de API
+const satelite = L.tileLayer(ESRI + "World_Imagery/MapServer/tile/{z}/{y}/{x}", {
+    attribution: "Tiles © Esri — Maxar, Earthstar Geographics, USDA FSA, USGS, GeoEye, Getmapping, AeroGRID, IGN, IGP",
+    maxNativeZoom: 18,
     maxZoom: 18
-}).addTo(map);
-// Nombres de ciudades y rutas encima de los departamentos
+});
+const topografico = L.tileLayer("https://tile.opentopomap.org/{z}/{x}/{y}.png", {
+    attribution: "Mapa © OpenTopoMap (CC-BY-SA), datos © OpenStreetMap contributors, SRTM",
+    maxNativeZoom: 17,
+    maxZoom: 18
+});
+
+// Nombres de ciudades y límites encima de los departamentos (solo sobre la imagen satelital;
+// OpenTopoMap ya trae sus propias etiquetas)
 map.createPane("etiquetas").style.zIndex = 650;
 map.getPane("etiquetas").style.pointerEvents = "none";
-L.tileLayer(ESRI + "World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}", {
+const etiquetas = L.tileLayer(ESRI + "Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}", {
     pane: "etiquetas", maxNativeZoom: 16, maxZoom: 18
-}).addTo(map);
-base.once("tileerror", () => mostrarError("No se pudo cargar el mapa base. Revisá tu conexión o si algún bloqueador la está cortando."));
+});
+
+satelite.addTo(map);
+etiquetas.addTo(map);
+L.control.layers({ "Satélite": satelite, "Topográfico": topografico }, null, { position: "topleft", collapsed: false }).addTo(map);
+map.on("baselayerchange", e => {
+    if (e.layer === satelite) etiquetas.addTo(map); else map.removeLayer(etiquetas);
+});
+
+const errorBase = () => mostrarError("No se pudo cargar el mapa base. Revisá tu conexión o si algún bloqueador la está cortando.");
+satelite.once("tileerror", errorBase);
+topografico.once("tileerror", errorBase);
 L.control.zoom({ position: 'bottomright' }).addTo(map);
 
 let personas = [];
@@ -40,14 +59,15 @@ function mostrarError(msg) {
     console.error(msg);
 }
 
-// Rampa de color: más personas = más intenso
+// Paleta Pizarra para fondo oscuro: más personas = más claro (el azul más oscuro
+// se perdería sobre la imagen satelital). Todos los tonos evitan blanco y negro puros.
 function getColor(n) {
-    if (n === 0) return "#242424";
-    if (n === 1) return "#555555";
-    if (n <= 5) return "#7d7d7d";
-    if (n <= 10) return "#a6a6a6";
-    if (n <= 15) return "#d0d0d0";
-    return "#ffffff";
+    if (n === 0) return "#2f3a4d";
+    if (n === 1) return "#4d6596";
+    if (n <= 5) return "#7c93ba";
+    if (n <= 10) return "#a9b9d3";
+    if (n <= 15) return "#d5dce8";
+    return "#eef2f8";
 }
 
 // Lee el CSV aunque venga de Excel (UTF-8 o Windows-1252, con BOM, comillas y ; o ,)
@@ -113,7 +133,7 @@ function seleccionarCapa(norm) {
     if (capaSeleccionada) capaSeleccionada.setStyle(estiloBase(capaSeleccionada.feature));
     capaSeleccionada = capas[norm] || null;
     if (capaSeleccionada) {
-        capaSeleccionada.setStyle({ color: "#ffffff", weight: 3 });
+        capaSeleccionada.setStyle(ESTILO_SELECCION);
         capaSeleccionada.bringToFront();
     }
 }
@@ -167,15 +187,20 @@ function mostrarFicha(nombre) {
         ${dato("Liberado / estado", p.liberado)}
         ${dato("Departamento", p.departamento)}
         ${dato("Profesión", p.profesion)}
-        <button class="btn-volver" type="button">← Volver al departamento</button>`;
+        <button class="btn-volver" type="button">Volver al departamento</button>`;
     contenidoPanel.querySelector(".btn-volver").addEventListener("click", () => mostrarDepartamento(p.departamento));
     panelDato.scrollTop = 0;
 }
 
 // ================= CARGA DE DATOS =================
+// Bordes claros y finos para que los departamentos se distingan sobre la imagen satelital.
+// Los departamentos sin prontuarios quedan más transparentes: dejan ver el terreno.
+const ESTILO_SELECCION = { color: "#eef2f8", weight: 3, opacity: 1 };
+const ESTILO_HOVER = { color: "#eef2f8", weight: 2, opacity: 1 };
+
 function estiloBase(f) {
     const n = conteoPorDepto[normalizar(f.properties[claveDepto])] || 0;
-    return { fillColor: getColor(n), fillOpacity: 0.85, color: "#0a0a0a", weight: 1 };
+    return { fillColor: getColor(n), fillOpacity: n === 0 ? 0.4 : 0.8, color: "#d5dce8", weight: 1, opacity: 0.55 };
 }
 let claveDepto = "Departamen";
 
@@ -235,7 +260,7 @@ async function cargarGeoJSON() {
             layer.bindTooltip(`${esc(nombre)}: ${n} ${n === 1 ? "persona" : "personas"}`, { sticky: true });
             layer.on({
                 click: () => mostrarDepartamento(nombre),
-                mouseover: () => { if (layer !== capaSeleccionada) layer.setStyle({ weight: 2, color: "#ffffff" }); },
+                mouseover: () => { if (layer !== capaSeleccionada) layer.setStyle(ESTILO_HOVER); },
                 mouseout: () => { if (layer !== capaSeleccionada) layer.setStyle(estiloBase(f)); }
             });
         }
@@ -253,7 +278,8 @@ function agregarLeyenda() {
     const l = L.control({ position: "bottomleft" });
     l.onAdd = () => {
         const d = L.DomUtil.create("div", "leyenda");
-        const tramos = [[0, "Sin registros"], [1, "1"], [3, "2 a 5"], [8, "6 a 10"], [12, "11 a 15"], [20, "Más de 15"]];
+        // "Sin registros" significa que el prontuario todavía no se incorporó, no que no haya habido personas
+        const tramos = [[0, "Sin prontuarios incorporados aún"], [1, "1"], [3, "2 a 5"], [8, "6 a 10"], [12, "11 a 15"], [20, "Más de 15"]];
         d.innerHTML = "<b>Personas por departamento</b>" + tramos.map(([n, t]) => `<div><i style="background:${getColor(n)}"></i>${t}</div>`).join("");
         return d;
     };

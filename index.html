@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" content="#0a0a0a">
+<meta name="theme-color" content="#1b2029">
 <title>Geografías del Encierro (1974-1983) · Archivo Provincial de la Memoria</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <link rel="stylesheet" href="inicio.css">
 </head>
@@ -15,12 +15,13 @@
 
 <header class="nav">
   <div class="wrap nav-in">
-    <a class="marca" href="#inicio"><img src="logo.PNG" alt="" height="24"><span>Geografías del Encierro</span></a>
-    <nav>
+    <a class="marca" href="#inicio"><img src="logo.PNG" alt="" height="28"><span>Geografías del Encierro</span></a>
+    <nav class="pill" aria-label="Principal">
       <a href="#mapa">Mapa</a>
       <a href="#proyecto">Proyecto</a>
       <a href="galeria.html">Galería</a>
     </nav>
+    <div class="pill nav-der"><a href="#contacto">Contacto</a></div>
   </div>
 </header>
 
@@ -32,18 +33,12 @@
       <a class="btn" href="#mapa">Explorar el mapa</a>
       <a class="btn btn-linea" href="galeria.html">Ver galería</a>
     </div>
-    <div class="cifras">
-      <div><b>30</b><span>prontuarios incorporados de 125</span></div>
-      <div><b>1974–1983</b><span>período documentado</span></div>
-      <div><b>Villa Las Rosas</b><span>Unidad Carcelaria N.º 1</span></div>
-    </div>
   </section>
 
   <section class="wrap" id="mapa">
     <div class="marco">
       <div id="map"></div>
       <div id="aviso" role="alert" hidden></div>
-      <p class="hint-movil">Usá dos dedos para mover el mapa</p>
       <aside id="panel-lateral" aria-label="Detalle del departamento">
         <div class="panel-header">
           <h2 id="titulo-panel">Departamento</h2>
@@ -52,12 +47,18 @@
         <div id="contenido-panel" class="panel-cuerpo"></div>
       </aside>
     </div>
-    <p class="pie-mapa">Tocá un departamento para ver las personas registradas. Los tonos más claros indican más registros.</p>
+
+    <div class="cifras">
+      <span><b>30</b> de 125 prontuarios incorporados</span>
+      <span>Período <b>1974–1983</b></span>
+      <span>Unidad Carcelaria N.º 1 <b>Villa Las Rosas</b></span>
+    </div>
+    <p class="pie-mapa">Tocá un departamento para ver las personas registradas. Los tonos más claros indican más registros. <span class="solo-movil">Usá dos dedos para mover el mapa.</span></p>
   </section>
 
   <div id="proyecto">
     <section class="wrap sec">
-      <div class="etq">01 Objetivo</div>
+      <div class="etq">Objetivo</div>
       <div>
         <h2>Visibilizar y georreferenciar los espacios de encierro<br><span class="mut">para la reconstrucción territorial de la represión</span></h2>
         <p>El presente mapa interactivo tiene como finalidad visibilizar y georreferenciar los espacios vinculados a las prácticas de encierro durante el período 1974–1983, contribuyendo a la reconstrucción territorial de la represión.</p>
@@ -68,7 +69,7 @@
     </section>
 
     <section class="wrap sec">
-      <div class="etq">02 Quiénes somos</div>
+      <div class="etq">Quiénes somos</div>
       <div>
         <h2>Archivo Provincial de la Memoria<br><span class="mut">creado por el decreto 1741, el 28 de abril de 2008</span></h2>
         <p>Su objetivo transversal es generar acciones que garanticen espacios de reflexión y respeto a los Derechos Humanos y la Democracia, para la no repetición de los crímenes de lesa humanidad. Lo hace a través de la Gestión Integral de los Fondos Documentales, la Puesta en Acceso y el Uso Pedagógico de las fuentes documentales.</p>
@@ -77,7 +78,7 @@
     </section>
 
     <section class="wrap sec">
-      <div class="etq">03 Metodología</div>
+      <div class="etq">Metodología</div>
       <div>
         <h2>De la restauración del prontuario al mapa<br><span class="mut">un trabajo procesual y todavía en desarrollo</span></h2>
         <p>Esta herramienta se construye a partir de los datos extraídos del mapeo del Fondo Documental de los Prontuarios AR-AL-APM-PRESOS POLÍTICOS (1974-1983) de la Unidad Carcelaria N.º 1 Villa Las Rosas.</p>
@@ -94,7 +95,7 @@
     </section>
 
     <section class="wrap sec">
-      <div class="etq">04 Equipo</div>
+      <div class="etq">Equipo</div>
       <div>
         <h2>Equipo de trabajo</h2>
         <dl class="equipo">
@@ -108,8 +109,8 @@
       </div>
     </section>
 
-    <section class="wrap sec">
-      <div class="etq">05 Contacto</div>
+    <section class="wrap sec" id="contacto">
+      <div class="etq">Contacto</div>
       <div>
         <h2>Archivo Provincial de la Memoria<br><span class="mut">Provincia de Salta</span></h2>
         <p>Av. Belgrano y Av. Sarmiento, 2.º piso, Capital, Salta<br>
