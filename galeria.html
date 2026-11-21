@@ -4,20 +4,70 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#000000">
-<title>Galería · Geografías del Encierro · Archivo Provincial de la Memoria</title>
+<title>Galería de actividades · Geografías del Encierro · Archivo Provincial de la Memoria</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=DM+Mono:wght@400;500&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="inicio.css">
+<link rel="stylesheet" href="header-archivo.css">
+<style>
+  .pill a[aria-current="page"] { background: rgba(255,255,255,.18); }
+
+  /* ---------- Cabecera de la página ---------- */
+  .gal-hero { padding-top: 56px; }
+  .gal-hero h1 { font-size: clamp(2.1rem, 5.5vw, 3.6rem); }
+  .gal-hero .bajada { max-width: 56ch; margin-top: 16px; font-size: 1.05rem; }
+
+  /* ---------- Eventos ---------- */
+  .evento { margin-top: 64px; }
+  .evento-cab { margin-bottom: 20px; padding-top: 22px; border-top: 1px solid var(--linea); }
+  .evento h2 { margin: 0 0 6px; font-size: clamp(1.4rem, 3.2vw, 2rem); }
+  .evento-meta { margin: 0; color: var(--mut); font-size: .98rem; }
+
+  /* Grilla pareja: todas las fotos en 4:3. Si el evento tiene 5, 9, 13… fotos, la primera se agranda y no quedan huecos. */
+  .fotos { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .foto { position: relative; margin: 0; aspect-ratio: 4 / 3; overflow: hidden; border: 1px solid var(--linea); border-radius: 18px; background: var(--card-2); }
+  .foto.grande { grid-column: span 2; aspect-ratio: 16 / 10; }
+  .foto-btn { position: absolute; inset: 0; width: 100%; height: 100%; padding: 0; border: 0; background: none; cursor: zoom-in; }
+  .foto-btn img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; transition: transform .4s ease; }
+  .foto-btn:hover img { transform: scale(1.04); }
+  .foto:hover, .foto:focus-within { border-color: var(--acc); }
+  .foto-btn:focus-visible { outline: 2px solid var(--acc); outline-offset: -4px; border-radius: 16px; }
+
+  @media (min-width: 760px) {
+    .fotos { grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .foto.grande { grid-column: span 2; grid-row: span 2; aspect-ratio: auto; }
+  }
+
+  .volver { display: flex; justify-content: center; margin-top: 72px; }
+
+  /* ---------- Visor de fotos ---------- */
+  dialog.visor { width: 100%; height: 100%; max-width: none; max-height: none; margin: 0; padding: 0; border: 0; background: transparent; color: var(--txt); }
+  dialog.visor::backdrop { background: rgba(0,0,0,.97); }
+  .visor-in { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; height: 100%; padding: 64px 16px 24px; }
+  .visor img { display: block; max-width: min(100%, 1400px); max-height: calc(100dvh - 140px); border-radius: 14px; object-fit: contain; }
+  .visor-pie { margin: 0; font-size: .9rem; color: var(--mut); text-align: center; }
+  .visor-btn { position: fixed; width: 48px; height: 48px; border-radius: 50%; border: 1px solid rgba(255,255,255,.28); background: rgba(255,255,255,.1); color: var(--txt); font-size: 1.3rem; line-height: 1; cursor: pointer; }
+  .visor-btn:hover { background: var(--vino); border-color: var(--vino); }
+  .visor-cerrar { top: max(14px, env(safe-area-inset-top)); right: max(14px, env(safe-area-inset-right)); }
+  .visor-ant { left: max(10px, env(safe-area-inset-left)); top: 50%; transform: translateY(-50%); }
+  .visor-sig { right: max(10px, env(safe-area-inset-right)); top: 50%; transform: translateY(-50%); }
+  @media (max-width: 600px) {
+    .visor-ant, .visor-sig { top: auto; bottom: 14px; transform: none; }
+    .visor-pie { padding: 0 64px; min-height: 2.4em; }
+  }
+</style>
 </head>
 <body>
 
 <header class="nav">
   <div class="wrap nav-in">
-    <a class="marca" href="index.html" aria-label="Gobierno de Salta, Secretaría de Justicia y Derechos Humanos. Ir al inicio">
+    <a class="marca" href="index.html" aria-label="Gobierno de Salta, Secretaría de Justicia y Derechos Humanos. Archivo Provincial de la Memoria">
       <img src="logo-gobierno-blanco.png" alt="Salta Gobierno">
       <span class="sep" aria-hidden="true"></span>
       <span class="inst">Secretaría de Justicia<br>y Derechos Humanos</span>
+      <span class="sep sep-archivo" aria-hidden="true"></span>
+      <span class="archivo"><span class="archivo-1">Archivo Provincial</span><strong class="archivo-2">de la Memoria</strong></span>
     </a>
     <nav class="pill" aria-label="Principal">
       <a href="index.html#mapa">Mapa</a>
@@ -33,23 +83,17 @@
 </header>
 
 <main>
-  <section class="wrap gal-cab">
-    <h1>Galería de actividades</h1>
-    <p>Jornadas, visitas y talleres con los que el Archivo Provincial de la Memoria acerca sus fondos documentales a la comunidad.</p>
+  <section class="wrap gal-hero" aria-labelledby="titulo">
+    <h1 id="titulo">Galería de actividades</h1>
+    <p class="bajada">Registro fotográfico de las jornadas y visitas del Archivo Provincial de la Memoria. Tocá una foto para verla ampliada.</p>
   </section>
 
-  <section class="wrap evento" aria-labelledby="ev-batalla">
-    <h2 id="ev-batalla">Jornada «El Archivo en el Aula»<span class="mut">Colegio N.º 5035 «Batalla de Salta» · 25 de marzo de 2026</span></h2>
-    <div class="grid-fotos" id="grid-batalla"></div>
-  </section>
+  <div class="wrap" id="eventos">
+    <noscript><p class="mut">Para ver las fotos hace falta activar JavaScript.</p></noscript>
+  </div>
 
-  <section class="wrap evento" aria-labelledby="ev-archivo">
-    <h2 id="ev-archivo">Visita guiada y taller<span class="mut">Archivo Provincial de la Memoria</span></h2>
-    <div class="grid-fotos" id="grid-archivo"></div>
-  </section>
-
-  <div class="wrap gal-volver">
-    <a class="btn btn-linea" href="index.html#mapa">Volver al mapa</a>
+  <div class="wrap volver">
+    <a class="btn btn-linea" href="index.html#mapa">← Volver al mapa</a>
   </div>
 </main>
 
@@ -58,46 +102,114 @@
   <span>Desarrollo web y cartográfico: Ing. Agrim. Néstor Fernando Tortosa · <a href="mailto:ing.tortosanf@gmail.com">ing.tortosanf@gmail.com</a></span>
 </footer>
 
-<dialog id="visor" aria-label="Foto ampliada">
-  <button class="visor-cerrar" type="button" aria-label="Cerrar foto">✕</button>
-  <img id="visor-img" src="" alt="">
+<!-- Visor de fotos -->
+<dialog class="visor" id="visor" aria-label="Visor de fotos">
+  <div class="visor-in" id="visor-in">
+    <img id="visor-img" src="" alt="">
+    <p class="visor-pie" id="visor-pie" aria-live="polite"></p>
+  </div>
+  <button class="visor-btn visor-cerrar" id="visor-cerrar" type="button" aria-label="Cerrar">✕</button>
+  <button class="visor-btn visor-ant" id="visor-ant" type="button" aria-label="Foto anterior">‹</button>
+  <button class="visor-btn visor-sig" id="visor-sig" type="button" aria-label="Foto siguiente">›</button>
 </dialog>
 
 <script>
-const fotosBatalla = [1, 2, 3, 4, 5].map(n => `BatallaDeSalta/fotosBatalla (${n}).jpeg`);
-const fotosArchivo = [1, 2, 3, 4, 5, 6, 7, 8].map(n => `En-el-archivo/fotosArchivo (${n}).jpeg`);
+/* Para agregar fotos: subilas a la carpeta con el mismo patrón de nombre ("fotosBatalla (6).jpeg")
+   y subí el número "fotos" del evento correspondiente. */
+const EVENTOS = [
+  { titulo: "Jornada “El Archivo en el Aula”",
+    meta: "Colegio N.º 5035 “Batalla de Salta”, 25 de marzo de 2026",
+    alt: "Jornada en el Colegio Batalla de Salta",
+    carpeta: "BatallaDeSalta/fotosBatalla", fotos: 5 },
+  { titulo: "Visita guiada y taller",
+    meta: "Archivo Provincial de la Memoria",
+    alt: "Visita guiada y taller en el Archivo Provincial de la Memoria",
+    carpeta: "En-el-archivo/fotosArchivo", fotos: 8 }
+];
 
 const visor = document.getElementById("visor");
 const visorImg = document.getElementById("visor-img");
+const visorPie = document.getElementById("visor-pie");
+let actual = { evento: null, i: 0 }, disparador = null;
 
-function cargarFotos(gridId, lista, evento) {
-    const grid = document.getElementById(gridId);
-    lista.forEach((ruta, i) => {
-        const alt = `Foto ${i + 1} de ${lista.length}: ${evento}`;
-        const b = document.createElement("button");
-        b.type = "button";
-        b.className = "foto";
-        b.setAttribute("aria-label", `Ampliar. ${alt}`);
-        const img = document.createElement("img");
-        img.src = ruta;
-        img.alt = "";
-        img.loading = "lazy";
-        b.appendChild(img);
-        b.addEventListener("click", () => {
-            visorImg.src = ruta;
-            visorImg.alt = alt;
-            visor.showModal();
-        });
-        grid.appendChild(b);
-    });
+function rutaFoto(ev, n) { return encodeURI(`${ev.carpeta} (${n}).jpeg`); }
+
+function mostrar(i) {
+  const ev = actual.evento, total = ev.fotos;
+  actual.i = (i + total) % total;
+  visorImg.src = rutaFoto(ev, actual.i + 1);
+  visorImg.alt = `${ev.alt}, foto ${actual.i + 1} de ${total}`;
+  visorPie.textContent = `${ev.titulo} · foto ${actual.i + 1} de ${total}`;
+  new Image().src = rutaFoto(ev, (actual.i + 1) % total + 1);   // precarga la siguiente
 }
 
-cargarFotos("grid-batalla", fotosBatalla, "jornada El Archivo en el Aula, Colegio Batalla de Salta");
-cargarFotos("grid-archivo", fotosArchivo, "visita guiada y taller en el Archivo Provincial de la Memoria");
+function abrir(ev, i, boton) {
+  actual.evento = ev; disparador = boton;
+  mostrar(i);
+  visor.showModal();
+  document.body.style.overflow = "hidden";
+}
 
-// Se cierra con la ✕, con Escape (nativo) o tocando fuera de la foto
-visor.querySelector(".visor-cerrar").addEventListener("click", () => visor.close());
-visor.addEventListener("click", e => { if (e.target === visor) visor.close(); });
+function cerrar() { visor.close(); }
+visor.addEventListener("close", () => { document.body.style.overflow = ""; if (disparador) disparador.focus(); });
+document.getElementById("visor-cerrar").onclick = cerrar;
+document.getElementById("visor-ant").onclick = () => mostrar(actual.i - 1);
+document.getElementById("visor-sig").onclick = () => mostrar(actual.i + 1);
+// Clic en el fondo oscuro cierra
+document.getElementById("visor-in").addEventListener("click", e => { if (e.target.id === "visor-in") cerrar(); });
+visor.addEventListener("keydown", e => {
+  if (e.key === "ArrowLeft") mostrar(actual.i - 1);
+  if (e.key === "ArrowRight") mostrar(actual.i + 1);
+});
+// Deslizar con el dedo
+let x0 = null;
+visor.addEventListener("touchstart", e => { x0 = e.touches[0].clientX; }, { passive: true });
+visor.addEventListener("touchend", e => {
+  if (x0 === null) return;
+  const dx = e.changedTouches[0].clientX - x0; x0 = null;
+  if (Math.abs(dx) > 50) mostrar(actual.i + (dx < 0 ? 1 : -1));
+}, { passive: true });
+
+const cont = document.getElementById("eventos");
+EVENTOS.forEach(ev => {
+  const sec = document.createElement("section");
+  sec.className = "evento";
+  sec.innerHTML = `<div class="evento-cab"><h2>${ev.titulo}</h2><p class="evento-meta">${ev.meta}</p></div><div class="fotos"></div>`;
+  const grilla = sec.querySelector(".fotos");
+  // Con 5, 9, 13… fotos la primera se agranda y la grilla queda completa
+  const conGrande = ev.fotos > 4 && (ev.fotos - 1) % 4 === 0;
+
+  for (let n = 1; n <= ev.fotos; n++) {
+    const fig = document.createElement("figure");
+    fig.className = "foto" + (conGrande && n === 1 ? " grande" : "");
+    const btn = document.createElement("button");
+    btn.type = "button"; btn.className = "foto-btn";
+    btn.setAttribute("aria-label", `Ampliar foto ${n} de ${ev.fotos}: ${ev.alt}`);
+    const img = document.createElement("img");
+    img.src = rutaFoto(ev, n); img.alt = ""; img.loading = n === 1 ? "eager" : "lazy"; img.decoding = "async";
+    img.onerror = () => fig.remove();          // si falta una foto, no queda un casillero roto
+    btn.appendChild(img);
+    btn.onclick = () => abrir(ev, n - 1, btn);
+    fig.appendChild(btn);
+    grilla.appendChild(fig);
+  }
+  cont.appendChild(sec);
+});
+
+/* Encabezado en dos filas: al bajar queda fijo solo el menú */
+(function () {
+  var nav = document.querySelector(".nav"), marca = nav.querySelector(".marca"), pill = nav.querySelector(".pill"), root = document.documentElement;
+  function ajustar() {
+    var envuelto = pill.getBoundingClientRect().top > marca.getBoundingClientRect().bottom - 4;
+    var off = envuelto ? Math.max(0, Math.round(pill.offsetTop - 8)) : 0;
+    root.style.setProperty("--nav-off", off + "px");
+    root.style.setProperty("--nav-pad", (nav.offsetHeight - off + 16) + "px");
+  }
+  ajustar();
+  addEventListener("resize", ajustar);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(ajustar);
+  addEventListener("load", ajustar);
+})();
 </script>
 </body>
 </html>
