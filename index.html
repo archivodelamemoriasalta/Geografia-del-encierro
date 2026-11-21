@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" content="#1b2029">
+<meta name="theme-color" content="#000000">
 <title>Geografías del Encierro (1974-1983) · Archivo Provincial de la Memoria</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=DM+Mono:wght@400;500&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <link rel="stylesheet" href="inicio.css">
 </head>
@@ -15,13 +15,21 @@
 
 <header class="nav">
   <div class="wrap nav-in">
-    <a class="marca" href="#inicio"><img src="logo.PNG" alt="" height="28"><span>Geografías del Encierro</span></a>
+    <a class="marca" href="#inicio" aria-label="Gobierno de Salta, Secretaría de Justicia y Derechos Humanos">
+      <img src="logo-gobierno-blanco.png" alt="Salta Gobierno">
+      <span class="sep" aria-hidden="true"></span>
+      <span class="inst">Secretaría de Justicia<br>y Derechos Humanos</span>
+    </a>
     <nav class="pill" aria-label="Principal">
       <a href="#mapa">Mapa</a>
       <a href="#proyecto">Proyecto</a>
       <a href="galeria.html">Galería</a>
+      <a href="#objetivo">Objetivo</a>
+      <a href="#quienes-somos">Quiénes somos</a>
+      <a href="#metodologia">Metodología</a>
+      <a href="#equipo">Equipo</a>
+      <a href="#contacto">Contacto</a>
     </nav>
-    <div class="pill nav-der"><a href="#contacto">Contacto</a></div>
   </div>
 </header>
 
@@ -53,11 +61,11 @@
       <span>Período <b>1974–1983</b></span>
       <span>Unidad Carcelaria N.º 1 <b>Villa Las Rosas</b></span>
     </div>
-    <p class="pie-mapa">Tocá un departamento para ver las personas registradas. Los tonos más claros indican más registros. <span class="solo-movil">Usá dos dedos para mover el mapa.</span></p>
+    <p class="pie-mapa">Tocá un departamento para ver las personas registradas. Cuanto más oscuro el tono, más registros. <span class="solo-movil">Usá dos dedos para mover el mapa.</span></p>
   </section>
 
   <div id="proyecto">
-    <section class="wrap sec">
+    <section class="wrap sec" id="objetivo">
       <div class="etq">Objetivo</div>
       <div>
         <h2>Visibilizar y georreferenciar los espacios de encierro<br><span class="mut">para la reconstrucción territorial de la represión</span></h2>
@@ -68,7 +76,7 @@
       </div>
     </section>
 
-    <section class="wrap sec">
+    <section class="wrap sec" id="quienes-somos">
       <div class="etq">Quiénes somos</div>
       <div>
         <h2>Archivo Provincial de la Memoria<br><span class="mut">creado por el decreto 1741, el 28 de abril de 2008</span></h2>
@@ -77,7 +85,7 @@
       </div>
     </section>
 
-    <section class="wrap sec">
+    <section class="wrap sec" id="metodologia">
       <div class="etq">Metodología</div>
       <div>
         <h2>De la restauración del prontuario al mapa<br><span class="mut">un trabajo procesual y todavía en desarrollo</span></h2>
@@ -94,7 +102,7 @@
       </div>
     </section>
 
-    <section class="wrap sec">
+    <section class="wrap sec" id="equipo">
       <div class="etq">Equipo</div>
       <div>
         <h2>Equipo de trabajo</h2>

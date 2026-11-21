@@ -59,15 +59,14 @@ function mostrarError(msg) {
     console.error(msg);
 }
 
-// Paleta Pizarra para fondo oscuro: más personas = más claro (el azul más oscuro
-// se perdería sobre la imagen satelital). Todos los tonos evitan blanco y negro puros.
+// Gama de vinos tintos: de rosado claro a bordó (#56070c). Más personas = más oscuro.
 function getColor(n) {
-    if (n === 0) return "#2f3a4d";
-    if (n === 1) return "#4d6596";
-    if (n <= 5) return "#7c93ba";
-    if (n <= 10) return "#a9b9d3";
-    if (n <= 15) return "#d5dce8";
-    return "#eef2f8";
+    if (n === 0) return "#3a3a3a";
+    if (n === 1) return "#ecc3c6";
+    if (n <= 5) return "#cf7f87";
+    if (n <= 10) return "#a63f4b";
+    if (n <= 15) return "#7c1623";
+    return "#56070c";
 }
 
 // Lee el CSV aunque venga de Excel (UTF-8 o Windows-1252, con BOM, comillas y ; o ,)
@@ -195,12 +194,12 @@ function mostrarFicha(nombre) {
 // ================= CARGA DE DATOS =================
 // Bordes claros y finos para que los departamentos se distingan sobre la imagen satelital.
 // Los departamentos sin prontuarios quedan más transparentes: dejan ver el terreno.
-const ESTILO_SELECCION = { color: "#eef2f8", weight: 3, opacity: 1 };
-const ESTILO_HOVER = { color: "#eef2f8", weight: 2, opacity: 1 };
+const ESTILO_SELECCION = { color: "#ffffff", weight: 3, opacity: 1 };
+const ESTILO_HOVER = { color: "#ffffff", weight: 2, opacity: 1 };
 
 function estiloBase(f) {
     const n = conteoPorDepto[normalizar(f.properties[claveDepto])] || 0;
-    return { fillColor: getColor(n), fillOpacity: n === 0 ? 0.4 : 0.8, color: "#d5dce8", weight: 1, opacity: 0.55 };
+    return { fillColor: getColor(n), fillOpacity: n === 0 ? 0.35 : 0.85, color: "#ffffff", weight: 1, opacity: 0.8 };
 }
 let claveDepto = "Departamen";
 
