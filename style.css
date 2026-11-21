@@ -1,290 +1,142 @@
 :root {
-    --top-height: 52px;
-    --bottom-height: 52px;
-    --real-vh: 100vh;
+  --fondo: #1b1f24;
+  --panel: #23282f;
+  --panel-2: #2b313a;
+  --linea: #3a424d;
+  --texto: #e8e4dc;
+  --texto-suave: #a9a59d;
+  --acento: #d8b36a;
+  --top: 56px;
+  --bottom: 40px;
+  --serif: 'Source Serif 4', Georgia, serif;
+  --sans: 'Inter', system-ui, sans-serif;
 }
 
-* { box-sizing: border-box; }
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 html, body {
-    margin: 0;
-    padding: 0;
-    overflow-x: hidden !important;
-    overflow-y: hidden !important; /* evita scroll vertical innecesario */
-    height: var(--real-vh);
-    font-family: 'Inter', sans-serif;
-    background: #0f0f0f;
-    color: #f0f0f0;
+  margin: 0; height: 100vh; height: 100dvh; overflow: hidden;
+  background: var(--fondo); color: var(--texto); font-family: var(--sans);
 }
+a { color: var(--acento); }
+button { font-family: inherit; }
+:focus-visible { outline: 2px solid var(--acento); outline-offset: 2px; }
 
-/* ============================================= */
-/* BARRA SUPERIOR (sin cambios) */
-/* ============================================= */
+/* ---------- Barra superior ---------- */
 #barra-superior {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    height: var(--top-height);
-    background: rgba(17,17,17,0.95);
-    display: flex;
-    align-items: center;
-    padding: 4px 6px;
-    z-index: 1002;
-    gap: 4px;
-    border-bottom: 1px solid #333;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.6);
-    flex-wrap: nowrap;
+  position: fixed; inset: 0 0 auto 0; height: var(--top); z-index: 1002;
+  display: flex; align-items: center; gap: 8px; padding: 0 10px;
+  background: var(--fondo); border-bottom: 1px solid var(--linea);
 }
-
-.logo-header {
-    height: 26px;
-    max-width: 80px;
-    flex-shrink: 0;
+#menu-info, #btn-galeria {
+  flex-shrink: 0; min-height: 36px; padding: 0 16px;
+  background: transparent; color: var(--texto);
+  border: 1px solid var(--linea); border-radius: 6px;
+  font-size: .85rem; font-weight: 500; cursor: pointer;
+  transition: background .2s, border-color .2s;
 }
+#menu-info:hover, #btn-galeria:hover { background: var(--panel-2); border-color: var(--acento); }
+.logo-header { height: 34px; max-width: 70px; object-fit: contain; flex-shrink: 0; margin-left: 4px; }
+.titulos { flex: 1; min-width: 0; line-height: 1.2; }
+.titulos .sup { font-size: .68rem; color: var(--texto-suave); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.titulos .tit { font-family: var(--serif); font-weight: 600; font-size: clamp(.8rem, 1.6vw, 1.15rem); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-#barra-superior > div {
-    flex: 1;
-    min-width: 0;
-    text-align: left;
-    padding-left: 4px;
-}
-
-/* ============================================= */
-/* BOTÓN MENÚ - MUCHO MÁS BONITO (pill redondeado) */
-/* ============================================= */
-#menu-info {
-    background: #2a2a2a;
-    color: #fff;
-    border: none;
-    padding: 9px 20px;
-    border-radius: 50px;
-    font-weight: 600;
-    font-size: 0.95rem;
-    letter-spacing: 0.8px;
-    cursor: pointer;
-    transition: all 0.25s ease;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-    flex-shrink: 0;
-}
-
-#menu-info:hover {
-    background: #3a3a3a;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-}
-
-/* ============================================= */
-/* PANEL IZQUIERDO Y LATERAL - MEJORADOS + DESKTOP */
-/* ============================================= */
-#panel-izquierdo,
-#panel-lateral {
-    position: absolute;
-    top: var(--top-height);
-    height: calc(var(--real-vh) - var(--top-height) - var(--bottom-height) - env(safe-area-inset-bottom));
-    background: #1a1a1a;
-    z-index: 999;
-    overflow-y: auto;
-    transition: left 0.35s cubic-bezier(0.32, 0.72, 0, 1),
-                right 0.35s cubic-bezier(0.32, 0.72, 0, 1);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.6);
-}
-
-/* Panel izquierdo */
-#panel-izquierdo {
-    left: -100%;
-    width: 100%;
-}
-#panel-izquierdo.menu-activo { left: 0; }
-
-/* Panel lateral */
-#panel-lateral {
-    right: -100%;
-    width: 100%;
-}
-#panel-lateral.panel-abierto { right: 0; }
-
-/* ============================================= */
-/* ESTILO BONITO DE CABECERA DE LOS PANELes */
-/* ============================================= */
-.panel-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 16px 24px;
-    background: #222;
-    border-bottom: 1px solid #333;
-}
-
-.panel-header h2 {
-    margin: 0;
-    color: #fff;
-    font-size: 1.45rem;
-    font-weight: 700;
-    letter-spacing: 0.5px;
-}
-
-.panel-header button {
-    background: transparent;
-    border: none;
-    color: #ccc;
-    font-size: 28px;
-    width: 44px;
-    height: 44px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    cursor: pointer;
-    transition: all 0.2s;
-}
-
-.panel-header button:hover {
-    background: rgba(255,255,255,0.15);
-    color: #fff;
-    transform: rotate(90deg);
-}
-
-/* ============================================= */
-/* VERSIÓN ESCRITORIO (paneles más chicos y elegantes) */
-/* ============================================= */
-@media (min-width: 768px) {
-    #panel-izquierdo {
-        width: 340px;
-        left: -340px;
-        border-radius: 0 16px 16px 0;
-    }
-    #panel-izquierdo.menu-activo {
-        left: 0;
-    }
-
-    #panel-lateral {
-        width: 440px;
-        right: -440px;
-        border-radius: 16px 0 0 16px;
-    }
-    #panel-lateral.panel-abierto {
-        right: 0;
-    }
-
-    /* Sombra más suave en escritorio */
-    #panel-izquierdo,
-    #panel-lateral {
-        box-shadow: 15px 0 40px -10px rgba(0,0,0,0.6);
-    }
-}
-
-/* ============================================= */
-/* FOOTER Y MAPA (sin cambios) */
-/* ============================================= */
-.footer-fixed {
-    position: fixed;
-    bottom: 0; left: 0; right: 0;
-    height: var(--bottom-height);
-    background: #1a1a1a;
-    color: #aaa;
-    text-align: center;
-    border-top: 1px solid #333;
-    z-index: 1001;
-    padding: 6px 12px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    font-size: 0.82rem;
-    line-height: 1.25;
-    padding-bottom: env(safe-area-inset-bottom);
-    box-sizing: border-box;
-}
-
+/* ---------- Mapa ---------- */
 #map {
-    position: absolute;
-    top: var(--top-height);
-    left: 0; right: 0;
-    height: calc(var(--real-vh) - var(--top-height) - var(--bottom-height) - env(safe-area-inset-bottom)) !important;
-    width: 100%;
+  position: absolute; top: var(--top); left: 0; right: 0;
+  bottom: calc(var(--bottom) + env(safe-area-inset-bottom));
+  background: var(--fondo);
+}
+.leaflet-container { font-family: var(--sans); background: var(--fondo); }
+.leaflet-tooltip { background: var(--panel); color: var(--texto); border: 1px solid var(--linea); box-shadow: none; font-size: .8rem; }
+.leaflet-tooltip-top:before { border-top-color: var(--linea); }
+.leaflet-bar a { background: var(--panel); color: var(--texto); border-color: var(--linea); width: 40px; height: 40px; line-height: 40px; }
+.leaflet-bar a:hover { background: var(--panel-2); color: var(--acento); }
+.leaflet-control-attribution { background: rgba(27,31,36,.8) !important; color: var(--texto-suave) !important; font-size: 10px; }
+.leaflet-control-attribution a { color: var(--texto-suave) !important; }
+
+.leyenda { background: var(--panel); color: var(--texto); border: 1px solid var(--linea); border-radius: 8px; padding: 10px 12px; font-size: .75rem; line-height: 1.7; }
+.leyenda b { display: block; margin-bottom: 4px; font-weight: 600; }
+.leyenda i { display: inline-block; width: 14px; height: 14px; margin-right: 8px; vertical-align: -2px; border-radius: 2px; }
+
+#aviso { position: absolute; z-index: 1001; top: calc(var(--top) + 10px); left: 10px; right: 10px; max-width: 520px; margin: 0 auto;
+  background: #4a2323; color: #fff; border: 1px solid #a04545; border-radius: 8px; padding: 12px 14px; font-size: .85rem; }
+
+/* ---------- Pie ---------- */
+.footer-fixed {
+  position: fixed; inset: auto 0 0 0; z-index: 1001;
+  height: calc(var(--bottom) + env(safe-area-inset-bottom)); padding: 0 12px env(safe-area-inset-bottom);
+  display: flex; align-items: center; justify-content: center; gap: 18px; flex-wrap: wrap; overflow: hidden;
+  background: var(--fondo); border-top: 1px solid var(--linea);
+  color: var(--texto-suave); font-size: .72rem; text-align: center;
 }
 
-/* ============================================= */
-/* LISTAS Y DETAILS (sin cambios) */
-/* ============================================= */
-.lista-personas { list-style: none; padding: 0; margin: 12px 0; }
-.lista-personas li { background: #222; margin: 8px 0; border-radius: 8px; padding: 12px 16px; }
-.lista-personas a { color: #f0f0f0; text-decoration: none; }
-details summary { font-weight: bold; cursor: pointer; padding: 14px 0; }
-details summary::after { content: "▼"; margin-left: auto; }
-details[open] summary::after { transform: rotate(180deg); }
-
-/* ============================================= */
-/* TAMAÑO DE TÍTULO EN BARRA SUPERIOR - RESPONSIVE */
-/* ============================================= */
-#barra-superior > div > div:first-child {
-    font-size: 10px !important; /* subtítulo */
+/* ---------- Paneles ---------- */
+#panel-izquierdo, #panel-lateral {
+  position: absolute; z-index: 1000; overflow-y: auto; overscroll-behavior: contain;
+  background: var(--panel); visibility: hidden;
+  transition: transform .3s cubic-bezier(.32,.72,0,1), visibility 0s .3s;
+  top: var(--top); bottom: calc(var(--bottom) + env(safe-area-inset-bottom));
 }
-#barra-superior > div > div:last-child {
-    font-size: clamp(11px, 1.8vw, 18px) !important; /* título principal */
-    line-height: 1.1;
-}
-/* En móviles seguimos manteniendo el tamaño que ya te gustaba */
-@media (max-width: 767px) {
-    #barra-superior > div > div:first-child {
-        font-size: 9px !important;
-    }
-    #barra-superior > div > div:last-child {
-        font-size: 13px !important; /* el que ya te gustaba en celular */
-    }
-}
+#panel-izquierdo.menu-activo, #panel-lateral.panel-abierto { visibility: visible; transform: none; transition-delay: 0s; }
 
-
-/* ============================================= */
-/* BARRA DE DESPLAZAMIENTO BONITA (para ambos paneles) */
-/* ============================================= */
-#panel-izquierdo::-webkit-scrollbar,
-#panel-lateral::-webkit-scrollbar {
-    width: 8px;
-}
-
-#panel-izquierdo::-webkit-scrollbar-thumb,
-#panel-lateral::-webkit-scrollbar-thumb {
-    background: #555;
-    border-radius: 20px;
-}
-
-#panel-izquierdo::-webkit-scrollbar-thumb:hover,
-#panel-lateral::-webkit-scrollbar-thumb:hover {
-    background: #777;
-}
-
-/* Aseguramos que ambos paneles tengan EXACTAMENTE la misma altura */
-#panel-izquierdo,
+/* Móvil: el menú ocupa toda la pantalla; el detalle es una hoja inferior para no tapar el mapa */
+#panel-izquierdo { left: 0; right: 0; transform: translateX(-100%); }
 #panel-lateral {
-    height: calc(var(--real-vh) - var(--top-height) - var(--bottom-height) - env(safe-area-inset-bottom)) !important;
+  left: 0; right: 0; top: auto; height: 50dvh; height: 50vh;
+  border-radius: 14px 14px 0 0; border-top: 1px solid var(--linea);
+  box-shadow: 0 -8px 24px rgba(0,0,0,.4); transform: translateY(100%);
 }
 
-/* Un poquito de padding extra abajo para que la barra no tape el último elemento */
-#contenido-panel,
-#panel-izquierdo > div {
-    padding-bottom: 30px;
+.panel-header {
+  position: sticky; top: 0; z-index: 2; display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 12px 10px 18px; background: var(--panel); border-bottom: 1px solid var(--linea);
+}
+.panel-header h2 { margin: 0; font-family: var(--serif); font-size: 1.25rem; font-weight: 600; }
+.panel-header button {
+  width: 44px; height: 44px; border: 0; border-radius: 50%; background: transparent;
+  color: var(--texto-suave); font-size: 1.2rem; cursor: pointer;
+}
+.panel-header button:hover { background: var(--panel-2); color: var(--texto); }
+.panel-cuerpo { padding: 14px 18px 32px; font-family: var(--serif); font-size: 1rem; line-height: 1.6; max-width: 70ch; }
+.panel-cuerpo h3 { font-family: var(--serif); font-size: 1.1rem; margin: 6px 0 12px; }
+.panel-cuerpo h4 { font-family: var(--sans); font-size: .85rem; font-weight: 600; color: var(--acento); margin: 20px 0 6px; }
+.panel-cuerpo p { margin: 0 0 .9em; }
+.panel-cuerpo ul { padding-left: 1.2em; }
+.panel-cuerpo .dato { margin: 0 0 .7em; }
+.panel-cuerpo .dato span { display: block; font-family: var(--sans); font-size: .75rem; color: var(--texto-suave); }
+
+details { border-bottom: 1px solid var(--linea); }
+summary { list-style: none; display: flex; justify-content: space-between; align-items: center; min-height: 48px;
+  font-family: var(--sans); font-weight: 600; font-size: .95rem; cursor: pointer; }
+summary::-webkit-details-marker { display: none; }
+summary::after { content: "+"; font-size: 1.3rem; color: var(--acento); }
+details[open] summary::after { content: "–"; }
+
+.lista-personas { list-style: none; padding: 0; margin: 8px 0; }
+.lista-personas li { margin: 6px 0; }
+.lista-personas a, .btn-volver {
+  display: block; width: 100%; padding: 12px 14px; text-align: left; text-decoration: none;
+  background: var(--panel-2); color: var(--texto); border: 1px solid transparent; border-radius: 8px;
+  font-family: var(--sans); font-size: .92rem; cursor: pointer;
+}
+.lista-personas a:hover, .btn-volver:hover { border-color: var(--acento); }
+.btn-volver { margin-top: 16px; color: var(--acento); text-align: center; }
+
+/* ---------- Escritorio ---------- */
+@media (min-width: 768px) {
+  :root { --top: 60px; --bottom: 36px; }
+  #panel-izquierdo { right: auto; width: 380px; transform: translateX(-100%); border-right: 1px solid var(--linea); }
+  #panel-lateral { left: auto; right: 0; top: var(--top); height: auto; width: 440px;
+    border-radius: 0; border-top: 0; border-left: 1px solid var(--linea); box-shadow: -8px 0 24px rgba(0,0,0,.3); transform: translateX(100%); }
 }
 
-
-/* ============================================= */
-/* BOTÓN GALERÍA - IGUAL QUE MENÚ */
-/* ============================================= */
-#btn-galeria {
-    background: #2a2a2a;
-    color: #fff;
-    border: none;
-    padding: 9px 20px;
-    border-radius: 50px;
-    font-weight: 600;
-    font-size: 0.95rem;
-    letter-spacing: 0.8px;
-    cursor: pointer;
-    transition: all 0.25s ease;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-    flex-shrink: 0;
-    text-transform: uppercase;
+/* ---------- Móvil chico ---------- */
+@media (max-width: 600px) {
+  .footer-fixed .dev-data { display: none; }
+  #menu-info, #btn-galeria { padding: 0 11px; font-size: .8rem; }
+  .logo-header { height: 28px; max-width: 48px; margin-left: 0; }
+  .titulos .sup { font-size: .6rem; }
+  .titulos .tit { font-size: .76rem; }
 }
-
-#btn-galeria:hover {
-    background: #3a3a3a;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-}
+@media (max-width: 380px) { .logo-header { display: none; } }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
