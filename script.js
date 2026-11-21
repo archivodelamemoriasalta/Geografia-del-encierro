@@ -1,10 +1,11 @@
 // ================= MAPA BASE =================
 const map = L.map('map', { zoomControl: false }).setView([-24.8, -65.4], 7);
-L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+const base = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
     attribution: '© OpenStreetMap · © CARTO',
     subdomains: 'abcd',
     maxZoom: 18
 }).addTo(map);
+base.once("tileerror", () => mostrarError("No se pudo cargar el mapa base (CARTO). Revisá tu conexión o si algún bloqueador la está cortando."));
 L.control.zoom({ position: 'bottomright' }).addTo(map);
 
 let personas = [];
@@ -48,6 +49,24 @@ function decodificar(buffer) {
     catch { return new TextDecoder("windows-1252").decode(buffer); }
 }
 
+// Repara tildes rotas tipo "CÃ¡mara" o "paÃ­s" (UTF-8 leído como Windows-1252)
+function repararTildes(s) {
+    if (!/[ÃÂ]/.test(s)) return s;
+    const cod = Array.from(s, ch => ch.charCodeAt(0));
+    if (cod.some(n => n > 255)) return s;
+    try { return new TextDecoder("utf-8", { fatal: true }).decode(Uint8Array.from(cod)).replace(/\u00AD/g, ""); }
+    catch { return s; }
+}
+
+// Quita espacios sobrantes y trata "-" y "null" como vacío
+function limpiar(s) {
+    const t = repararTildes((s || "").replace(/\s+/g, " ").trim());
+    return (t === "-" || t.toLowerCase() === "null") ? "" : t;
+}
+
+// "Salta" no es un departamento: corresponde a Capital
+const ALIAS_DEPTO = { SALTA: "CAPITAL" };
+
 function parsearCSV(texto) {
     texto = texto.replace(/^\uFEFF/, "");
     const primera = texto.split(/\r?\n/)[0];
@@ -75,7 +94,8 @@ function itemPersona(p) {
 }
 
 function listaPersonas(lista) {
-    return lista.length ? `<ul class="lista-personas">${lista.map(itemPersona).join("")}</ul>` : `<p>Sin registros incorporados todavía.</p>`;
+    const orden = [...lista].sort((a, b) => a.nombre.localeCompare(b.nombre, "es"));
+    return lista.length ? `<ul class="lista-personas">${orden.map(itemPersona).join("")}</ul>` : `<p>Sin registros incorporados todavía.</p>`;
 }
 
 function abrirPanel() {
@@ -158,20 +178,30 @@ async function cargarCSV() {
     if (!res.ok) throw new Error(`No se pudo leer presos_politicos_salta.csv (HTTP ${res.status}). Revisá que el archivo esté en la misma carpeta que index.html y que el nombre coincida exactamente.`);
     const filas = parsearCSV(decodificar(await res.arrayBuffer()));
 
+    // Las columnas se buscan por el nombre del encabezado, no por posición
+    const encabezado = filas[0].map(normalizar);
+    const idx = n => encabezado.indexOf(n);
+    const I = { nombre: idx("NOMBRECOMPLETO"), decreto: idx("DECRETO"), ingreso: idx("FECHAINGRESO"),
+                traslado: idx("FECHATRASLADO"), unidad: idx("UNIDADDESTINO"), liberado: idx("LIBERADO"),
+                depto: idx("DEPARTAMEN"), profesion: idx("PROFESION") };
+    if (Object.values(I).includes(-1)) throw new Error("El encabezado del CSV no tiene los nombres esperados: " + filas[0].join(" | "));
+    const get = (c, k, vacio) => limpiar(c[I[k]]) || vacio;
+
     filas.slice(1).forEach(c => {
-        const raw = (c[7] || "").trim();
+        const nombre = limpiar(c[I.nombre]);
+        if (!nombre) return;
+        const raw = limpiar(c[I.depto]);
         const esFederal = raw === "" || raw.toUpperCase() === "NULL";
-        const depto = esFederal ? "CAPITAL" : raw;
-        if (!(c[1] || "").trim()) return;
+        const depto = esFederal ? "CAPITAL" : (ALIAS_DEPTO[normalizar(raw)] || raw);
         personas.push({
-            nombre: c[1].trim(),
-            decreto: c[2] || "Sin decreto",
-            fechaIngreso: c[3] || "Sin información",
-            fechaTraslado: c[4] || "Sin traslado",
-            unidadDestino: c[6] || "Sin información",
-            liberado: c[10] || c[5] || "Sin información",
+            nombre,
+            decreto: get(c, "decreto", "Sin decreto"),
+            fechaIngreso: get(c, "ingreso", "Sin información"),
+            fechaTraslado: get(c, "traslado", "Sin traslado"),
+            unidadDestino: get(c, "unidad", "Sin información"),
+            liberado: get(c, "liberado", "Sin información"),
             departamento: depto,
-            profesion: c[9] || "Sin información",
+            profesion: get(c, "profesion", "Sin información"),
             esFederal
         });
         const k = normalizar(depto);
