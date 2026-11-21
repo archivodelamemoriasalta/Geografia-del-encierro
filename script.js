@@ -1,11 +1,19 @@
 // ================= MAPA BASE =================
 const map = L.map('map', { zoomControl: false }).setView([-24.8, -65.4], 7);
-const base = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-    attribution: '© OpenStreetMap · © CARTO',
-    subdomains: 'abcd',
+// Mapa base oscuro de Esri (no requiere clave). CARTO ahora exige API key.
+const ESRI = "https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/";
+const base = L.tileLayer(ESRI + "World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}", {
+    attribution: "Tiles © Esri — Esri, HERE, Garmin, © OpenStreetMap contributors",
+    maxNativeZoom: 16,
     maxZoom: 18
 }).addTo(map);
-base.once("tileerror", () => mostrarError("No se pudo cargar el mapa base (CARTO). Revisá tu conexión o si algún bloqueador la está cortando."));
+// Nombres de ciudades y rutas encima de los departamentos
+map.createPane("etiquetas").style.zIndex = 650;
+map.getPane("etiquetas").style.pointerEvents = "none";
+L.tileLayer(ESRI + "World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}", {
+    pane: "etiquetas", maxNativeZoom: 16, maxZoom: 18
+}).addTo(map);
+base.once("tileerror", () => mostrarError("No se pudo cargar el mapa base. Revisá tu conexión o si algún bloqueador la está cortando."));
 L.control.zoom({ position: 'bottomright' }).addTo(map);
 
 let personas = [];
